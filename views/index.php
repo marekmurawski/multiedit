@@ -139,19 +139,21 @@ $(".multiedit-field").live('change',function() {
 				},
 			success: function( data ) {
 					if (data.status == 'OK') {
-							field.removeClass('error');
-							field.addClass('success');
-							setTimeout(function(){field.removeClass('success');},1000);
+							field.removeClass('error');  field.addClass('success');
+
 							showMessageBox (data.message,data.status);
 							setTimeout(function(){progressIndicator.removeClass('visible');},300)
+							if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
+								$('#updated_on-'+data.identifier).html(data.datetime).addClass('wasmodified');
+							}
 					} else {
-							field.removeClass('success');
-							field.addClass('error');
-							setTimeout(function(){field.removeClass('error');},5000);
+							field.removeClass('success'); field.addClass('error');
+
 							field.val(data.oldvalue);
-							setTimeout(function(){progressIndicator.removeClass('visible');},300)
 							showMessageBox (data.message,data.status);
+							setTimeout(function(){progressIndicator.removeClass('visible');},300)
 							$(".slugfield").trigger('keyup');
+							
 					}
 				},
 			error: function( data ) {

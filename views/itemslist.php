@@ -124,7 +124,7 @@ if (!defined('IN_CMS')) { exit(); }
 				</td>
 				<td></td>
 				<td class="label"><?php echo __('Updated on'); ?></td>
-				<td>
+				<td id="updated_on-<?php echo $k->id; ?>">
 					<?php echo $k->updated_on; ?>
 				</td>
 			</tr>

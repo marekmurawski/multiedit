@@ -5,7 +5,7 @@ if (!defined('IN_CMS')) { exit(); }
 
 <label for="rootpage">Show subpages of: </label>
 <select name="rootpage" id="multiedit-pageslist" class="multiedit-items-select">
-			<option value="1"><?php echo __('Root'); ?></option>
+			<option value="1" selected><?php echo $rootPage->title; ?></option>
 			<?php foreach($pagesList as $k): ?>
 			<option value="<?php echo $k['id'] ?>"><?php echo $k['label'] . ' (' . $k['count'] . ')' ?></option>
 			<?php endforeach; ?>

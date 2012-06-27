@@ -1,12 +1,16 @@
 #multiedit-messagebox {
     margin-bottom: 5px;
-    padding: 5px 0px;
+    padding: 5px 5px;
 }
 #multiedit-messagebox.success {
 color: green;
+background: #cfc;
+border: 1px solid #6f6;
 }
 #multiedit-messagebox.error {
 color: red;
+background: #fcc;
+border: 1px solid #f66;
 }
 
 #multiedit-header {
@@ -39,6 +43,11 @@ color: red;
 .multiedit-item:hover {
     background: #cccccc;
     border: 1px solid #f80;
+}
+
+.multiedit-item td.wasmodified {
+    color: blue;
+    font-weight: bold;
 }
 
 .multiedit-item div.header {
@@ -97,6 +106,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', end
     font-size: 12px;
     text-align: right;
     width: 100px;
+    color: #888;    
 }
 
 .multiedit-item td.textareacontainer {
@@ -129,6 +139,10 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', end
 #multiedit-wrapper input:focus, 
 #multiedit-wrapper textarea:focus,
 #multiedit-wrapper select:focus {background: #ffffcc; border: 1px solid #f80;}
+
+#multiedit-wrapper input:hover, 
+#multiedit-wrapper textarea:hover,
+#multiedit-wrapper select:hover {background: #ffffdd;}
 
 #multiedit-wrapper select {
    padding: 0px;

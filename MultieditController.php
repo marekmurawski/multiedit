@@ -62,9 +62,7 @@ class MultieditController extends PluginController {
 
      public function getonepage($page_id,$showpageparts=1) {
 	$items[] = Page::findById((int) $page_id); // add one item to array;
-//	echo '<pre>';
-//	print_r ($items[0]);
-//	echo '</pre>';
+
 	if ($page_id > 1) {$parentPage = Page::findById($items[0]->parent_id);}
 	if ($parentPage) {$parentUri = $parentPage->getUri();} else {$parentUri='';}
 	  
@@ -102,6 +100,7 @@ class MultieditController extends PluginController {
 	self::makeSubpagesList($page);
 	               $list = new View(self::PLUGIN_REL_VIEW_FOLDER.'pageselect', array(
                             'pagesList' => self::$pagesList,
+			    'rootPage' => $page	 
                         )); 
 
 	$items = Page::findAllFrom('Page', 'parent_id=?',array($page->id));
@@ -130,11 +129,14 @@ class MultieditController extends PluginController {
     }
 
     public function setvalue() {
-		$item = explode('-', $_POST['item']);
+		$fieldsAffectingUpdatedOn = array('title','breadcrumb','slug','keywords','description');
+		// Page part changes always update "updated_on" field
+        	$item = explode('-', $_POST['item']);
 		$field = $item[0];
 		$identifier = $item[1];
 		$value = $_POST['value'];
-		
+		$new_updated_on = date('Y-m-d H:i:s');
+
 		if ($field=='slug') {
 				$page = Record::findOneFrom('Page','id=?', array($identifier));
 				$oldslug = $page->slug;
@@ -152,7 +154,7 @@ class MultieditController extends PluginController {
 				}				
 				$exists = Record::countFrom('Page', 'parent_id=? AND slug=?', array($page->parent_id,$value));
 				if ($exists>0) {
-					$result =  array('message' => 'Slug exists: <b>' . $value . '</b>',
+					$result =  array('message' => 'Slug exists! - <b>' . $value . '</b>',
  						 'oldvalue' => $oldslug,
 						   'status' => 'error');
 				echo json_encode($result); return false;
@@ -165,27 +167,29 @@ class MultieditController extends PluginController {
 				
 				Record::update('Page', array($field => $value,        
 					'updated_by_id' => AuthUser::getId(),
-					'updated_on' => date('Y-m-d H:i:s')
+					'updated_on' => $new_updated_on
 					), 'id=?', array($page_id));				
 				
 				$part = Record::findOneFrom('PagePart','name=? AND page_id=?', array($part_name, $page_id));
 				$part->content = $value;
 				$part->content_html = $value;
 				if ($part->save()) {
-					$result =  array('message' => 'Updated PagePart <b>' . $part->name. '</b>' . ' in page: ' . $page_id,
+					$result =  array('message' => 'Updated <b>' . $part->name. '</b>' . ' page part in page: ' . $page_id,
+							'datetime' => $new_updated_on, 
+							'identifier' => $page_id,
 							'status' => 'OK');
 					}
 					else {
-					$result =  array('message' => 'Error saving PagePart <b>' . $part->name. '</b>' . ' in page: ' . $page_id,
-							'status' => 'OK');
+					$result =  array('message' => 'Error saving <b>' . $part->name. '</b>' . ' page part in page: ' . $page_id,
+							'status' => 'error');
 					}
 		echo json_encode($result); return false;						 
 		}
 		elseif ( in_array($field, array('created_on','published_on')) ) {
 			 $correct = MultieditController::checkdatevalid($value);
 			 if (! $correct) {
-				$page = Page::findById((int) $item[1]);
-				$result =  array('message' => 'Date: <b>' . $value. '</b>',
+				$page = Page::findById((int) $identifier);
+				$result =  array('message' => 'Wrong date: <b>' . $value. '</b>',
 						 'oldvalue' => $page->{$field},
 						 'status' => 'error');
 				echo json_encode($result); return false;
@@ -194,27 +198,21 @@ class MultieditController extends PluginController {
 		elseif ( $field == 'valid_until' ) {
 			 if (trim($value,'-/: ')=='') {
 				 Record::getConnection()->exec("UPDATE page SET valid_until=NULL WHERE id=".(int)$identifier);
-				 
-				 $result =  array('message' => 'Valid_until cleared in page <b>' . $identifier . '</b>',
-						 'status' => 'OK');
+
+				 $result =  array('message' => 'Cleared <b>valid_until</b> in page <b>' . $identifier . '</b>',
+						  'datetime' => $new_updated_on, 
+						  'identifier' => $identifier,
+						  'status' => 'OK');
         	  		 echo json_encode($result); return false;
 				 };
 			 $correct = MultieditController::checkdatevalid($value);
-			 if ($correct) {
-				 Record::update('Page', array($item[0] => $value), 'id=?', array($identifier));
-				 
-				 $result =  array('message' => 'Changed <b>"' . $field . '"</b><br/>'.
-							       'in page: <b>' . $identifier . '</b><br/>'.
-							       'new value: <b>' . $value . '</b>',
-						 'status' => 'OK');
-			 } else {
-				$page = Page::findById((int) $item[1]);
-				$result =  array('message' => 'Invalid datetime: <b>' . $value. '</b>',
+			 if (! $correct) {
+				$page = Page::findById((int) $identifier);
+				$result =  array('message' => 'Wrong date: <b>' . $value. '</b>',
 						 'oldvalue' => $page->{$field},
 						 'status' => 'error');
+				echo json_encode($result); return false;
 			 }
-				
-			echo json_encode($result); return false;
 		}
 		elseif ($field == 'tags') {
 			$page = Page::findById((int) $identifier);
@@ -228,22 +226,27 @@ class MultieditController extends PluginController {
 			echo json_encode($result); return false;
 		}
 		
-		//$page = Record::findByIdFrom('Page', (int) $identifier);
-		//$page->{$field} = $value;
-		Record::update('Page', array($field => $value,        
-					'updated_by_id' => AuthUser::getId(),
-					'updated_on' => date('Y-m-d H:i:s')
-					), 'id=?', array($identifier));
-		//
-		//$page = Page::findById((int) $identifier);
-		//$page->setFromData( array($field => $value) );
-		//$page->{$field} = $value;
-		//$page->save();
+		$toUpdate = array($field => $value);
+		$updateInfo = array(   'updated_by_id' => AuthUser::getId(),
+					'updated_on' => $new_updated_on);
 		
+		// add modification time to return array if field affects updated_on
+		if (in_array($field, $fieldsAffectingUpdatedOn)) {
+			$toUpdate = array_merge($toUpdate,$updateInfo);}
+		
+		Record::update('Page', $toUpdate, 'id=?', array($identifier));
+
 		$result = array('message' => 'Updated <b>' . $field . '</b> in page <b>' . $identifier . '</b>',
 				'status' => 'OK');
-		echo json_encode($result);
-		return false;
+		$timeInfo = array('datetime' => $new_updated_on, 
+				'identifier' => $identifier);
+
+		// add modification time to return array if field affects updated_on
+		if (in_array($field, $fieldsAffectingUpdatedOn)) {
+			$result = array_merge($result,$timeInfo);
+		}
+		
+		echo json_encode($result); return false;
 		
 	}
 }
