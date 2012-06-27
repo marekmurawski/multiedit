@@ -80,19 +80,21 @@ $(".slugifier").live('click',function(){
 	id = $(this).attr('rel').split('-',2)[1];
 	source = $('#title-' + id )
 	target = $('#slug-' + id );
-	target.val(toSlug(source.val()));
-	target.trigger("change");
+
+	oldval = target.val();
+	if (oldval != toSlug(source.val())) {
+		target.val(toSlug(source.val()));
+		target.trigger("change");
+	}
 })
 
 $(".breadcrumber").live('click',function(){
 	id = $(this).attr('rel').split('-',2)[1];
 	source = $('#title-' + id )
 	target = $('#breadcrumb-' + id );
-	oldval = target.val();
-	if (oldval != source.val()) {
+
 		target.val(source.val());
 		target.trigger("change");
-	}
 })
 
 $("#reload-list").live('click',function(){
