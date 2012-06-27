@@ -162,6 +162,12 @@ class MultieditController extends PluginController {
 				$tmpval = explode('_partname_', $identifier);
 				$page_id = $tmpval[0];
 				$part_name = $tmpval[1];
+				
+				Record::update('Page', array($field => $value,        
+					'updated_by_id' => AuthUser::getId(),
+					'updated_on' => date('Y-m-d H:i:s')
+					), 'id=?', array($page_id));				
+				
 				$part = Record::findOneFrom('PagePart','name=? AND page_id=?', array($part_name, $page_id));
 				$part->content = $value;
 				$part->content_html = $value;
