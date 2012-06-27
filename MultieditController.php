@@ -193,8 +193,8 @@ class MultieditController extends PluginController {
 		}
 		elseif ( $field == 'valid_until' ) {
 			 if (trim($value,'-/: ')=='') {
-				 $sql = "UPDATE `page` SET `valid_until`=DEFAULT WHERE `page`.`id` = ".(int)$identifier." LIMIT 1";
-				 Record::query($sql);
+				 Record::getConnection()->exec("UPDATE page SET valid_until=NULL WHERE id=".(int)$identifier);
+				 
 				 $result =  array('message' => 'Valid_until cleared in page <b>' . $identifier . '</b>',
 						 'status' => 'OK');
         	  		 echo json_encode($result); return false;
