@@ -1,0 +1,162 @@
+#multiedit-messagebox {
+    margin-bottom: 5px;
+    padding: 5px 0px;
+}
+#multiedit-messagebox.success {
+color: green;
+}
+#multiedit-messagebox.error {
+color: red;
+}
+
+#multiedit-header {
+    margin-bottom: 10px;
+    padding: 5px 15px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    font-size: 14px;
+    position: relative;
+    background: #ddd;
+}
+
+.multiedit-item {
+    background: #cccccc;
+    background: -moz-linear-gradient(top,  #cccccc 0%, #e4e4e4 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#cccccc), color-stop(100%,#e4e4e4));
+    background: -webkit-linear-gradient(top,  #cccccc 0%,#e4e4e4 100%);
+    background: -o-linear-gradient(top,  #cccccc 0%,#e4e4e4 100%);
+    background: -ms-linear-gradient(top,  #cccccc 0%,#e4e4e4 100%);
+    background: linear-gradient(top,  #cccccc 0%,#e4e4e4 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#e4e4e4',GradientType=0 );
+    margin-bottom: 10px;
+    padding: 5px;
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    font-size: 12px;
+    position: relative;
+}
+
+.multiedit-item:hover {
+    background: #cccccc;
+    border: 1px solid #f80;
+}
+
+.multiedit-item div.header {
+background: -moz-linear-gradient(left,  rgba(68,68,68,1) 0%, rgba(68,68,68,1) 59%, rgba(68,68,68,0) 87%, rgba(68,68,68,0) 100%);
+background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(68,68,68,1)), color-stop(59%,rgba(68,68,68,1)), color-stop(87%,rgba(68,68,68,0)), color-stop(100%,rgba(68,68,68,0)));
+background: -webkit-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+background: -o-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+background: -ms-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+background: linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#00444444',GradientType=1 );
+
+
+    color: #CCC;
+    font-size: 14px;
+    padding: 3px 10px 3px 85px;
+}
+
+.multiedit-item div.header .titleslug{
+    display: inline;
+    color: white;
+}
+
+.multiedit-item .page-id {
+    position: absolute;
+    display: block;
+    color: #AAA;
+    left: 20px;
+    font-size: 14px;
+}
+
+.multiedit-item .actions {
+    position: absolute;
+    display: block;
+    color: white;
+    right: 20px;
+    font-size: 14px;
+}
+
+.multiedit-item table {
+    width: 100%;
+}
+
+.multiedit-item div.filteredparts {
+    display: inline-block;
+    background: white;
+    padding: 2px 5px;
+    margin: 2px 2px;
+    border-radius: 3px;
+}
+
+.multiedit-item td {
+    padding: 2px;
+    position: relative;
+}
+.multiedit-item td.label {
+    font-size: 12px;
+    text-align: right;
+    width: 100px;
+}
+
+.multiedit-item td.textareacontainer {
+    padding-right: 12px;
+}
+
+.multiedit-item td.timecolumn {
+    width: 140px;
+}
+
+.multiedit-item td.timecolumn input.multiedit-field{
+ /*   width: 150px; */
+}
+
+.multiedit-item td.counter {
+    font-size: 12px;
+    width: 30px;
+}
+
+.multiedit-item td.counter div{
+    text-align: left;
+    margin-left: 3px;
+    color: #888;
+}
+
+#multiedit-wrapper input, 
+#multiedit-wrapper textarea,
+#multiedit-wrapper select {border: 1px solid #AAA; width: 100%; font-size: 12px; outline: none;}
+
+#multiedit-wrapper input:focus, 
+#multiedit-wrapper textarea:focus,
+#multiedit-wrapper select:focus {background: #ffffcc; border: 1px solid #f80;}
+
+#multiedit-wrapper select {
+   padding: 0px;
+   -webkit-appearance: none;
+    background: rgb(224,224,224);
+    background: -moz-linear-gradient(top,  rgba(224,224,224,1) 0%, rgba(188,188,188,1) 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(224,224,224,1)), color-stop(100%,rgba(188,188,188,1)));
+    background: -webkit-linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
+    background: -o-linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
+    background: -ms-linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
+    background: linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#bcbcbc',GradientType=0 );
+   
+}
+
+#multiedit-wrapper textarea {resize: vertical; height: 100px;}
+
+#multiedit-wrapper input.multiedit-datetime {width: 140px}
+
+#multiedit-wrapper input.error {border: 1px solid red;}
+#multiedit-wrapper input.success {border: 1px solid blue;}
+
+#multiedit-header select,#multiedit-header input {width: auto;    font-size: 14px;}
+
+.multiedit-item img.loader {position: absolute; right: 4px; top: 3px; display: none;}
+.multiedit-item img.visible {display: block;}
+
+.breadcrumber, .slugifier, .reload-item, #reload-list, #togglepagepartrows, .hide-item {
+    cursor: pointer;
+}
+ #reload-list,#togglepagepartrows {margin: 0 5px;}
