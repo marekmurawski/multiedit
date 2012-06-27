@@ -68,6 +68,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', end
 .multiedit-item div.header .titleslug{
     display: inline;
     color: white;
+    font-weight: bold;
 }
 
 .multiedit-item .page-id {
@@ -147,6 +148,8 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', end
 #multiedit-wrapper select {
    padding: 0px;
    -webkit-appearance: none;
+   -moz-appearance: none;
+    appearance: none;
     background: rgb(224,224,224);
     background: -moz-linear-gradient(top,  rgba(224,224,224,1) 0%, rgba(188,188,188,1) 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(224,224,224,1)), color-stop(100%,rgba(188,188,188,1)));

@@ -20,7 +20,7 @@ if (!defined('IN_CMS')) { exit(); }
 			<option value="created_on"><?php echo __('Created on'); ?></option>
 			<option value="published_on"><?php echo __('Published on'); ?></option>
 			<option value="valid_until"><?php echo __('Valid until'); ?></option>	
-			<option value="id"><?php echo __('ID'); ?></option>	
+			<option value="id" selected><?php echo __('ID'); ?></option>	
 </select>
 <label for="order"> ordered </label>
 <select name="order" id="multiedit-pageslist-order" class="multiedit-items-select">

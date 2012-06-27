@@ -103,7 +103,7 @@ class MultieditController extends PluginController {
 			    'rootPage' => $page	 
                         )); 
 
-	$items = Page::findAllFrom('Page', 'parent_id=?',array($page->id));
+	$items = Page::findAllFrom('Page', 'parent_id=? ORDER BY id ASC',array($page->id));
 	
 	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
 			'items' => $items,

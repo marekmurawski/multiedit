@@ -9,10 +9,10 @@ if (!defined('IN_CMS')) { exit(); }
 <?php echo __('Here you can quickly edit multiple pages at once. The list of pages consists of immediate children of selected parent page.')?>
 </p>
 <p>
-<?php echo __('Each field is updated upon leaving it.')?>
+<?php echo __('Each field is updated upon leaving it. Changing <em>"title", "breadcrumb", "slug", "keywords", "description" and page parts</em> will change page "updated on" time.')?>
 </p>
 <p>
-<?php echo __('You can also edit page parts but only those without filter applied. Page parts with filters are listed below each page.')?>
+<?php echo __('You can also edit page parts but only those <strong>without filter</strong> applied. Page parts with filters are listed below each page.')?>
 </p>
 </div>
 <div class="box">
