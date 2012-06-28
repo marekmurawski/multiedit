@@ -9,9 +9,9 @@ if (!defined('IN_CMS')) { exit(); }
 <?php endif; ?>
 		<div class="header">
 		<div class="actions">
-			<span class="reload-item" rel="multipage_item-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-circle-135-left.png'; ?>"/></span>
-			<span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/minus-button.png'; ?>"/></span>
-			<a href="/admin/page/edit/<?php echo $k->id; ?>" target="_blank"><img src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--pencil.png'; ?>"/></a>
+			<span class="reload-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-circle-135-left.png'; ?>"/></span>
+			<span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Hide item'); ?>" title="<?php echo __('Hide item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/minus-button.png'; ?>"/></span>
+			<a href="/<?php echo ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--pencil.png'; ?>"/></a>
 		</div>			
 		<div class="page-id"><?php echo $k->id; ?></div>
 		<?php echo URL_PUBLIC; ?><?php echo $parentUri; if (strlen($parentUri)>0) {echo '/';} ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
@@ -52,7 +52,7 @@ if (!defined('IN_CMS')) { exit(); }
 					<img id="breadcrumb-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
-					<div><span class="breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>"/></span></div>
+					<div><span class="breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
 				</td>
 				<td class="label">Description</td>
 				<td>
@@ -78,7 +78,7 @@ if (!defined('IN_CMS')) { exit(); }
 				</td>
 				<td class="counter">
 					<?php if($k->id != 1): //root page slug protection ?>
-					<div><span class="slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>"/></span></div>
+					<div><span class="slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
 					<?php endif; ?>
 				</td>
 				<td class="label">Tags</td>
@@ -148,7 +148,7 @@ if (!defined('IN_CMS')) { exit(); }
 			<tr>
 				<td class="label">
 				</td>
-				<td colspan="6">
+				<td colspan="7">
 					<?php foreach ($parts as $part): ?>
 					<?php 
 						if (!empty($part->filter_id)) {
