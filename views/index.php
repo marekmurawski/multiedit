@@ -11,6 +11,9 @@ if (!defined('IN_CMS')) { exit(); }
 	</div>
 	<div id="multiedit-list">
 		<?php 
+		echo $rootItem; 
+		?>
+		<?php 
 		echo $itemsList; 
 		?>
 	</div>

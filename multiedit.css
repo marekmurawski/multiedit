@@ -33,13 +33,16 @@ border: 1px solid #f66;
     background: linear-gradient(top,  #cccccc 0%,#e4e4e4 100%);
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cccccc', endColorstr='#e4e4e4',GradientType=0 );
     margin-bottom: 10px;
+    margin-left: 10px;
     padding: 5px;
     border-radius: 5px;
     border: 1px solid #bbb;
     font-size: 12px;
     position: relative;
 }
-
+.multiedit-item-root {
+    margin-left: 0px;
+}
 .multiedit-item:hover {
     background: #cccccc;
     border: 1px solid #f80;
@@ -106,7 +109,7 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', end
 .multiedit-item td.label {
     font-size: 12px;
     text-align: right;
-    width: 100px;
+    width: 65px;
     color: #888;    
 }
 
