@@ -71,13 +71,15 @@ if (!defined('IN_CMS')) { exit(); }
 			<tr>
 				<td class="label">Slug</td>
 				<td>
-					<?php if($k->id != 1): //root page protection?>
+					<?php if($k->id != 1): //root page slug protection ?>
 					<input type="text" class="multiedit-field slugfield" id="slug-<?php echo $k->id; ?>" name="slug-<?php echo $k->id; ?>" value="<?php echo $k->slug; ?>"/>
 					<img id="slug-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 					<?php endif; ?>
 				</td>
 				<td class="counter">
+					<?php if($k->id != 1): //root page slug protection ?>
 					<div><span class="slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>"/></span></div>
+					<?php endif; ?>
 				</td>
 				<td class="label">Tags</td>
 				<td>
