@@ -88,6 +88,7 @@ $(".slugifier").live('click',function(){
 	if (oldval != toSlug(source.val())) {
 		target.val(toSlug(source.val()));
 		target.trigger("change");
+		target.trigger("keyup");		
 	}
 })
 
