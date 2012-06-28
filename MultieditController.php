@@ -160,6 +160,12 @@ class MultieditController extends PluginController {
 		if ($field=='slug') {
 				$page = Record::findOneFrom('Page','id=?', array($identifier));
 				$oldslug = $page->slug;
+				if ($identifier==1) { //root page protection
+					$result =  array('message' => 'Slug of root page must be empty!',
+ 						 'oldvalue' => $oldslug,
+						   'status' => 'error');
+				echo json_encode($result); return false;
+				}				
 				if (strpos($value,'/')) {
 					$result =  array('message' => 'Slug cannot contain slashes!',
  						 'oldvalue' => $oldslug,
