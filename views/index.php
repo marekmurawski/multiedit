@@ -71,13 +71,11 @@ $(".multiedit-items-select").live('change',function() {
 				pageparts, 
 			type:   'get',
 			success: function(data){
-				//$('#multiedit-list').fadeOut('fast', function(){
 				$('#multiedit-list').html(data);
 				$(".countchars").trigger('keyup');
 				$(".counttags").trigger('keyup');
 				$('#multiedit-list-preloader').removeClass('preloading');
 				$('#multiedit-list').fadeIn('fast');
-				//})
 				},
 			error: function( data ) {
 					alert (dump(data));
