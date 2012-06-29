@@ -22,7 +22,13 @@ border: 1px solid #f66;
     position: relative;
     background: #ddd;
 }
-
+#multiedit-list-preloader {
+    display: none;
+    margin: 20px auto;
+}
+#multiedit-list-preloader.preloading {
+    display: block;
+}
 .multiedit-item {
     background: #cccccc;
     background: -moz-linear-gradient(top,  #cccccc 0%, #e4e4e4 100%);

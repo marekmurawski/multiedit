@@ -9,6 +9,7 @@ if (!defined('IN_CMS')) { exit(); }
 			echo $pagesList; 
 			?>
 	</div>
+	<img id="multiedit-list-preloader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress-big.gif'; ?>"/>
 	<div id="multiedit-list">
 		<?php 
 		echo $rootItem; 
@@ -60,7 +61,9 @@ $(document).ready( function() { // @todo: change counters to be initially PHP pr
 
 $(".multiedit-items-select").live('change',function() {
     if ($('#showpageparts').attr('checked')) {pageparts='1'} else {pageparts='0'}
-    var request = $.ajax({
+    $('#multiedit-list').fadeOut('fast', function(){
+	    $('#multiedit-list-preloader').addClass('preloading');
+	var request = $.ajax({
 			url:	"<?php echo get_url('plugin/multiedit/getsubpages/'); ?>"
 				+ $('#multiedit-pageslist').val() + '/' +
 				$("#multiedit-pageslist-sorting").val() + '/' +
@@ -68,16 +71,19 @@ $(".multiedit-items-select").live('change',function() {
 				pageparts, 
 			type:   'get',
 			success: function(data){
-				$('#multiedit-list').fadeOut('fast', function(){
+				//$('#multiedit-list').fadeOut('fast', function(){
+				$('#multiedit-list-preloader').removeClass('preloading');
 				$('#multiedit-list').html(data);
 				$(".countchars").trigger('keyup');
 				$(".counttags").trigger('keyup');
 				$('#multiedit-list').fadeIn('fast');
-				})},
+				//})
+				},
 			error: function( data ) {
 					alert (dump(data));
 				}				
 			})
+})
 
 });
 
