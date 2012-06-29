@@ -53,7 +53,7 @@ messageBox = $('#multiedit-messagebox');
 	});
 }	
 
-$(document).ready( function() {
+$(document).ready( function() { // @todo: change counters to be initially PHP processed - faster
 	$(".multiedit-field").trigger('keyup');
 })
 
@@ -69,7 +69,8 @@ $(".multiedit-items-select").live('change',function() {
 			success: function(data){
 				$('#multiedit-list').fadeOut('fast', function(){
 				$('#multiedit-list').html(data);
-				$(".multiedit-field").trigger('keyup');
+				$(".countchars").trigger('keyup');
+				$(".counttags").trigger('keyup');
 				$('#multiedit-list').fadeIn('fast');
 				})},
 			error: function( data ) {
@@ -105,10 +106,6 @@ $("#reload-list").live('click',function(){
 	$('#multiedit-pageslist').trigger('change');
 })
 
-$("#togglepagepartrows").live('click',function(){
-	$('.pagepartrow').toggle();
-})
-
 $(".reload-item").live('click',function(){
    if ($('#showpageparts').attr('checked')) {pageparts='1'} else {pageparts='0'}
    id = $(this).attr('rel').split('-',2)[1];
@@ -117,8 +114,10 @@ $(".reload-item").live('click',function(){
 		function(data){
 			target.fadeOut('fast', function(){
 			target.html(data);
-			$(".multiedit-field").trigger('keyup');
+			$(".countchars").trigger('keyup');
+			$(".counttags").trigger('keyup');
 			target.fadeIn('fast');
+			showMessageBox ('Reloaded item ' + id,'OK');
 			});	
 		});
 })
@@ -152,6 +151,12 @@ $(".multiedit-field").live('change',function() {
 							if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
 								$('#updated_on-'+data.identifier).html(data.datetime).addClass('wasmodified');
 							}
+								// status change management
+								if (field.hasClass('status-select')) {
+								indicator = $('#'+field.attr('rel'));	
+								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
+								indicator.addClass('status-' + field.val());
+								}
 					} else {
 							field.removeClass('success'); field.addClass('error');
 
