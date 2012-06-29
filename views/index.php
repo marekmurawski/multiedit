@@ -54,7 +54,8 @@ messageBox = $('#multiedit-messagebox');
 }	
 
 $(document).ready( function() { // @todo: change counters to be initially PHP processed - faster
-	$(".multiedit-field").trigger('keyup');
+	$(".countchars").trigger('keyup');
+	$(".counttags").trigger('keyup');
 })
 
 $(".multiedit-items-select").live('change',function() {
