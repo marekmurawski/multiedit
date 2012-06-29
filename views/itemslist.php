@@ -8,6 +8,7 @@ if (!defined('IN_CMS')) { exit(); }
 	<div class="multiedit-item<?php if (isset($isRoot)&&$isRoot==true) {echo " multiedit-item-root";} ?>" id="multipage_item-<?php echo $k->id; ?>">
 <?php endif; ?>
 		<div class="header">
+			<div id="status-indicator-<?php echo $k->id; ?>" class="status-indicator status-<?php echo $k->status_id;?>"></div>
 		<div class="actions">
 			<span class="reload-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-circle-135-left.png'; ?>"/></span>
 			<span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Hide item'); ?>" title="<?php echo __('Hide item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/minus-button.png'; ?>"/></span>
@@ -15,7 +16,6 @@ if (!defined('IN_CMS')) { exit(); }
 		</div>			
 		<div class="page-id"><?php echo $k->id; ?></div>
 		<?php echo URL_PUBLIC; ?><?php echo $parentUri; if (strlen($parentUri)>0) {echo '/';} ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
-
 		</div>
 		<table border="0">
 
@@ -117,7 +117,7 @@ if (!defined('IN_CMS')) { exit(); }
 					Status
 				</td>				
 				<td>
-					<select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
+					<select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field status-select" rel="status-indicator-<?php echo $k->id; ?>" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
 						<option value="<?php echo Page::STATUS_DRAFT; ?>"<?php echo $k->status_id == Page::STATUS_DRAFT ? ' selected="selected"': ''; ?>><?php echo __('Draft'); ?></option>
 						<option value="<?php echo Page::STATUS_PREVIEW; ?>"<?php echo $k->status_id == Page::STATUS_PREVIEW ? ' selected="selected"': ''; ?>><?php echo __('Preview'); ?></option>
 						<option value="<?php echo Page::STATUS_PUBLISHED; ?>"<?php echo $k->status_id == Page::STATUS_PUBLISHED ? ' selected="selected"': ''; ?>><?php echo __('Published'); ?></option>
