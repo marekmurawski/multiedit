@@ -41,7 +41,7 @@ class MultieditController extends PluginController {
         $this->assignToLayout('sidebar', new View(self::PLUGIN_REL_VIEW_FOLDER.'sidebar'));
     }
     
-    public static function makeSubpagesList($page) {
+    public static function makeSubpagesList($page) { // @todo make showing all pages possible
         $arr = array('order' => 'position ASC, published_on DESC');
         if ($page && count($page->children(null, array(), true)) > 0) {
             foreach ($page->children($arr, array(), true) as $menu) :
@@ -53,7 +53,6 @@ class MultieditController extends PluginController {
 				);
 			}
 			MultieditController::makeSubpagesList($menu);
-
             endforeach;
         }
     }

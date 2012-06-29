@@ -202,7 +202,8 @@ display: block;
 .multiedit-item img.loader {position: absolute; right: 4px; top: 3px; display: none;}
 .multiedit-item img.visible {display: block;}
 
-.breadcrumber, .slugifier, .reload-item, #reload-list, #togglepagepartrows, .hide-item {
+.breadcrumber, .slugifier, .reload-item, #multiedit-header #reload-list, #multiedit-header .hide-item, #multiedit-header .edit-item {
     cursor: pointer;
+    display: inline;
 }
- #reload-list,#togglepagepartrows {margin: 0 5px;}
+ #multiedit-header #reload-list {margin: 0 5px;}

@@ -18,7 +18,7 @@ $layouts = Record::findAllFrom('Layout');
 		<div class="actions">
 			<span class="reload-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-circle-135-left.png'; ?>"/></span>
 			<span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Hide item'); ?>" title="<?php echo __('Hide item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/minus-button.png'; ?>"/></span>
-			<a href="/<?php echo ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--pencil.png'; ?>"/></a>
+			<a class="edit-item" href="/<?php echo ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--pencil.png'; ?>"/></a>
 		</div>			
 		<div class="page-id"><?php echo $k->id; ?></div>
 		<?php echo URL_PUBLIC; ?><?php echo $parentUri; if (strlen($parentUri)>0) {echo '/';} ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
