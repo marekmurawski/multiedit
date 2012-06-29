@@ -260,6 +260,7 @@ class MultieditController extends PluginController {
 		if (in_array($field, $fieldsAffectingUpdatedOn)) {
 			$toUpdate = array_merge($toUpdate,$updateInfo);}
 		
+		// @todo allow NULL values insertion instead of empty strings
 		Record::update('Page', $toUpdate, 'id=?', array($identifier));
 
 		$result = array('message' => 'Updated <b>' . $field . '</b> in page <b>' . $identifier . '</b>',
@@ -271,7 +272,6 @@ class MultieditController extends PluginController {
 		if (in_array($field, $fieldsAffectingUpdatedOn)) {
 			$result = array_merge($result,$timeInfo);
 		}
-		
 		echo json_encode($result); return false;
 		
 	}
