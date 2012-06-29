@@ -64,7 +64,7 @@ class MultieditController extends PluginController {
 	$items[] = Page::findById((int) $page_id); // add one item to array;
 
 	if ($page_id > 1) {$parentPage = Page::findById($items[0]->parent_id);}
-	if ($parentPage) {$parentUri = $parentPage->getUri();} else {$parentUri='';}
+	if (isset($parentPage)) {$parentUri = $parentPage->getUri();} else {$parentUri='';}
 	  
 	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
 			'items' => $items,
