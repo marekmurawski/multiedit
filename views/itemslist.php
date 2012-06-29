@@ -4,8 +4,8 @@ if (!defined('IN_CMS')) { exit(); }
 ?>
 <?php
 // initialize variables
-$filters = Filter::findAll();
-$behaviors = Behavior::findAll();
+//$filters = Filter::findAll();
+//$behaviors = Behavior::findAll();
 $layouts = Record::findAllFrom('Layout');
 ?>
 
