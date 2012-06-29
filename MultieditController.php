@@ -91,7 +91,7 @@ class MultieditController extends PluginController {
 			'parentUri' => $parentPage->getUri(),
 			'showpageparts' => $showpageparts,
 			));
-	sleep(3);
+	//sleep(3);
 	echo $rootItem->render();
 	echo $itemsList->render();
     }   
