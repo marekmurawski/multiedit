@@ -71,9 +71,6 @@ class MultieditController extends PluginController {
 			'innerOnly' => true,
 			'parentUri' => $parentUri,		
 			'showpageparts' => $showpageparts,
-			'filters' => Filter::findAll(),
-			'behaviors' => Behavior::findAll(),
-			'layouts' => Record::findAllFrom('Layout')			
 			));
 	echo $itemsList->render();	
     }   
@@ -87,18 +84,12 @@ class MultieditController extends PluginController {
 			'isRoot' => true,
 			'parentUri' => '', //uri of root page = ''
 			'showpageparts' => $showpageparts, //show page parts by default			
-			'filters' => Filter::findAll(),
-			'behaviors' => Behavior::findAll(),
-			'layouts' => Record::findAllFrom('Layout')			
 			));	
 	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
 			'items' => $items,
 			'rootItem' => $parentPage,
 			'parentUri' => $parentPage->getUri(),
 			'showpageparts' => $showpageparts,
-			'filters' => Filter::findAll(),
-			'behaviors' => Behavior::findAll(),
-			'layouts' => Record::findAllFrom('Layout')			
 			));
 	echo $rootItem->render();
 	echo $itemsList->render();
@@ -119,18 +110,12 @@ class MultieditController extends PluginController {
 			'isRoot' => true,
 			'parentUri' => '', //uri of root page = ''
 			'showpageparts' => '1', //show page parts by default			
-			'filters' => Filter::findAll(),
-			'behaviors' => Behavior::findAll(),
-			'layouts' => Record::findAllFrom('Layout')			
 			));
 
 	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
 			'items' => $items,
 			'parentUri' => '', //uri of root page = ''
 			'showpageparts' => '1', //show page parts by default			
-			'filters' => Filter::findAll(),
-			'behaviors' => Behavior::findAll(),
-			'layouts' => Record::findAllFrom('Layout')			
 			));
 	
 	$this->display('multiedit/views/index', array(

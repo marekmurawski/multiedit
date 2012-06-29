@@ -2,6 +2,12 @@
 /* Security measure */
 if (!defined('IN_CMS')) { exit(); }
 ?>
+<?php
+// initialize variables
+$filters = Filter::findAll();
+$behaviors = Behavior::findAll();
+$layouts = Record::findAllFrom('Layout');
+?>
 
 <?php foreach ($items as $k): ?>
 <?php if (!isset($innerOnly)): ?>
