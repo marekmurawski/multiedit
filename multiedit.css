@@ -54,18 +54,37 @@ border: 1px solid #f66;
 }
 
 .multiedit-item div.header {
-background: -moz-linear-gradient(left,  rgba(68,68,68,1) 0%, rgba(68,68,68,1) 59%, rgba(68,68,68,0) 87%, rgba(68,68,68,0) 100%);
-background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(68,68,68,1)), color-stop(59%,rgba(68,68,68,1)), color-stop(87%,rgba(68,68,68,0)), color-stop(100%,rgba(68,68,68,0)));
-background: -webkit-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
-background: -o-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
-background: -ms-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
-background: linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
-filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#00444444',GradientType=1 );
-
-
+    background: -moz-linear-gradient(left,  rgba(68,68,68,1) 0%, rgba(68,68,68,1) 59%, rgba(68,68,68,0) 87%, rgba(68,68,68,0) 100%);
+    background: -webkit-gradient(linear, left top, right top, color-stop(0%,rgba(68,68,68,1)), color-stop(59%,rgba(68,68,68,1)), color-stop(87%,rgba(68,68,68,0)), color-stop(100%,rgba(68,68,68,0)));
+    background: -webkit-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+    background: -o-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+    background: -ms-linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+    background: linear-gradient(left,  rgba(68,68,68,1) 0%,rgba(68,68,68,1) 59%,rgba(68,68,68,0) 87%,rgba(68,68,68,0) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#00444444',GradientType=1 );
     color: #CCC;
     font-size: 14px;
-    padding: 3px 10px 3px 85px;
+    height: 16px;
+    overflow: hidden;
+    margin-left: 60px;
+    padding: 3px 10px 3px 13px;
+}
+
+.status-indicator {width: 45px; height: 20px; position: absolute; left: 25px; top: 5px; border-top-left-radius: 4px; border-bottom-left-radius: 4px; border:1px solid black;}
+.status-1   { background-color: red; }
+.status-10  { background-color: orange; }
+.status-100 { background-color: #5B9700;}
+.status-101 { background-color: #B5C09F; }
+.status-200 { background-color: #6E88BB; }
+
+.multiedit-item .page-id {
+    position: absolute;
+    display: block;
+    color: white;
+    left: 25px;
+    text-align: center;
+    width: 45px;
+    font-size: 14px;
+    text-shadow: 1px 1px 1px black;
 }
 
 .multiedit-item div.header .titleslug{
@@ -74,20 +93,16 @@ filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', end
     font-weight: bold;
 }
 
-.multiedit-item .page-id {
-    position: absolute;
-    display: block;
-    color: #AAA;
-    left: 20px;
-    font-size: 14px;
-}
 
 .multiedit-item .actions {
     position: absolute;
-    display: block;
+    display: none;
     color: white;
     right: 20px;
     font-size: 14px;
+}
+.multiedit-item:hover .actions {
+display: block;
 }
 
 .multiedit-item table {
