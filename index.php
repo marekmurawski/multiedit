@@ -14,7 +14,7 @@ Plugin::setInfos(array(
     'id'          => 'multiedit',
     'title'       => 'MultiEdit',
     'description' => __('Provides convenient interface to quickly edit multiple pages metadata.'),
-    'version'     => '0.0.5',
+    'version'     => '0.0.6',
    	'license'     => 'GPL',
 	'author'      => 'Marek Murawski',
     'website'     => 'http://marekmurawski.pl/',
