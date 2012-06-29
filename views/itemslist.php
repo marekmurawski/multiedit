@@ -69,7 +69,11 @@ if (!defined('IN_CMS')) { exit(); }
 				</td>
 			</tr>
 			<tr>
-				<td class="label">Slug</td>
+				<td class="label">
+					<?php if($k->id != 1): //root page slug protection ?>
+					Slug
+					<?php endif; ?>
+				</td>
 				<td>
 					<?php if($k->id != 1): //root page slug protection ?>
 					<input type="text" class="multiedit-field slugfield" id="slug-<?php echo $k->id; ?>" name="slug-<?php echo $k->id; ?>" value="<?php echo $k->slug; ?>"/>
@@ -114,9 +118,12 @@ if (!defined('IN_CMS')) { exit(); }
 					
 				</td>
 				<td class="label">
+					<?php if($k->id != 1): //root page status protection ?>
 					Status
+					<?php endif; ?>
 				</td>				
 				<td>
+					<?php if($k->id != 1): //root page status protection ?>
 					<select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field status-select" rel="status-indicator-<?php echo $k->id; ?>" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
 						<option class="status-<?php echo Page::STATUS_DRAFT; ?>" value="<?php echo Page::STATUS_DRAFT; ?>"<?php echo $k->status_id == Page::STATUS_DRAFT ? ' selected="selected"': ''; ?>><?php echo __('Draft'); ?></option>
 						<option class="status-<?php echo Page::STATUS_PREVIEW; ?>" value="<?php echo Page::STATUS_PREVIEW; ?>"<?php echo $k->status_id == Page::STATUS_PREVIEW ? ' selected="selected"': ''; ?>><?php echo __('Preview'); ?></option>
@@ -124,7 +131,7 @@ if (!defined('IN_CMS')) { exit(); }
 						<option class="status-<?php echo Page::STATUS_HIDDEN; ?>" value="<?php echo Page::STATUS_HIDDEN; ?>"<?php echo $k->status_id == Page::STATUS_HIDDEN ? ' selected="selected"': ''; ?>><?php echo __('Hidden'); ?></option>
 						<option class="status-<?php echo Page::STATUS_ARCHIVED; ?>" value="<?php echo Page::STATUS_ARCHIVED; ?>"<?php echo $k->status_id == Page::STATUS_ARCHIVED ? ' selected="selected"': ''; ?>><?php echo __('Archived'); ?></option>
 					</select>
-
+					<?php endif; ?>
 				</td>
 				<td></td>
 				<td class="label">Updated on</td>
