@@ -153,7 +153,7 @@ $layouts = Record::findAllFrom('Layout');
 			?>
 					<tr>
 						      <td class="label"><b><?php echo $part->name; ?></b></td>
-						      <td colspan="7" class="textareacontainer"><textarea class="multiedit-field" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"><?php echo $part->content_html; ?></textarea></td>
+						      <td colspan="7" class="textareacontainer"><textarea class="multiedit-field" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"><?php echo htmlentities($part->content, ENT_COMPAT, 'UTF-8'); ?></textarea></td>
 					</tr>
 			<?php 
 				}; //empty filter value
