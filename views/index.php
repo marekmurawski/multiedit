@@ -72,10 +72,10 @@ $(".multiedit-items-select").live('change',function() {
 			type:   'get',
 			success: function(data){
 				//$('#multiedit-list').fadeOut('fast', function(){
-				$('#multiedit-list-preloader').removeClass('preloading');
 				$('#multiedit-list').html(data);
 				$(".countchars").trigger('keyup');
 				$(".counttags").trigger('keyup');
+				$('#multiedit-list-preloader').removeClass('preloading');
 				$('#multiedit-list').fadeIn('fast');
 				//})
 				},
