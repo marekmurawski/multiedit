@@ -93,6 +93,9 @@ border: 1px solid #f66;
     font-weight: bold;
 }
 
+.multiedit-item .actions,
+.multiedit-item .breadcrumber,
+.multiedit-item .slugifier {display: none}
 
 .multiedit-item .actions {
     position: absolute;
@@ -101,7 +104,9 @@ border: 1px solid #f66;
     right: 20px;
     font-size: 14px;
 }
-.multiedit-item:hover .actions {
+.multiedit-item:hover .actions,
+.multiedit-item:hover .breadcrumber,
+.multiedit-item:hover .slugifier {
 display: block;
 }
 
