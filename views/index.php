@@ -58,19 +58,20 @@ $(document).ready( function() { // @todo: change counters to be initially PHP pr
 	$(".countchars").trigger('keyup');
 	$(".counttags").trigger('keyup');
 
-  var top = $('#multiedit-messages').offset().top - parseFloat($('#multiedit-messages').css('marginTop').replace(/auto/, 0));
-  $(window).scroll(function (event) {
-    // what the y position of the scroll is
-    var y = $(this).scrollTop();
-  
-    // whether that's below the form
-    if (y >= top) {
-      // if so, ad the fixed class
-      $('#multiedit-messages').addClass('fixed');
-    } else {
-      // otherwise remove it
-      $('#multiedit-messages').removeClass('fixed');
-    }
+	// FLOATING messages
+	var top = $('#multiedit-messages').offset().top - parseFloat($('#multiedit-messages').css('marginTop').replace(/auto/, 0));
+	$(window).scroll(function (event) {
+	// what the y position of the scroll is
+	var y = $(this).scrollTop();
+
+	// whether that's below the form
+	if (y >= top) {
+	// if so, ad the fixed class
+	$('#multiedit-messages').addClass('fixed');
+	} else {
+	// otherwise remove it
+	$('#multiedit-messages').removeClass('fixed');
+	}
   });
 	
 })
@@ -195,7 +196,7 @@ $(".multiedit-field").live('change',function() {
 								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
 								indicator.addClass('status-' + data.setstatus);
 							}								
-								// status change management @todo change if above changed
+								// status change management @todo DRY status change
 								if (field.hasClass('status-select')) {
 								indicator = $('#'+field.attr('rel'));	
 								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');

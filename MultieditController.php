@@ -281,7 +281,6 @@ class MultieditController extends PluginController {
 						 'status' => 'error');
 				echo json_encode($result); return false;
 			 }
-//				@todo change status to archived if valid_until in past
 			if ($value < $now_datetime) {
 					Record::getConnection()->exec("UPDATE " . TABLE_PREFIX . "page SET status_id=".Page::STATUS_ARCHIVED." WHERE id=".(int)$identifier);
 					$messagesExt[] = '<span class="warning">'.__('Warning: Date of <b>:field</b> is in past! Changed page status to archived!', array(':field'=>$field)).'</span>';
