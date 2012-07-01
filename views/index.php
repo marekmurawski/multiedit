@@ -57,10 +57,27 @@ messageBox = $('#multiedit-messagebox');
 $(document).ready( function() { // @todo: change counters to be initially PHP processed - faster
 	$(".countchars").trigger('keyup');
 	$(".counttags").trigger('keyup');
+
+  var top = $('#multiedit-messages').offset().top - parseFloat($('#multiedit-messages').css('marginTop').replace(/auto/, 0));
+  $(window).scroll(function (event) {
+    // what the y position of the scroll is
+    var y = $(this).scrollTop();
+  
+    // whether that's below the form
+    if (y >= top) {
+      // if so, ad the fixed class
+      $('#multiedit-messages').addClass('fixed');
+    } else {
+      // otherwise remove it
+      $('#multiedit-messages').removeClass('fixed');
+    }
+  });
+	
 })
 
 $(".multiedit-items-select").live('change',function() {
-    if ($('#showpageparts').attr('checked')) {pageparts='1'} else {pageparts='0'}
+    if ($('#showpageparts').attr('checked')) {showpageparts='1'} else {showpageparts='0'}
+    if ($('#showcollapsed').attr('checked')) {showcollapsed='1'} else {showcollapsed='0'}
     $('#multiedit-list').fadeOut('fast', function(){
 	    $('#multiedit-list-preloader').addClass('preloading');
 	var request = $.ajax({
@@ -68,7 +85,9 @@ $(".multiedit-items-select").live('change',function() {
 				+ $('#multiedit-pageslist').val() + '/' +
 				$("#multiedit-pageslist-sorting").val() + '/' +
 				$("#multiedit-pageslist-order").val()+ '/' +
-				pageparts, 
+				showpageparts + '/' +
+				showcollapsed + '/'
+				, 
 			type:   'get',
 			success: function(data){
 				$('#multiedit-list').html(data);
@@ -102,9 +121,11 @@ $(".breadcrumber").live('click',function(){
 	id = $(this).attr('rel').split('-',2)[1];
 	source = $('#title-' + id )
 	target = $('#breadcrumb-' + id );
-
+	oldval = target.val();
+	if (oldval != source.val()) {
 		target.val(source.val());
 		target.trigger("change");
+	}
 })
 
 $("#reload-list").live('click',function(){
@@ -112,10 +133,11 @@ $("#reload-list").live('click',function(){
 })
 
 $(".reload-item").live('click',function(){
-   if ($('#showpageparts').attr('checked')) {pageparts='1'} else {pageparts='0'}
+   if ($('#showpageparts').attr('checked')) {showpageparts='1'} else {showpageparts='0'}
+   if ($('#showcollapsed').attr('checked')) {showcollapsed='1'} else {showcollapsed='0'}
    id = $(this).attr('rel').split('-',2)[1];
 	target = $('#' + $(this).attr('rel'));
-		$.get("<?php echo get_url('plugin/multiedit/getonepage/'); ?>" + id + '/' + pageparts,
+		$.get("<?php echo get_url('plugin/multiedit/getonepage/'); ?>" + id + '/' + showpageparts+ '/' + showcollapsed,
 		function(data){
 			target.fadeOut('fast', function(){
 			target.html(data);
@@ -133,6 +155,16 @@ $(".hide-item").live('click',function(){
 				target.remove();
 			});
 
+})
+
+$(".multiedit-item .header").live('click',function(){
+$(this).parent().find('table').toggle();
+})
+
+$(".collapse-item").live('click',function(){
+	id = $(this).attr('rel').split('-',2)[1];
+	target = $('#' + $(this).attr('rel'));
+			target.find('table').toggle();
 })
 
 $(".multiedit-field").live('change',function() {
@@ -156,7 +188,14 @@ $(".multiedit-field").live('change',function() {
 							if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
 								$('#updated_on-'+data.identifier).html(data.datetime).addClass('wasmodified');
 							}
-								// status change management
+							// change status if page has expired
+							if (data.hasOwnProperty('setstatus') && data.hasOwnProperty('identifier')) {
+								$('#status_id-'+data.identifier).val(data.setstatus);
+								indicator = $('#status-indicator-'+data.identifier);
+								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
+								indicator.addClass('status-' + data.setstatus);
+							}								
+								// status change management @todo change if above changed
 								if (field.hasClass('status-select')) {
 								indicator = $('#'+field.attr('rel'));	
 								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
