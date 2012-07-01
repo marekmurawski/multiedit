@@ -14,6 +14,7 @@ Changelog
 
 - fixed "Show subpages" list to always show full pages hierarchy
 - valid_until set in past makes page status "Archived"
+- added "default" sorting option (as in Wolf's Pages tab)
 - Part Revisions plugin compatible
 - collapsible items
 - improved messages
