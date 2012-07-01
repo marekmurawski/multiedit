@@ -20,6 +20,8 @@ if (!defined('IN_CMS')) { exit(); }
 	</div>
 </div>	
 <script>
+	var showpageparts;
+	var showcollapsed;
 function dump(arr,level) {
 	var dumped_text = "";
 	if(!level) level = 0;
@@ -77,8 +79,8 @@ $(document).ready( function() { // @todo: change counters to be initially PHP pr
 })
 
 $(".multiedit-items-select").live('change',function() {
-    if ($('#showpageparts').attr('checked')) {showpageparts='1'} else {showpageparts='0'}
-    if ($('#showcollapsed').attr('checked')) {showcollapsed='1'} else {showcollapsed='0'}
+   if ((document.getElementById("showpageparts").checked)) {showpageparts='1'} else {showpageparts='0'}
+   if ((document.getElementById("showcollapsed").checked)) {showcollapsed='1'} else {showcollapsed='0'}
     $('#multiedit-list').fadeOut('fast', function(){
 	    $('#multiedit-list-preloader').addClass('preloading');
 	var request = $.ajax({
@@ -134,8 +136,8 @@ $("#reload-list").live('click',function(){
 })
 
 $(".reload-item").live('click',function(){
-   if ($('#showpageparts').attr('checked')) {showpageparts='1'} else {showpageparts='0'}
-   if ($('#showcollapsed').attr('checked')) {showcollapsed='1'} else {showcollapsed='0'}
+   if ((document.getElementById("showpageparts").checked)) {showpageparts='1'} else {showpageparts='0'}
+   if ((document.getElementById("showcollapsed").checked)) {showcollapsed='1'} else {showcollapsed='0'}
    id = $(this).attr('rel').split('-',2)[1];
 	target = $('#' + $(this).attr('rel'));
 		$.get("<?php echo get_url('plugin/multiedit/getonepage/'); ?>" + id + '/' + showpageparts+ '/' + showcollapsed,
