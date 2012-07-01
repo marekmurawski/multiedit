@@ -10,7 +10,7 @@ You can also edit page parts but only those *without filter* applied. Page parts
 Installation
 ------------
 
-MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***<WOLF_ROOT>/wolf/plugins/multiedit/*** and enabling it in Wolf administration panel.
+MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_ROOT/wolf/plugins/multiedit/*** and enabling it in administration panel.
 
 Changelog
 ---------
