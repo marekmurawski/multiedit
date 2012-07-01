@@ -22,8 +22,10 @@ Changelog
 - added "default" sorting option (as in Wolf's Pages tab)
 - Part Revisions plugin compatible
 - collapsible items
-- improved messages
+- improved messages and I18n
 - sticky message box (scrolling with view)
+- minor bugfixes
+- minor visual enhancements
 
 0.0.6
 
