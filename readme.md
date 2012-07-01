@@ -3,9 +3,14 @@ MultiEdit for Wolf CMS
 
 Plugin for editing multiple pages interactively.
 
+This plugin helps you to edit multiple pages based on jQuery, so you don't have to wait for page reload and click "Save and continue editing" to see the changes.  All changes are made (almost) instantly.
+
+You can also edit page parts but only those *without filter* applied. Page parts with filters are listed below each page. If you have Part Revisions plugin enabled, the changes in page part contents will be stored as a revision.
+
 Installation
 ------------
 
+MultiEdit Plugin can be installed into your WolfCMS by uploading it to <WOLF_ROOT>/wolf/plugins/multiedit/ and enabling it in Wolf administration panel.
 
 Changelog
 ---------
