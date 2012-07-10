@@ -9,26 +9,18 @@
 
 /* Security measure */
 if (!defined('IN_CMS')) { exit(); }
-
-/**
- * The multiedit plugin serves as a basic plugin template.
- *
- * This multiedit plugin makes use/provides the following features:
- * - A controller without a tab
- * - Three views (sidebar, documentation and settings)
- * - A documentation page
- * - A sidebar
- * - A settings page (that does nothing except display some text)
- * - Code that gets run when the plugin is enabled (enable.php)
- *
- * Note: to use the settings and documentation pages, you will first need to enable
- * the plugin!
- *
+/*
+ * Wolf CMS - Content Management Simplified. <http://www.wolfcms.org>
+ * Copyright (C) 2008-2010 Martijn van der Kleijn <martijn.niji@gmail.com>
+ * 
+ * MultiEdit Plugin for Wolf CMS
+ * Provides convenient interface to quickly edit multiple pages metadata.
+ *  
  * @package Plugins
  * @subpackage multiedit
  *
- * @author Martijn van der Kleijn <martijn.niji@gmail.com>
- * @copyright Martijn van der Kleijn, 2008
+ * @author Marek Murawski <http://marekmurawski.pl>
+ * @copyright Marek Murawski, 2012
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
  */
 
@@ -214,8 +206,8 @@ class MultieditController extends PluginController {
 				}
 		}
 		elseif ($field=='part') {
-				$tmpval = explode('_partname_', $identifier);
-				$page_id = $tmpval[0];
+				$tmpval = explode('_partname_', $_POST['item']);
+				$page_id = substr($tmpval[0],strlen($field)+1);
 				$part_name = $tmpval[1];
 				$revision_save_info = ''; //Part_revisions plugin notice
 				
