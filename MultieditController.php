@@ -32,6 +32,9 @@ class MultieditController extends PluginController {
     public function __construct() {
         $this->setLayout('backend');
 	$lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
+        if( !file_exists( PLUGINS_ROOT.DS.'multiedit/views/documentation/sidebar'.$lang.'.php') ) {            
+            $lang='en';
+        }
 	$sidebarContents = new View(self::PLUGIN_REL_VIEW_FOLDER.'documentation/sidebar/'.$lang);
         $this->assignToLayout('sidebar', new View(self::PLUGIN_REL_VIEW_FOLDER.'sidebar',array(
 			'sidebarContents' => $sidebarContents
