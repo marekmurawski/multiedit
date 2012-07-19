@@ -37,13 +37,13 @@ $layouts = Record::findAllFrom('Layout');
 				<td class="counter">
 					<div id="title-<?php echo $k->id; ?>-cnt"></div>
 				</td>
-				<td class="label">Keywords</td>
+				<td class="label">Description</td>
 				<td>
-					<input type="text" class="multiedit-field countchars" id="keywords-<?php echo $k->id; ?>" name="keywords-<?php echo $k->id; ?>" value="<?php echo $k->keywords; ?>"/>
-					<img id="keywords-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
+					<input type="text" class="multiedit-field countchars" id="description-<?php echo $k->id; ?>" name="description-<?php echo $k->id; ?>" value="<?php echo $k->description; ?>"/>
+					<img id="description-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
-					<div id="keywords-<?php echo $k->id; ?>-cnt"></div>
+					<div id="description-<?php echo $k->id; ?>-cnt"></div>
 				</td>
 				<td class="label">Created</td>
 				<td class="timecolumn">
@@ -60,13 +60,13 @@ $layouts = Record::findAllFrom('Layout');
 				<td class="counter">
 					<div><span class="breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
 				</td>
-				<td class="label">Description</td>
+				<td class="label">Keywords</td>
 				<td>
-					<input type="text" class="multiedit-field countchars" id="description-<?php echo $k->id; ?>" name="description-<?php echo $k->id; ?>" value="<?php echo $k->description; ?>"/>
-					<img id="description-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
+					<input type="text" class="multiedit-field countchars" id="keywords-<?php echo $k->id; ?>" name="keywords-<?php echo $k->id; ?>" value="<?php echo $k->keywords; ?>"/>
+					<img id="keywords-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
-					<div id="description-<?php echo $k->id; ?>-cnt"></div>
+					<div id="keywords-<?php echo $k->id; ?>-cnt"></div>
 				</td>
 				<td class="label">Published</td>
 				<td class="timecolumn">
