@@ -15,6 +15,10 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
+0.0.8
+
+- translation for polish language
+
 0.0.7
 
 - fixed "Show subpages" list to always show full pages hierarchy
