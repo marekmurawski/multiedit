@@ -29,5 +29,26 @@ Plugin::setInfos(array(
 		'require_wolf_version' => '0.7.3' // 0.7.5SP-1 fix -> downgrading requirement to 0.7.3
 ));
 
-Plugin::addController('multiedit', 'MultiEdit', 'administrator');
+	function getMultiEdit($page_id) {
+		$mE = new MultieditController();
+		$mE->getonepage($page_id);
+//		new View(MultieditController::PLUGIN_REL_VIEW_FOLDER.'itemslist');
+	$items[] = Page::findById((int) $page_id); // add one item to array;
+
+	if ($page_id > 1) {$parentPage = Page::findById($items[0]->parent_id);}
+	if (isset($parentPage)) {$parentUri = $parentPage->getUri();} else {$parentUri='';}
+	  
+	$itemsList = new View(MultieditController::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
+			'items' => $items,
+			'innerOnly' => true,
+			'parentUri' => $parentUri,		
+			'showpageparts' => false,
+			'showcollapsed' => false, 
+			));
+	echo $itemsList->render();		
+	}
+
+if (defined('CMS_BACKEND')) {
+	Plugin::addController('multiedit', 'MultiEdit', 'administrator');
+}
 

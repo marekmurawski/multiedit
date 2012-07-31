@@ -64,6 +64,9 @@
 .multiedit-item-root {
     margin-left: 0px;
 }
+.multiedit-item tbody tr:nth-child(even) td, tbody tr.even td {
+    background: transparent;
+}
 .multiedit-item:hover {
     background: #cccccc;
     border: 1px solid #333;
@@ -119,7 +122,7 @@
 
 .multiedit-item .actions,
 .multiedit-item .breadcrumber,
-.multiedit-item .slugifier {display: none}
+.multiedit-item .slugifier {visibility: hidden}
 
 .multiedit-item .actions {
     position: absolute;
@@ -131,7 +134,7 @@
 .multiedit-item:hover .actions,
 .multiedit-item:hover .breadcrumber,
 .multiedit-item:hover .slugifier {
-display: block;
+visibility: visible;
 }
 
 .multiedit-item table {
@@ -188,15 +191,16 @@ display: block;
     padding: 0px;
     border-radius: 0px;
     box-shadow: inset 0 2px 2px #EAEAF2;
+    margin: 0px;
 }
 
 #multiedit-wrapper input:focus, 
 #multiedit-wrapper textarea:focus,
-#multiedit-wrapper select:focus {background: #ffffcc; border: 1px solid #f80;}
+#multiedit-wrapper select:focus {background: #ffffcc; border: 1px solid #f80; margin: 0px;}
 
 #multiedit-wrapper input:hover, 
 #multiedit-wrapper textarea:hover,
-#multiedit-wrapper select:hover {background: #ffffdd;}
+#multiedit-wrapper select:hover {background: #ffffdd; margin: 0px;}
 
 #multiedit-wrapper select {
    padding: 0px;
