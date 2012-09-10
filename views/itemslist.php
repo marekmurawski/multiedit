@@ -31,7 +31,7 @@ $layouts = Record::findAllFrom('Layout');
 			<tr>
 				<td class="label">Title</td>
 				<td>
-					<input type="text" class="multiedit-field countchars" id="title-<?php echo $k->id; ?>" name="title-<?php echo $k->id; ?>" value="<?php echo $k->title; ?>"/>
+					<input type="text" class="multiedit-field multiedit-countchars" id="title-<?php echo $k->id; ?>" name="title-<?php echo $k->id; ?>" value="<?php echo $k->title; ?>"/>
 					<img id="title-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
@@ -39,7 +39,7 @@ $layouts = Record::findAllFrom('Layout');
 				</td>
 				<td class="label">Description</td>
 				<td>
-					<input type="text" class="multiedit-field countchars" id="description-<?php echo $k->id; ?>" name="description-<?php echo $k->id; ?>" value="<?php echo $k->description; ?>"/>
+					<input type="text" class="multiedit-field multiedit-countchars" id="description-<?php echo $k->id; ?>" name="description-<?php echo $k->id; ?>" value="<?php echo $k->description; ?>"/>
 					<img id="description-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
@@ -58,11 +58,11 @@ $layouts = Record::findAllFrom('Layout');
 					<img id="breadcrumb-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
-					<div><span class="breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
+					<div><span class="multiedit-breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
 				</td>
 				<td class="label">Keywords</td>
 				<td>
-					<input type="text" class="multiedit-field countchars" id="keywords-<?php echo $k->id; ?>" name="keywords-<?php echo $k->id; ?>" value="<?php echo $k->keywords; ?>"/>
+					<input type="text" class="multiedit-field multiedit-countchars" id="keywords-<?php echo $k->id; ?>" name="keywords-<?php echo $k->id; ?>" value="<?php echo $k->keywords; ?>"/>
 					<img id="keywords-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
@@ -82,18 +82,18 @@ $layouts = Record::findAllFrom('Layout');
 				</td>
 				<td>
 					<?php if($k->id != 1): //root page slug protection ?>
-					<input type="text" class="multiedit-field slugfield" id="slug-<?php echo $k->id; ?>" name="slug-<?php echo $k->id; ?>" value="<?php echo $k->slug; ?>"/>
+					<input type="text" class="multiedit-field multiedit-slugfield" id="slug-<?php echo $k->id; ?>" name="slug-<?php echo $k->id; ?>" value="<?php echo $k->slug; ?>"/>
 					<img id="slug-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 					<?php endif; ?>
 				</td>
 				<td class="counter">
 					<?php if($k->id != 1): //root page slug protection ?>
-					<div><span class="slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
+					<div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
 					<?php endif; ?>
 				</td>
 				<td class="label">Tags</td>
 				<td>
-					<input type="text" class="multiedit-field counttags" id="tags-<?php echo $k->id; ?>" name="tags-<?php echo $k->id; ?>" value="<?php echo implode(', ', $k->tags()); ?>"/>
+					<input type="text" class="multiedit-field multiedit-counttags" id="tags-<?php echo $k->id; ?>" name="tags-<?php echo $k->id; ?>" value="<?php echo implode(', ', $k->tags()); ?>"/>
 					<img id="tags-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">

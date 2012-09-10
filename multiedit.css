@@ -121,19 +121,18 @@
 }
 
 .multiedit-item .actions,
-.multiedit-item .breadcrumber,
-.multiedit-item .slugifier {visibility: hidden}
+.multiedit-item .multiedit-breadcrumber,
+.multiedit-item .multiedit-slugifier {visibility: hidden}
 
 .multiedit-item .actions {
     position: absolute;
-    display: none;
     color: white;
     right: 14px;
     font-size: 14px;
 }
 .multiedit-item:hover .actions,
-.multiedit-item:hover .breadcrumber,
-.multiedit-item:hover .slugifier {
+.multiedit-item:hover .multiedit-breadcrumber,
+.multiedit-item:hover .multiedit-slugifier {
 visibility: visible;
 }
 
@@ -179,6 +178,14 @@ visibility: visible;
     text-align: left;
     margin-left: 3px;
     color: #888;
+}
+
+.multiedit-item td.counter div.red{
+    color: red;
+}
+
+.multiedit-item td.counter div.green{
+    color: green;
 }
 
 #multiedit-wrapper input, 
@@ -231,7 +238,7 @@ visibility: visible;
 .multiedit-item td.timecolumn img.loader {right: 14px;}
 .multiedit-item img.visible {display: block;}
 
-.breadcrumber, .slugifier, .reload-item, #multiedit-header #reload-list, .multiedit-item .hide-item, .multiedit-item .edit-item {
+.multiedit-breadcrumber, .multiedit-slugifier, .reload-item, #multiedit-header #reload-list, .multiedit-item .hide-item, .multiedit-item .edit-item {
     cursor: pointer;
     display: inline;
 }
