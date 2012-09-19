@@ -29,7 +29,7 @@ $layouts = Record::findAllFrom('Layout');
 				<td colspan="8"></td>
 			</tr>			
 			<tr>
-				<td class="label">Title</td>
+				<td class="fieldlabel">Title</td>
 				<td>
 					<input type="text" class="multiedit-field multiedit-countchars" id="title-<?php echo $k->id; ?>" name="title-<?php echo $k->id; ?>" value="<?php echo $k->title; ?>"/>
 					<img id="title-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
@@ -37,7 +37,7 @@ $layouts = Record::findAllFrom('Layout');
 				<td class="counter">
 					<div id="title-<?php echo $k->id; ?>-cnt"></div>
 				</td>
-				<td class="label">Description</td>
+				<td class="fieldlabel">Description</td>
 				<td>
 					<input type="text" class="multiedit-field multiedit-countchars" id="description-<?php echo $k->id; ?>" name="description-<?php echo $k->id; ?>" value="<?php echo $k->description; ?>"/>
 					<img id="description-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
@@ -45,14 +45,14 @@ $layouts = Record::findAllFrom('Layout');
 				<td class="counter">
 					<div id="description-<?php echo $k->id; ?>-cnt"></div>
 				</td>
-				<td class="label">Created</td>
+				<td class="fieldlabel">Created</td>
 				<td class="timecolumn">
 					<input type="text" class="multiedit-field" id="created_on-<?php echo $k->id; ?>" name="created_on-<?php echo $k->id; ?>" value="<?php echo $k->created_on; ?>"/>
 					<img id="created_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 			</tr>		
 			<tr>
-				<td class="label">B-crumb</td>
+				<td class="fieldlabel">B-crumb</td>
 				<td>
 					<input type="text" class="multiedit-field" id="breadcrumb-<?php echo $k->id; ?>" name="breadcrumb-<?php echo $k->id; ?>" value="<?php echo $k->breadcrumb; ?>"/>
 					<img id="breadcrumb-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
@@ -60,7 +60,7 @@ $layouts = Record::findAllFrom('Layout');
 				<td class="counter">
 					<div><span class="multiedit-breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
 				</td>
-				<td class="label">Keywords</td>
+				<td class="fieldlabel">Keywords</td>
 				<td>
 					<input type="text" class="multiedit-field multiedit-countchars" id="keywords-<?php echo $k->id; ?>" name="keywords-<?php echo $k->id; ?>" value="<?php echo $k->keywords; ?>"/>
 					<img id="keywords-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
@@ -68,14 +68,14 @@ $layouts = Record::findAllFrom('Layout');
 				<td class="counter">
 					<div id="keywords-<?php echo $k->id; ?>-cnt"></div>
 				</td>
-				<td class="label">Published</td>
+				<td class="fieldlabel">Published</td>
 				<td class="timecolumn">
 					<input type="text" class="multiedit-field" id="published_on-<?php echo $k->id; ?>" name="published_on-<?php echo $k->id; ?>" value="<?php echo $k->published_on; ?>"/>
 					<img id="published_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 			</tr>
 			<tr>
-				<td class="label">
+				<td class="fieldlabel">
 					<?php if($k->id != 1): //root page slug protection ?>
 					Slug
 					<?php endif; ?>
@@ -91,7 +91,7 @@ $layouts = Record::findAllFrom('Layout');
 					<div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
 					<?php endif; ?>
 				</td>
-				<td class="label">Tags</td>
+				<td class="fieldlabel">Tags</td>
 				<td>
 					<input type="text" class="multiedit-field multiedit-counttags" id="tags-<?php echo $k->id; ?>" name="tags-<?php echo $k->id; ?>" value="<?php echo implode(', ', $k->tags()); ?>"/>
 					<img id="tags-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
@@ -101,7 +101,7 @@ $layouts = Record::findAllFrom('Layout');
 				</td>
 
 
-				<td class="label">Valid until</td>
+				<td class="fieldlabel">Valid until</td>
 				<td class="timecolumn">
 					<input type="text" class="multiedit-field" id="valid_until-<?php echo $k->id; ?>" name="valid_until-<?php echo $k->id; ?>" value="<?php echo $k->valid_until; ?>"/>
 					<img id="valid_until-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
@@ -109,7 +109,7 @@ $layouts = Record::findAllFrom('Layout');
 
 			</tr>
 			<tr>
-				<td class="label">
+				<td class="fieldlabel">
 					Layout
 				</td>
 				<td>
@@ -123,7 +123,7 @@ $layouts = Record::findAllFrom('Layout');
 				<td>
 					
 				</td>
-				<td class="label">
+				<td class="fieldlabel">
 					<?php if($k->id != 1): //root page status protection ?>
 					Status
 					<?php endif; ?>
@@ -140,7 +140,7 @@ $layouts = Record::findAllFrom('Layout');
 					<?php endif; ?>
 				</td>
 				<td></td>
-				<td class="label">Updated on</td>
+				<td class="fieldlabel">Updated on</td>
 				<td id="updated_on-<?php echo $k->id; ?>">
 					<?php echo $k->updated_on; ?>
 				</td>
@@ -152,14 +152,14 @@ $layouts = Record::findAllFrom('Layout');
 				if (empty($part->filter_id)) {
 			?>
 					<tr>
-						      <td class="label"><b><?php echo $part->name; ?></b></td>
+						      <td class="fieldlabel"><b><?php echo $part->name; ?></b></td>
 						      <td colspan="7" class="textareacontainer"><textarea class="multiedit-field" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"><?php echo htmlentities($part->content, ENT_COMPAT, 'UTF-8'); ?></textarea></td>
 					</tr>
 			<?php 
 				}; //empty filter value
 			}; //foreach ?>
 			<tr>
-				<td class="label">
+				<td class="fieldlabel">
 				</td>
 				<td colspan="7">
 					<?php foreach ($parts as $part): ?>
