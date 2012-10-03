@@ -3,6 +3,8 @@ if (!defined('IN_CMS')) {
 	exit();
 }
 ?>
+
+
 <p>
 	This plugin helps you to edit multiple 
 	pages based on <strong>jQuery</strong>, 
@@ -15,24 +17,32 @@ if (!defined('IN_CMS')) {
 	It's especially useful for SEO purposes 
 	(like optimizing meta descriptions and titles) 
 	or quick editing large number of pages.
-</p>
-
+</p><br/><br/>
+<hr/>
+<h3>MultiEdit in frontend </h3>
 <p>
-	<strong>Features:</strong>
+  To include MultiEdit in <b>frontend</b>, make sure you have <b>jQuery (1.4.2+)</b>
+available in frontend (layout) for example like this:
 </p>
-
-<ul>
-	<li>Live editing basic <strong>page properties</strong></li>
-	<li>Live editing <strong>unfiltered</strong> page parts</li>
-	<li>Live changing <strong>layout and status</strong> of pages</li>
-	<li>Various <strong>sorting</strong> options</li>
-	<li>Field length counters and tag counter</li>
-	<li>Basic fields validation <em>(slug uniqueness and presence of slashes, date fields)</em></li>
-	<li>Color page status indication (new in 0.0.6)</li>
-	<li><a href="http://www.wolfcms.org/forum/topic2245.html">Part Revisions</a> plugin compatible (saving page part edits as revisions) (new in 0.0.7)</li>
-	<li>Collapsible items (new in 0.0.7)</li>
-</ul>
-
+<pre style="background-color: #EEE; border: 1px solid black;">
+ &lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"/&gt;
+</pre>
+<p>
+Then put this code somewhere at the 
+end of your layout code (ideally - just <b>before &lt;/body&gt; ending</b> tag):
+<pre style="background-color: #EEE; border: 1px solid black;">
+  &lt;?php 
+    if ( Plugin::isEnabled('multiedit') &&
+         AuthUser::hasRole('administrator') ) {
+           getMultiEdit($this->id);
+        } 
+  ?&gt;
+</pre>
+This way users with role <b>Administrator</b> will be able to edit page metadata
+in frontend
+</p>
+<br/>
+<hr/>
 <p>Wolf CMS repository: <a href="http://www.wolfcms.org/repository/120">http://www.wolfcms.org/repository/120</a><br>
 	Git repository: <a href="https://github.com/marekmurawski/multiedit">https://github.com/marekmurawski/multiedit</a>
 </p>
