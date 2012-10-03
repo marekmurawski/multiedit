@@ -15,6 +15,11 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
+0.0.9
+
+- FRONTEND EDITING support
+- color character counters indicating short meta descriptions/titles
+
 0.0.8
 
 - translation for polish language

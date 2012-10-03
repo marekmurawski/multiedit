@@ -87,7 +87,7 @@ class MultieditController extends PluginController {
      }
     }    
 
-     public function getonepage($page_id,$showpageparts=1,$showcollapsed=0) {
+     public function getonepage($page_id,$showpageparts=1,$showcollapsed=0,$is_frontend=0) {
 	$items[] = Page::findById((int) $page_id); // add one item to array;
 
 	if ($page_id > 1) {$parentPage = Page::findById($items[0]->parent_id);}
@@ -98,7 +98,8 @@ class MultieditController extends PluginController {
 			'innerOnly' => true,
 			'parentUri' => $parentUri,		
 			'showpageparts' => $showpageparts,
-			'showcollapsed' => $showcollapsed, 
+			'showcollapsed' => $showcollapsed,
+            'is_frontend'   => $is_frontend==='1',
 			));
 	echo $itemsList->render();	
     }   

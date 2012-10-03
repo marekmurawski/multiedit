@@ -57,7 +57,7 @@ $("#multiedit-frontend-trigger").live('click',function() {
     target.fadeOut('fast', function(){
 	var request = $.ajax({
 			url:	"/<?php echo ADMIN_DIR; ?>/plugin/multiedit/getonepage/"
-				+ <?php echo $page_id; ?> + '/0/0', 
+				+ <?php echo $page_id; ?> + '/0/0/1', 
 			type:   'get',
 			success: function(data){
 				target.html(data);
