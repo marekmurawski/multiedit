@@ -14,7 +14,7 @@ $layouts = Record::findAllFrom('Layout');
 	<div class="multiedit-item<?php if (isset($isRoot)&&$isRoot==true) {echo " multiedit-item-root";} ?>" id="multipage_item-<?php echo $k->id; ?>">
 <?php endif; ?>
 		<div class="actions">
-			<?php if (!$is_frontend): ?>
+			<?php if (!isset($is_frontend)): ?>
             <span class="reload-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-circle-135-left.png'; ?>"/></span>
 			<span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __("Remove from list (doesn't delete the page)"); ?>" title="<?php echo __("Remove from list (doesn't delete the page)"); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--minus.png'; ?>"/></span>
             <?php endif; ?>
