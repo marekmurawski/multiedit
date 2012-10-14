@@ -78,9 +78,9 @@ $("#multiedit-frontend-trigger").trigger('click');
 });
 
 </script>
-<div id="multiedit-wrapper" style="margin: 0; position: fixed; bottom: 0px; right: 5%; left: 5%; width: 90%; z-index: 999;">
+<div id="multiedit-wrapper" style="margin: 0; position: fixed; bottom: 0px; right: 5%; left: 5%; width: 90%; z-index: 999; ">
 	<div id="multiedit-list" style="display: none;">
-		<div class="multiedit-item-root multiedit-item" id="multipage_item-<?php echo $page_id; ?>">
+		<div class="multiedit-item-root multiedit-item" id="multipage_item-<?php echo $page_id; ?>" style="box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);">
 		</div>	
 	</div>
 	<div id="multiedit-frontend-trigger">
