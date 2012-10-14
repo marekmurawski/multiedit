@@ -30,15 +30,15 @@ class MultieditController extends PluginController {
     private static $defaultSorting = 'position ASC, published_on DESC';
 	
     public function __construct() {
-        $this->setLayout('backend');
-	$lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
-        if( !file_exists( PLUGINS_ROOT.DS.'multiedit/views/documentation/sidebar/'.$lang.'.php') ) {            
-            $lang='en';
-        }
-	$sidebarContents = new View(self::PLUGIN_REL_VIEW_FOLDER.'documentation/sidebar/'.$lang);
-        $this->assignToLayout('sidebar', new View(self::PLUGIN_REL_VIEW_FOLDER.'sidebar',array(
-			'sidebarContents' => $sidebarContents
-	)));
+            $this->setLayout('backend');
+        $lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
+            if( !file_exists( PLUGINS_ROOT.DS.'multiedit/views/documentation/sidebar/'.$lang.'.php') ) {            
+                $lang='en';
+            }
+        $sidebarContents = new View(self::PLUGIN_REL_VIEW_FOLDER.'documentation/sidebar/'.$lang);
+            $this->assignToLayout('sidebar', new View(self::PLUGIN_REL_VIEW_FOLDER.'sidebar',array(
+                'sidebarContents' => $sidebarContents
+        )));
     }
 
     private static function getAllChildren($id) {
@@ -47,9 +47,8 @@ class MultieditController extends PluginController {
                 . 'FROM '.TABLE_PREFIX.'page AS page '
                 . 'WHERE parent_id = '.(int)$id
                 . " ORDER BY page.position, page.id";
-
         $pages = array();
-        // Run!
+        Record::logQuery($sql);
         if ($stmt = Record::getConnection()->prepare($sql)) {
             $stmt->execute();
             while ($object = $stmt->fetchObject()) $pages[] = $object;            
@@ -63,109 +62,121 @@ class MultieditController extends PluginController {
         $sql = 'SELECT COUNT(*) AS nb_rows '
                 . 'FROM '.TABLE_PREFIX.'page AS page '
 	        . 'WHERE parent_id = '.(int)$id;
+        Record::logQuery($sql);
         $stmt = Record::getConnection()->prepare($sql);
         $stmt->execute();
         return (int) $stmt->fetchColumn();
     }
 
     public static function makePagesListRecursive($page_id=1) {
-     $children = self::getAllChildren($page_id);
-     static $nestLevel; //for storing level, faster than ->level()
-     if (count($children) > 0) {
-	 $nestLevel++;
-         foreach ($children as $childpage) {
-		$childCount = self::countAllChildren($childpage->id);
-		if ($childCount>0) {self::$pagesList[] = array( //add only if there are children
-				'label' => str_replace(" ", "-", str_pad(' ', $nestLevel, " ", STR_PAD_LEFT)) . ' ' . $childpage->breadcrumb,
-				'id' => $childpage->id,
-				'count' => $childCount,
-				);
-		self::makePagesListRecursive($childpage->id);
-		}
-	 }
-	 $nestLevel--;
-     }
+        $children = self::getAllChildren($page_id);
+        static $nestLevel; //for storing level, faster than ->level()
+        if (count($children) > 0) {
+        $nestLevel++;
+            foreach ($children as $childpage) {
+            $childCount = self::countAllChildren($childpage->id);
+            if ($childCount>0) {self::$pagesList[] = array( //add only if there are children
+                    'label' => str_replace(" ", "-", str_pad(' ', $nestLevel, " ", STR_PAD_LEFT)) . ' ' . $childpage->breadcrumb,
+                    'id' => $childpage->id,
+                    'count' => $childCount,
+                    );
+            self::makePagesListRecursive($childpage->id);
+            }
+        }
+        $nestLevel--;
+        }
     }    
 
-     public function getonepage($page_id,$showpageparts=1,$showcollapsed=0,$is_frontend=0) {
-	$items[] = Page::findById((int) $page_id); // add one item to array;
+    public function getonepage($page_id,$showpageparts=1,$showcollapsed=0,$is_frontend=0) {
+        $items[] = Page::findById((int) $page_id); // add one item to array;
 
-	if ($page_id > 1) {$parentPage = Page::findById($items[0]->parent_id);}
-	if (isset($parentPage)) {$parentUri = $parentPage->getUri();} else {$parentUri='';}
-	  
-	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
-			'items' => $items,
-			'innerOnly' => true,
-			'parentUri' => $parentUri,		
-			'showpageparts' => $showpageparts,
-			'showcollapsed' => $showcollapsed,
-            'is_frontend'   => $is_frontend==='1',
-			));
-	echo $itemsList->render();	
+        if ($page_id > 1) {$parentPage = Page::findById($items[0]->parent_id);}
+        if (isset($parentPage)) {$parentUri = $parentPage->getUri();} else {$parentUri='';}
+
+        $itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
+                'items' => $items,
+                'innerOnly' => true,
+                'parentUri' => $parentUri,		
+                'showpageparts' => $showpageparts,
+                'showcollapsed' => $showcollapsed,
+                'is_frontend'   => $is_frontend==='1',
+                ));
+        echo $itemsList->render();	
     }   
     
-     public function getsubpages($page_id, $sorting="id", $order="ASC",$showpageparts=1,$showcollapsed=0) {
-	$parentPage = Page::findById($page_id);
-	if ($sorting != '-default-') {
-	$items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.$sorting.' '.$order,array((int)$page_id));
-	} else {
-	$items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting,array((int)$page_id));
-	}
-	$parentUri = $parentPage->getUri();
-	$rootItem = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
-			'items' => array($parentPage),
-			'isRoot' => true,
-			'parentUri' => isset($parentPage->parent_id) ? mb_substr($parentUri,0,-mb_strlen(strrchr($parentUri,"/"))) : '', //trim last slash
-			'showpageparts' => $showpageparts,
-			'showcollapsed' => $showcollapsed, 
-			));	
-	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
-			'items' => $items,
-			'rootItem' => $parentPage,
-			'parentUri' => $parentUri,
-			'showpageparts' => $showpageparts,
-			'showcollapsed' => $showcollapsed,
-			));
-	echo $rootItem->render();
-	echo $itemsList->render();
+    public function getsubpages($page_id, $sorting="id", $order="ASC",$showpageparts=1,$showcollapsed=0) {
+        $parentPage = Page::findById($page_id);
+        if ($sorting != '-default-') {
+        $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.$sorting.' '.$order,array((int)$page_id));
+        } else {
+        $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting,array((int)$page_id));
+        }
+        $parentUri = $parentPage->getUri();
+        $rootItem = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
+                'items' => array($parentPage),
+                'isRoot' => true,
+                'parentUri' => isset($parentPage->parent_id) ? mb_substr($parentUri,0,-mb_strlen(strrchr($parentUri,"/"))) : '', //trim last slash
+                'showpageparts' => $showpageparts,
+                'showcollapsed' => $showcollapsed, 
+                ));	
+        $itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
+                'items' => $items,
+                'rootItem' => $parentPage,
+                'parentUri' => $parentUri,
+                'showpageparts' => $showpageparts,
+                'showcollapsed' => $showcollapsed,
+                ));
+        echo $rootItem->render();
+        echo $itemsList->render();
     }   
 
+
+    public function documentation() {
+		// Check for localized documentation or fallback to the default english and display notice
+		$lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
+
+		if (!file_exists(PLUGINS_ROOT . DS . 'multiedit' . DS . 'views/documentation/' . $lang . '.php')) {
+			$this->display('multiedit/views/documentation/en');
+		}
+		else
+			$this->display('multiedit/views/documentation/' . $lang);
+	}	
 
     public function index() {
-	$page = Page::findById(1);
-	self::makePagesListRecursive($page->id);
-	               $list = new View(self::PLUGIN_REL_VIEW_FOLDER.'header', array(
-                            'pagesList' => self::$pagesList,
-			    'rootPage' => $page	 
-                        )); 
-	$items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting, array($page->id));
-	
-	$rootItem = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
-			'items' => array($page),
-			'isRoot' => true,
-			'parentUri' => '', //uri of root page = ''
-			'showpageparts' => '1', //show page parts by default
-			'showcollapsed' => '0', // show expanded by default
-			));
+        $page = Page::findById(1);
+        self::makePagesListRecursive($page->id);
+                      $list = new View(self::PLUGIN_REL_VIEW_FOLDER.'header', array(
+                                'pagesList' => self::$pagesList,
+                    'rootPage' => $page	 
+                            )); 
+        $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting, array($page->id));
 
-	$itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
-			'items' => $items,
-			'parentUri' => '', //uri of root page = ''
-			'showpageparts' => '1', //show page parts by default			
-			'showcollapsed' => '0', // show expanded by default
-			));
-	
-	$this->display('multiedit/views/index', array(
-				'pagesList' => $list,
-				'rootItem' => $rootItem,
-				'itemsList' => $itemsList,
-			));
-    }
-    
+        $rootItem = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
+                'items' => array($page),
+                'isRoot' => true,
+                'parentUri' => '', //uri of root page = ''
+                'showpageparts' => '1', //show page parts by default
+                'showcollapsed' => '0', // show expanded by default
+                ));
+
+        $itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
+                'items' => $items,
+                'parentUri' => '', //uri of root page = ''
+                'showpageparts' => '1', //show page parts by default			
+                'showcollapsed' => '0', // show expanded by default
+                ));
+
+        $this->display('multiedit/views/index', array(
+                    'pagesList' => $list,
+                    'rootItem' => $rootItem,
+                    'itemsList' => $itemsList,
+                ));
+        }
+
     public static function checkdatevalid($sDate) {
-	if ((preg_match('/^([0-9]{4})[-_]([0-9]{2})[-_]([0-9]{2}) ([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/D', (string) $sDate, $bits) &&
-	checkdate($bits[2], $bits[3], $bits[1]))==true) {return true;}
-	else return false;
+        if ((preg_match('/^([0-9]{4})[-_]([0-9]{2})[-_]([0-9]{2}) ([0-1][0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/D', (string) $sDate, $bits) &&
+        checkdate($bits[2], $bits[3], $bits[1]))==true) {return true;}
+        else return false;
     }
 
     public function setvalue() {
@@ -325,15 +336,4 @@ class MultieditController extends PluginController {
 		echo json_encode($result); return false;
 		
 	}
-	
-	public function documentation() {
-		// Check for localized documentation or fallback to the default english and display notice
-		$lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
-
-		if (!file_exists(PLUGINS_ROOT . DS . 'multiedit' . DS . 'views/documentation/' . $lang . '.php')) {
-			$this->display('multiedit/views/documentation/en');
-		}
-		else
-			$this->display('multiedit/views/documentation/' . $lang);
-	}	
 }
