@@ -58,6 +58,7 @@ $(".multiedit-items-select").live('change',function() {
 			type:   'get',
 			success: function(data){
 				$('#multiedit-list').html(data);
+                
 				$(".multiedit-countchars").trigger('keyup');
 				$(".multiedit-counttags").trigger('keyup');
 				$('#multiedit-list-preloader').removeClass('preloading');

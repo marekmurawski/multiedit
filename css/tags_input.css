@@ -1,0 +1,13 @@
+/*tagsinput*/
+#multiedit-wrapper div.tagsinput { border:1px solid #ccc;background:transparent;padding:3px;width:auto;overflow-y:auto }
+#multiedit-wrapper div.tagsinput span.tag { display: block;float: left;margin:3px 3px 0px 0;padding:0px 4px;font-size:12px;text-decoration:none;background: #76a83a;color: #fefefe;border: 1px solid #699434;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px }
+#multiedit-wrapper div.tagsinput span.tag a { font-weight:bold; color:#485c30; text-decoration:none; font-size:12px }
+#multiedit-wrapper div.tagsinput .ac_input { margin:0px 5px 5px 0;padding:4px 8px;font-size:12px;border:1px solid #ddd;background-color: white;color: #000;outline:0 none;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; display: inline-block; width: 100px;}
+#multiedit-wrapper div.tagsinput input.not_valid { background-color:#cc7f6a;border:1px solid #a84125 }
+/*autocomplete*/
+.ac_results { padding:0px;border:1px solid #ccc;background-color:#fefefe;overflow:hidden;z-index:99999 }
+.ac_results ul { width:100%;list-style-position:outside;list-style:none;padding:0;margin:0 }
+.ac_results li { margin:0px;padding:2px 5px;cursor:default;display:block;font:menu;font-size:12px;line-height:16px;overflow:hidden }
+.ac_loading { background:white url('assets/indicator.gif') right center no-repeat }
+.ac_odd { background-color:#ebebeb }
+.ac_over { background-color:#76a83a; color:#fefefe }

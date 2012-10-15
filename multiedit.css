@@ -3,8 +3,8 @@
   /* just used to show how to include the margin in the effect */
   margin-top: 20px;
   padding-top: 19px;
-  right: 20px;
-  width: 20%;
+  right: 1%;
+  width: 18%;
 }
 
 #multiedit-messages.fixed {
@@ -59,6 +59,7 @@
     border-radius: 5px;
     border: 1px solid white;
     font-size: 12px;
+    font-family: sans-serif;
     position: relative;
     box-sizing: content-box;
 }
@@ -156,6 +157,7 @@ visibility: visible;
 .multiedit-item td {
     padding: 1px;
     position: relative;
+    vertical-align: top;
 }
 .multiedit-item td.fieldlabel {
     font-size: 12px;
@@ -230,7 +232,7 @@ visibility: visible;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#bcbcbc',GradientType=0 );
 }
 
-#multiedit-wrapper textarea {resize: vertical; height: 100px;}
+#multiedit-wrapper textarea {resize: vertical; height: 64px;}
 
 #multiedit-wrapper input.error {border: 1px solid red;}
 #multiedit-wrapper input.success {border: 1px solid blue;}

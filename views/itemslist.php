@@ -93,12 +93,12 @@ $layouts = Record::findAllFrom('Layout');
 					<div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
 					<?php endif; ?>
 				</td>
-				<td class="fieldlabel">Tags</td>
-				<td>
-					<input type="text" class="multiedit-field multiedit-counttags" id="tags-<?php echo $k->id; ?>" name="tags-<?php echo $k->id; ?>" value="<?php echo implode(', ', $k->tags()); ?>"/>
+				<td rowspan="3" class="fieldlabel">Tags</td>
+				<td rowspan="3">
+                    <textarea class="multiedit-field multiedit-counttags multiedit-field-tags" id="tags-<?php echo $k->id; ?>" name="tags-<?php echo $k->id; ?>"><?php echo implode(', ', $k->tags()); ?></textarea>
 					<img id="tags-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
-				<td class="counter">
+				<td rowspan="3" class="counter">
 					<div id="tags-<?php echo $k->id; ?>-cnt"></div>
 				</td>
 
@@ -125,6 +125,12 @@ $layouts = Record::findAllFrom('Layout');
 				<td>
 					
 				</td>
+				<td class="fieldlabel">Updated on</td>
+				<td id="updated_on-<?php echo $k->id; ?>">
+					<?php echo $k->updated_on; ?>
+				</td>
+			</tr>
+            <tr>
 				<td class="fieldlabel">
 					<?php if($k->id != 1): //root page status protection ?>
 					Status
@@ -141,12 +147,8 @@ $layouts = Record::findAllFrom('Layout');
 					</select>
 					<?php endif; ?>
 				</td>
-				<td></td>
-				<td class="fieldlabel">Updated on</td>
-				<td id="updated_on-<?php echo $k->id; ?>">
-					<?php echo $k->updated_on; ?>
-				</td>
-			</tr>
+				<td></td>              
+            </tr>
 	<?php if ($showpageparts=='1'): ?>
 			<?php
 			$parts = PagePart::findByPageId($k->id);
