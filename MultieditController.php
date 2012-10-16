@@ -105,11 +105,17 @@ class MultieditController extends PluginController {
     }   
     
     public function getsubpages($page_id, $sorting="id", $order="ASC",$showpageparts=1,$showcollapsed=0) {
+        if ($page_id=='-1') {
+          $page_id = 1;
+          $whereString='id <> 1';
+        } else {
+          $whereString='parent_id='.Record::escape($page_id);
+        }
         $parentPage = Page::findById($page_id);
         if ($sorting != '-default-') {
-        $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.$sorting.' '.$order,array((int)$page_id));
+          $items = Page::findAllFrom('Page', $whereString . ' ORDER BY '.$sorting.' '.$order);
         } else {
-        $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting,array((int)$page_id));
+          $items = Page::findAllFrom('Page', $whereString . ' ORDER BY '.self::$defaultSorting);
         }
         $parentUri = $parentPage->getUri();
         $rootItem = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
@@ -147,7 +153,7 @@ class MultieditController extends PluginController {
         self::makePagesListRecursive($page->id);
                       $list = new View(self::PLUGIN_REL_VIEW_FOLDER.'header', array(
                                 'pagesList' => self::$pagesList,
-                    'rootPage' => $page	 
+                      'rootPage' => $page	 
                             )); 
         $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting, array($page->id));
 

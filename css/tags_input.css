@@ -1,5 +1,5 @@
 /*tagsinput*/
-#multiedit-wrapper div.tagsinput { border:1px solid #ccc;background:transparent;padding:3px;width:auto;overflow-y:auto }
+#multiedit-wrapper div.tagsinput { border:1px solid #aaa;background:transparent;padding:0 0 0 3px;width:auto;overflow-y:auto }
 #multiedit-wrapper div.tagsinput span.tag { display: block;float: left;margin:3px 3px 0px 0;padding:0px 4px;font-size:12px;text-decoration:none;background: #76a83a;color: #fefefe;border: 1px solid #699434;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px }
 #multiedit-wrapper div.tagsinput span.tag a { font-weight:bold; color:#485c30; text-decoration:none; font-size:12px }
 #multiedit-wrapper div.tagsinput .ac_input { margin:0px 5px 5px 0;padding:4px 8px;font-size:12px;border:1px solid #ddd;background-color: white;color: #000;outline:0 none;-moz-border-radius:2px;-webkit-border-radius:2px;border-radius:2px; display: inline-block; width: 100px;}
