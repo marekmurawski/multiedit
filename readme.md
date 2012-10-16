@@ -15,6 +15,14 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
+0.1.1
+
+- frontend - tags_input plugin integration
+- frontend - panel trigger button
+- frontend - display settings stored in session cookies
+- backend option to show ALL pages of website in one list
+- documentation with Gist
+
 0.1.0
 
 - bugfix: variable notice

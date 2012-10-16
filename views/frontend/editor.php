@@ -61,7 +61,9 @@ $(".multiedit-field").live('change',function() {
 });
 
 
-$("#multiedit-frontend-trigger").live('click',function() {
+$("#multiedit-fe-show").live('click',function() {
+$(this).hide();
+document.cookie = 'mtedfe=1; path=/';
    target=$('#multipage_item-'+<?php echo $page_id; ?>);
     target.fadeOut('fast', function(){
 	var request = $.ajax({
@@ -74,6 +76,7 @@ $("#multiedit-frontend-trigger").live('click',function() {
 				$(".multiedit-counttags").trigger('keyup');
 				target.fadeIn('fast');
 				$('#multiedit-list').show();
+                  <?php if (Plugin::isEnabled('tags_input')): ?>
                     $('.multiedit-field-tags').tagsInput({
                         interactive:true,
                         defaultText:'add a tag',
@@ -103,7 +106,8 @@ $("#multiedit-frontend-trigger").live('click',function() {
                             scrollHeight: 100
                         }
                     });
-
+                  <?php endif; ?>
+                $("#multiedit-fe-hide").fadeIn('slow');
 				},
 			error: function( data ) {
 					alert (dump(data));
@@ -112,19 +116,56 @@ $("#multiedit-frontend-trigger").live('click',function() {
 		})
 })
 
+    function me_createCookie( name,value,days) 
+      {
+          if ( days) 
+          {
+                  var date = new Date( );
+                  date.setTime( date.getTime( )+( days*24*60*60*1000));
+                  var expires = "; expires="+date.toGMTString( );
+          }
+          else var expires = "";
+          document.cookie = name+"="+value+expires+"; path=/";
+      }
+    function me_readCookie(name) {
+        var nameEQ = name + "=";
+        var ca = document.cookie.split( ';');
+        for( var i=0;i < ca.length;i++) 
+        {
+                var c = ca[i];
+                while ( c.charAt( 0)==' ') c = c.substring( 1,c.length);
+                if ( c.indexOf( nameEQ) == 0) return c.substring( nameEQ.length,c.length);
+        }
+        return null;
+    }
+    function me_eraseCookie(name) { me_createCookie( name,"",-1); }
+
+$("#multiedit-fe-hide").live('click',function() {
+    $(this).hide();
+    me_eraseCookie('mtedfe');
+    target=$('#multipage_item-'+<?php echo $page_id; ?>);
+    target.hide();
+    $("#multiedit-fe-show").fadeIn('slow');
+});
+
 $(document).ready( function() {
-$("#multiedit-frontend-trigger").trigger('click');
-        
+  if (me_readCookie("mtedfe") === '1') {
+    //alert("hello again");
+    $("#multiedit-fe-show").trigger('click');
+  }
+  else {
+//    document.cookie = "mtedfe=1";
+//    $("#multiedit-frontend-trigger").trigger('click');
+  }
 });
 
 </script>
 
-<div id="multiedit-wrapper" style="margin: 0; position: fixed; bottom: 0px; right: 5%; left: 5%; width: 90%; z-index: 999; ">
+<div id="multiedit-wrapper" class="frontend">
+  <div id="multiedit-fe-hide"></div>
 	<div id="multiedit-list" style="display: none;">
 		<div class="multiedit-item-root multiedit-item" id="multipage_item-<?php echo $page_id; ?>" style="box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);">
 		</div>	
 	</div>
-	<div id="multiedit-frontend-trigger">
-		[edit meta]
-	</div>
+	<div id="multiedit-fe-show"></div>
 </div>

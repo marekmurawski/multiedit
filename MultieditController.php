@@ -108,8 +108,10 @@ class MultieditController extends PluginController {
         if ($page_id=='-1') {
           $page_id = 1;
           $whereString='id <> 1';
+          $showAll = true;
         } else {
           $whereString='parent_id='.Record::escape($page_id);
+          $showAll = false;
         }
         $parentPage = Page::findById($page_id);
         if ($sorting != '-default-') {
@@ -125,6 +127,9 @@ class MultieditController extends PluginController {
                 'showpageparts' => $showpageparts,
                 'showcollapsed' => $showcollapsed, 
                 ));	
+        if ($showAll===true) {
+          $parentUri = false;
+        }
         $itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER.'itemslist', array(
                 'items' => $items,
                 'rootItem' => $parentPage,

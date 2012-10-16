@@ -23,7 +23,19 @@ $layouts = Record::findAllFrom('Layout');
 		<div class="header">
 			<div id="status-indicator-<?php echo $k->id; ?>" class="status-indicator status-<?php echo $k->status_id;?>"></div>
 		<div class="page-id"><?php echo $k->id; ?></div>
-		<?php echo URL_PUBLIC; ?><?php echo $parentUri; if (strlen($parentUri)>0) {echo '/';} ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
+		<?php echo URL_PUBLIC; 
+        if ($parentUri!==false) {
+              echo $parentUri; 
+              if (strlen($parentUri)>0) {echo '/';};
+              } 
+              else {
+                $listUri = $k->getUri();
+                // echo '[ listuri ='.$listUri.']';
+                echo (isset($k->parent_id)) ? mb_substr($listUri,0,-mb_strlen(strrchr($listUri,"/"))) : '';
+                if (strpos($listUri,'/')!==false) {echo '/';};
+              }
+        
+        ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
 		</div>
 		<table border="0"<?php echo ($showcollapsed==1) ? ' style="display:none;"' : '';?>>
 

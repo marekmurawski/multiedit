@@ -45,6 +45,7 @@ $(document).ready( function() { // @todo: change counters to be initially PHP pr
 $(".multiedit-items-select").live('change',function() {
    if ((document.getElementById("showpageparts").checked)) {showpageparts='1'} else {showpageparts='0'}
    if ((document.getElementById("showcollapsed").checked)) {showcollapsed='1'} else {showcollapsed='0'}
+   if ($(this).val()=='0') return false;
     $('#multiedit-list').fadeOut('fast', function(){
 	    $('#multiedit-list-preloader').addClass('preloading');
 	var request = $.ajax({

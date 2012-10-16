@@ -17,29 +17,15 @@ if (!defined('IN_CMS')) {
 	It's especially useful for SEO purposes 
 	(like optimizing meta descriptions and titles) 
 	or quick editing large number of pages.
-</p><br/><br/>
+</p><br/>
 <hr/>
 <h3>MultiEdit in frontend </h3>
 <p>
   To include MultiEdit in <b>frontend</b>, make sure you have <b>jQuery (1.4.2+)</b>
-available in frontend (layout) for example like this:
+available in frontend (layout). Sample implementation:
 </p>
-<pre style="background-color: #EEE; border: 1px solid black;">
- &lt;script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.js"/&gt;
-</pre>
-<p>
-Then put this code somewhere at the 
-end of your layout code (ideally - just <b>before &lt;/body&gt; ending</b> tag):
-<pre style="background-color: #EEE; border: 1px solid black;">
-  &lt;?php 
-    if ( Plugin::isEnabled('multiedit') &&
-         AuthUser::hasRole('administrator') ) {
-           getMultiEdit($this->id);
-        } 
-  ?&gt;
-</pre>
-This way users with role <b>Administrator</b> will be able to edit page metadata
-in frontend
+
+<script src="https://gist.github.com/3899583.js?file=multiedit_frontend.php"></script>
 </p>
 <br/>
 <hr/>

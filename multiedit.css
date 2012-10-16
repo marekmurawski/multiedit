@@ -93,10 +93,11 @@
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#444444', endColorstr='#00444444',GradientType=1 );
     color: #CCC;
     font-size: 14px;
-    height: 16px;
+    height: 20px;
+    line-height: 14px;
     overflow: hidden;
     margin-left: 60px;
-    padding: 3px 10px 3px 13px;
+    padding: 2px 10px 0px 13px;
     cursor: default;
     box-sizing: content-box;    
 }
@@ -254,3 +255,11 @@ visibility: visible;
 .multiedit-item .header .actions a {margin-left: 5px}
 
  #multiedit-header #reload-list {float: right; position: relative; top: 2px;}
+ 
+ /* FRONTEND CSS */
+ #multiedit-wrapper.frontend {margin: 0; position: fixed; bottom: 0px; right: 3%; left: 3%; width: 94%; z-index: 999;}
+ #multiedit-fe-hide {display:none; background:url('icons/cross-script.png') no-repeat; width:16px; height:16px; cursor: pointer; opacity: .7;}
+ #multiedit-fe-hide:hover {opacity: 1;}
+ #multiedit-fe-show {background:url('icons/multiedit_trigger.png') no-repeat; width:128px; height:32px; cursor: pointer; opacity: .8; position: relative; top: 2px;}
+ #multiedit-fe-show:hover {opacity: 1;top: 0px;}
+ 

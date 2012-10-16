@@ -21,7 +21,7 @@ Plugin::setInfos(array(
 		'id'          => 'multiedit',
 		'title'       => 'MultiEdit',
 		'description' => __('Provides convenient interface to quickly edit multiple pages metadata.'),
-		'version'     => '0.1.0',
+		'version'     => '0.1.1',
 			'license'     => 'GPL',
 			'author'      => 'Marek Murawski',
 		'website'     => 'http://marekmurawski.pl/',
@@ -36,7 +36,6 @@ if (defined('CMS_BACKEND')) {
 else {
 	function getMultiEdit($page_id) {
 		$frontView = new View('../../plugins/multiedit/views/frontend/editor', array('page_id'=>$page_id));
-		// @todo: inject page id
 		echo $frontView;
 	}
 }
