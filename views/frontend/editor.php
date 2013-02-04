@@ -15,7 +15,7 @@ $(".multiedit-field").live('change',function() {
     progressIndicator = $('#'+field.attr('id')+'-loader');
     progressIndicator.addClass('visible');
     var request = $.ajax({
-			url:	"/<?php echo ADMIN_DIR; ?>/plugin/multiedit/setvalue",
+			url:	"<?php echo URL_PUBLIC.ADMIN_DIR; ?>/plugin/multiedit/setvalue",
 			type:   'post',
 			data:	{
 					item: field.attr('name'),
@@ -67,7 +67,7 @@ document.cookie = 'mtedfe=1; path=/';
    target=$('#multipage_item-'+<?php echo $page_id; ?>);
     target.fadeOut('fast', function(){
 	var request = $.ajax({
-			url:	"/<?php echo ADMIN_DIR; ?>/plugin/multiedit/getonepage/"
+			url:	"<?php echo URL_PUBLIC.ADMIN_DIR; ?>/plugin/multiedit/getonepage/"
 				+ <?php echo $page_id; ?> + '/0/0/1',
 			type:   'get',
 			success: function(data){
@@ -96,7 +96,7 @@ document.cookie = 'mtedfe=1; path=/';
                           $(this).trigger('change');
                           $(".multiedit-counttags").trigger('keyup');
                         },
-                        autocomplete_url: "/<?php echo ADMIN_DIR ?>/plugin/tags_input/autocomplete/index?v=0.1",
+                        autocomplete_url: "<?php echo URL_PUBLIC.ADMIN_DIR ?>/plugin/tags_input/autocomplete/index?v=0.1",
                         autocomplete: {
                             selectFirst: false,
                             autoFill:false,
