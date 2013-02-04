@@ -2,11 +2,19 @@
 /* Security measure */
 if (!defined('IN_CMS')) { exit(); }
 ?>
+
 <?php
 // initialize variables
-//$filters = Filter::findAll();
 //$behaviors = Behavior::findAll();
-$layouts = Record::findAllFrom('Layout');
+
+if (!isset($force)) $force=false;
+
+$show_line_1 = (((!isset($_COOKIE['r1']) || $_COOKIE['r1']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
+$show_line_2 = (((!isset($_COOKIE['r2']) || $_COOKIE['r2']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
+$show_line_3 = (((!isset($_COOKIE['r3']) || $_COOKIE['r3']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
+$show_line_4 = (((!isset($_COOKIE['r4']) || $_COOKIE['r4']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_advanced')) ? true : false;
+$showpageparts = (((!isset($_COOKIE['shpp']) || $_COOKIE['shpp']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_parts')) ? true : false;
+$editable_filters = array('ace','textile','markdown','codemirror');
 ?>
 
 <?php foreach ($items as $k): ?>
@@ -14,34 +22,33 @@ $layouts = Record::findAllFrom('Layout');
 	<div class="multiedit-item<?php if (isset($isRoot)&&$isRoot==true) {echo " multiedit-item-root";} ?>" id="multipage_item-<?php echo $k->id; ?>">
 <?php endif; ?>
 		<div class="actions">
-			<?php if (!isset($is_frontend)): ?>
-            <span class="reload-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-circle-135-left.png'; ?>"/></span>
-			<span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __("Remove from list (doesn't delete the page)"); ?>" title="<?php echo __("Remove from list (doesn't delete the page)"); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--minus.png'; ?>"/></span>
-            <?php endif; ?>
-			<a class="edit-item" href="/<?php echo ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/blue-document--pencil.png'; ?>"/></a>
-		</div>	
+<?php if (!$is_frontend): ?>
+                        <span class="reload-item" id="reload-item<?php echo $k->id; ?>" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/refresh.png'; ?>"/></span>
+                        <span class="reload-item full" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Full view'); ?>" title="<?php echo __('Full view'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/zoom.png'; ?>"/></span>
+			<!-- <span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __("Remove from list (doesn't delete the page)"); ?>" title="<?php echo __("Remove from list (doesn't delete the page)"); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/minus.png'; ?>"/></span> -->
+<?php endif; ?>
+			<a class="edit-item" href="/<?php echo ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/pencil.png'; ?>"/></a>
+		</div>
 		<div class="header">
 			<div id="status-indicator-<?php echo $k->id; ?>" class="status-indicator status-<?php echo $k->status_id;?>"></div>
 		<div class="page-id"><?php echo $k->id; ?></div>
-		<?php echo URL_PUBLIC; 
+		<?php echo URL_PUBLIC;
         if ($parentUri!==false) {
-              echo $parentUri; 
+              echo $parentUri;
               if (strlen($parentUri)>0) {echo '/';};
-              } 
+              }
               else {
                 $listUri = $k->getUri();
                 // echo '[ listuri ='.$listUri.']';
                 echo (isset($k->parent_id)) ? mb_substr($listUri,0,-mb_strlen(strrchr($listUri,"/"))) : '';
                 if (strpos($listUri,'/')!==false) {echo '/';};
               }
-        
+
         ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
 		</div>
-		<table border="0"<?php echo ($showcollapsed==1) ? ' style="display:none;"' : '';?>>
+		<table>
 
-			<tr>
-				<td colspan="8"></td>
-			</tr>			
+                        <?php if ($show_line_1): ?>
 			<tr>
 				<td class="fieldlabel">Title</td>
 				<td>
@@ -64,7 +71,9 @@ $layouts = Record::findAllFrom('Layout');
 					<input type="text" class="multiedit-field" id="created_on-<?php echo $k->id; ?>" name="created_on-<?php echo $k->id; ?>" value="<?php echo $k->created_on; ?>"/>
 					<img id="created_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
-			</tr>		
+			</tr>
+                        <?php endif; //$show_line_1 ?>
+                        <?php if ($show_line_2): ?>
 			<tr>
 				<td class="fieldlabel">B-crumb</td>
 				<td>
@@ -72,7 +81,9 @@ $layouts = Record::findAllFrom('Layout');
 					<img id="breadcrumb-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 				<td class="counter">
-					<div><span class="multiedit-breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
+                                    <?php if ($show_line_1): ?>
+					<div><span class="multiedit-breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-top-left.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
+                                    <?php endif; ?>
 				</td>
 				<td class="fieldlabel">Keywords</td>
 				<td>
@@ -88,6 +99,8 @@ $layouts = Record::findAllFrom('Layout');
 					<img id="published_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
 				</td>
 			</tr>
+                        <?php endif; //$show_line_2 ?>
+                        <?php if ($show_line_3): ?>
 			<tr>
 				<td class="fieldlabel">
 					<?php if($k->id != 1): //root page slug protection ?>
@@ -102,7 +115,9 @@ $layouts = Record::findAllFrom('Layout');
 				</td>
 				<td class="counter">
 					<?php if($k->id != 1): //root page slug protection ?>
-					<div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-curve-180.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
+                                            <?php if ($show_line_1): ?>
+					<div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI.'multiedit/icons/arrow-top-left.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
+                                            <?php endif; ?>
 					<?php endif; ?>
 				</td>
 				<td rowspan="3" class="fieldlabel">Tags</td>
@@ -135,19 +150,19 @@ $layouts = Record::findAllFrom('Layout');
 					</select>
 				</td>
 				<td>
-					
+
 				</td>
 				<td class="fieldlabel">Updated on</td>
 				<td id="updated_on-<?php echo $k->id; ?>">
 					<?php echo $k->updated_on; ?>
 				</td>
 			</tr>
-            <tr>
+                        <tr>
 				<td class="fieldlabel">
 					<?php if($k->id != 1): //root page status protection ?>
 					Status
 					<?php endif; ?>
-				</td>				
+				</td>
 				<td>
 					<?php if($k->id != 1): //root page status protection ?>
 					<select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field status-select" rel="status-indicator-<?php echo $k->id; ?>" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
@@ -159,30 +174,68 @@ $layouts = Record::findAllFrom('Layout');
 					</select>
 					<?php endif; ?>
 				</td>
-				<td></td>              
-            </tr>
+				<td></td>
+                        </tr>
+                        <?php endif; //$show_line_3 ?>
+
+                        <?php if ($show_line_4):
+                            $cnt = 1; // helper counter for layouting
+                            $total_ext_fields = count($extended_fields);
+                            $warning = '&lArr; ' . __('Plugin fields. Use with caution!');
+                            ?>
+                            <tr class="extended_fields_row">
+                            <?php foreach ( $extended_fields as $ext_field ): ?>
+                            <td class="fieldlabel"><span title="<?php echo __('Extended field') . ' [' . $ext_field . ']'; ?>"><?php echo Inflector::humanize($ext_field); ?></span></td>
+                                    <td>
+                                            <input type="text" class="multiedit-field" id="<?php echo $ext_field . '-' . $k->id; ?>" name="<?php echo $ext_field . '-' . $k->id; ?>" value="<?php echo $k->{$ext_field}; ?>"/>
+                                            <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
+                                    </td>
+                                    <td class="counter">
+
+                                    </td>
+
+                            <?php
+                            if (($cnt % 2)===0 && $cnt !== $total_ext_fields) { echo '<td class="warning" colspan="2">'.$warning.'</td></tr><tr class="extended_fields_row">'; $warning=''; }
+                            $cnt++;
+                            endforeach; //extended fields
+
+                            // fill up remaining cells
+                            if ($total_ext_fields % 2 === 1) echo '<td class="fieldlabel"></td><td></td><td></td><td class="warning" colspan="2">'.$warning.'</td>';
+                            else echo '<td class="warning" colspan="2">'.$warning.'</td>';
+
+                            ?>
+			</tr>
+                        <?php endif; //$show_line_4 ?>
+
 	<?php if ($showpageparts=='1'): ?>
 			<?php
 			$parts = PagePart::findByPageId($k->id);
-			foreach ($parts as $part) {
-				if (empty($part->filter_id)) {
+			foreach ($parts as $part) :
+                            if (empty($part->filter_id) || in_array($part->filter_id,$editable_filters)) :
+
+                             $filter_class = (!in_array( $part->filter_id, $filters ) && !empty($part->filter_id)) ? ' class="error" title="'.__('Plugin for this filter seems to be disabled!').'"' : '';
 			?>
-					<tr>
-						      <td class="fieldlabel"><b><?php echo $part->name; ?></b></td>
-						      <td colspan="7" class="textareacontainer"><textarea class="multiedit-field" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"><?php echo htmlentities($part->content, ENT_COMPAT, 'UTF-8'); ?></textarea></td>
+					<tr class="page_part_row">
+						      <td class="fieldlabel"><span class="rename_page_part" rel="<?php echo $k->id; ?>"><?php echo $part->name; ?></span><br/>
+                                                          <?php
+                                                          echo '[<em'.$filter_class.'>';
+                                                          echo (empty($part->filter_id)) ? '-'. __('none') . '-' : $part->filter_id;
+                                                          echo '</em>]';
+                                                          ?></td>
+						      <td colspan="7" class="textareacontainer"><textarea class="multiedit-field partedit" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"><?php echo htmlentities($part->content, ENT_COMPAT, 'UTF-8'); ?></textarea></td>
 					</tr>
-			<?php 
-				}; //empty filter value
-			}; //foreach ?>
-			<tr>
+			<?php
+				endif; //editable parts
+                            endforeach; //foreach  ?>
+			<tr class="page_part_row">
 				<td class="fieldlabel">
 				</td>
 				<td colspan="7">
 					<?php foreach ($parts as $part): ?>
-					<?php 
-						if (!empty($part->filter_id)) {
-						echo '<div class="filteredparts">' . $part->name . ' [<em>' . $part->filter_id . '</em>]</div>'; 
-						}
+					<?php
+						if (!empty($part->filter_id) && !in_array($part->filter_id,$editable_filters) ):
+						echo '<div class="filteredparts"><span class="rename_page_part" rel="'. $k->id . '">' . $part->name . '</span> [<em>' . $part->filter_id . '</em>]</div>';
+						endif;
 					?>
 					<?php endforeach; ?>
 				</td>

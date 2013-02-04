@@ -1,6 +1,6 @@
 
 <link href="<?php echo PLUGINS_URI; ?>multiedit/multiedit.css" media="screen" rel="stylesheet" type="text/css" />
-<script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>multiedit/js/helpers.js"></script> 
+<script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>multiedit/js/helpers.js"></script>
 
 <?php if (Plugin::isEnabled('tags_input')): ?>
 <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>tags_input/assets/jquery.autocomplete.pack.js"></script>
@@ -9,15 +9,15 @@
 <?php endif; ?>
 
 <script>
-  
+
 $(".multiedit-field").live('change',function() {
     field = $(this);
     progressIndicator = $('#'+field.attr('id')+'-loader');
     progressIndicator.addClass('visible');
     var request = $.ajax({
-			url:	"/<?php echo ADMIN_DIR; ?>/plugin/multiedit/setvalue", 
+			url:	"/<?php echo ADMIN_DIR; ?>/plugin/multiedit/setvalue",
 			type:   'post',
-			data:	{ 
+			data:	{
 					item: field.attr('name'),
 					value: field.val()
 				},
@@ -36,10 +36,10 @@ $(".multiedit-field").live('change',function() {
 								indicator = $('#status-indicator-'+data.identifier);
 								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
 								indicator.addClass('status-' + data.setstatus);
-							}								
+							}
 								// status change management @todo DRY status change
 								if (field.hasClass('status-select')) {
-								indicator = $('#'+field.attr('rel'));	
+								indicator = $('#'+field.attr('rel'));
 								indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
 								indicator.addClass('status-' + field.val());
 								}
@@ -50,13 +50,13 @@ $(".multiedit-field").live('change',function() {
 							showMessageBox (data.message,data.status);
 							setTimeout(function(){progressIndicator.removeClass('visible');},300)
 							$(".multiedit-slugfield").trigger('keyup');
-							
+
 					}
 				},
 			error: function( data ) {
 					showMessageBox (dump(data));
 				},
-			dataType: 'json'				
+			dataType: 'json'
 			})
 });
 
@@ -68,7 +68,7 @@ document.cookie = 'mtedfe=1; path=/';
     target.fadeOut('fast', function(){
 	var request = $.ajax({
 			url:	"/<?php echo ADMIN_DIR; ?>/plugin/multiedit/getonepage/"
-				+ <?php echo $page_id; ?> + '/0/0/1', 
+				+ <?php echo $page_id; ?> + '/0/0/1',
 			type:   'get',
 			success: function(data){
 				target.html(data);
@@ -95,7 +95,7 @@ document.cookie = 'mtedfe=1; path=/';
                         onChange : function() {
                           $(this).trigger('change');
                           $(".multiedit-counttags").trigger('keyup');
-                        },          
+                        },
                         autocomplete_url: "/<?php echo ADMIN_DIR ?>/plugin/tags_input/autocomplete/index?v=0.1",
                         autocomplete: {
                             selectFirst: false,
@@ -111,34 +111,12 @@ document.cookie = 'mtedfe=1; path=/';
 				},
 			error: function( data ) {
 					alert (dump(data));
-				}				
+				}
 			})
 		})
 })
 
-    function me_createCookie( name,value,days) 
-      {
-          if ( days) 
-          {
-                  var date = new Date( );
-                  date.setTime( date.getTime( )+( days*24*60*60*1000));
-                  var expires = "; expires="+date.toGMTString( );
-          }
-          else var expires = "";
-          document.cookie = name+"="+value+expires+"; path=/";
-      }
-    function me_readCookie(name) {
-        var nameEQ = name + "=";
-        var ca = document.cookie.split( ';');
-        for( var i=0;i < ca.length;i++) 
-        {
-                var c = ca[i];
-                while ( c.charAt( 0)==' ') c = c.substring( 1,c.length);
-                if ( c.indexOf( nameEQ) == 0) return c.substring( nameEQ.length,c.length);
-        }
-        return null;
-    }
-    function me_eraseCookie(name) { me_createCookie( name,"",-1); }
+
 
 $("#multiedit-fe-hide").live('click',function() {
     $(this).hide();
@@ -165,7 +143,7 @@ $(document).ready( function() {
   <div id="multiedit-fe-hide"></div>
 	<div id="multiedit-list" style="display: none;">
 		<div class="multiedit-item-root multiedit-item" id="multipage_item-<?php echo $page_id; ?>" style="box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);">
-		</div>	
+		</div>
 	</div>
 	<div id="multiedit-fe-show"></div>
 </div>

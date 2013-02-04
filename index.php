@@ -2,10 +2,10 @@
 /*
  * Wolf CMS - Content Management Simplified. <http://www.wolfcms.org>
  * Copyright (C) 2008-2010 Martijn van der Kleijn <martijn.niji@gmail.com>
- * 
+ *
  * MultiEdit Plugin for Wolf CMS
  * Provides convenient interface to quickly edit multiple pages metadata.
- *  
+ *
  * @package Plugins
  * @subpackage multiedit
  *
@@ -21,7 +21,7 @@ Plugin::setInfos(array(
 		'id'          => 'multiedit',
 		'title'       => 'MultiEdit',
 		'description' => __('Provides convenient interface to quickly edit multiple pages metadata.'),
-		'version'     => '0.1.1',
+		'version'     => '0.2.0', 
 			'license'     => 'GPL',
 			'author'      => 'Marek Murawski',
 		'website'     => 'http://marekmurawski.pl/',
@@ -30,7 +30,7 @@ Plugin::setInfos(array(
 ));
 
 if (defined('CMS_BACKEND')) {
-	Plugin::addController('multiedit', 'MultiEdit', 'administrator');
+	Plugin::addController('multiedit', 'MultiEdit', 'multiedit_view');
 	Plugin::addJavascript('multiedit', 'js/helpers.js');
 }
 else {
