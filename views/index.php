@@ -97,7 +97,7 @@ var oldname = $(this).html();
 var pageid  = $(this).attr('rel');
 var newname = window.prompt('<?php echo __('New page part name for "'); ?>' + oldname + '"', oldname );
 
-
+reloadButton = $(this).parents('div.multiedit-item').find('.reload-item');
 if (newname===null) { /* showMessageBox ('Cancelled page part name change','error'); */ return false;}
 if (newname.trim().length===0) {showMessageBox ('No name specified','error'); return false;}
 if (newname.trim()===$(this).html().trim()) {showMessageBox ('Same name specified','error'); return false;}
@@ -111,11 +111,13 @@ if (newname.trim()===$(this).html().trim()) {showMessageBox ('Same name specifie
 				},
                         dataType: 'json',
 			success: function(data){
-                                    $( "#reload-item-" + pageid ).trigger('click');
+                                    reloadButton.trigger('click');
                                     showMessageBox (data.message,data.status);
 				},
 			error: function( data ) {
-				showMessageBox (data.message,data.status);
+                                    reloadButton.trigger('click');
+                                    showMessageBox (data.message,data.status); 
+
 				}
 			})
 });
