@@ -4,8 +4,7 @@ if ( !defined( 'IN_CMS' ) ) {
     exit();
 }
 ?>
-<img alt="<?php echo __( "Reload list of pages" ); ?>" title="<?php echo __( "Reload list of pages" ); ?>" id="reload-list" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh.png'; ?>"/>
-
+<img alt="<?php echo __( "Reload list of pages" ); ?>" title="<?php echo __( "Reload list of pages" ); ?>" id="reload-list" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh-32.png'; ?>"/>
 <label for="rootpage"><?php echo __( 'Show subpages of' ) ?>: </label>
 <select name="rootpage" id="multiedit-pageslist" class="multiedit-items-select">
     <option value="-1"><?php echo __( 'All pages as flat list' ); ?></option>
@@ -71,6 +70,7 @@ $autosizepageparts = (isset( $_COOKIE['aspp'] ) && $_COOKIE['aspp'] == '1') ? ' 
                 <input type="checkbox" class="multiedit-items-select secondary" name="autosizepageparts" id="autosizepageparts" value="1" <?php echo $autosizepageparts; ?>/>
                 <label for="autosizepageparts"><img alt="<?php echo __( 'Auto-size page parts' ); ?>" title="<?php echo __( 'Auto-size page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Auto-size page parts' ); ?></label>
             <?php endif; ?>
+            <div class="clear"></div>
         </td>
     </tr>
 </table>

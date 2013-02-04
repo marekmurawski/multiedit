@@ -14,7 +14,7 @@ $show_line_2 = (((!isset($_COOKIE['r2']) || $_COOKIE['r2']=='1') || $force || $i
 $show_line_3 = (((!isset($_COOKIE['r3']) || $_COOKIE['r3']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
 $show_line_4 = (((!isset($_COOKIE['r4']) || $_COOKIE['r4']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_advanced')) ? true : false;
 $showpageparts = (((!isset($_COOKIE['shpp']) || $_COOKIE['shpp']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_parts')) ? true : false;
-$editable_filters = array('ace','textile','markdown','codemirror');
+$editable_filters = MultieditController::$editableFilters;
 ?>
 
 <?php foreach ($items as $k): ?>

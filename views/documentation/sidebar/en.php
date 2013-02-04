@@ -5,10 +5,19 @@ if (!defined('IN_CMS')) {
 ?>
 <p>
 Here you can quickly edit multiple pages at once. The list of pages consists of the selected root page and children of it.
+Each field is updated upon leaving it.
 </p>
+<?php if (AuthUser::hasPermission('multiedit_parts') ): ?>
 <p>
-Each field is updated upon leaving it. Changing <em>"title", "breadcrumb", "slug", "keywords", "description" and page parts</em> will change page "updated on" time.
+You can also edit page parts with <strong>ace, codemirror, markdown, textile or -none-</strong> filter. Page parts with other filters are listed below.
 </p>
+<?php endif; ?>
 <p>
-You can also edit page parts but only those <strong>without filter</strong> applied. Page parts with filters are listed below each page.
+    To <strong>rename page part</strong> click it's label and type new name.
 </p>
+<?php if (AuthUser::hasPermission('multiedit_advanced') ): ?>
+<p>
+    You can edit <strong>extended page fields</strong>, which are generally provided by some plugins. This can have <strong>unexpected</strong> consequences, so do it with care.
+</p>
+<?php endif; ?>
+

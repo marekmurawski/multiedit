@@ -28,6 +28,7 @@ class MultieditController extends PluginController {
     const PLUGIN_REL_VIEW_FOLDER = "../../plugins/multiedit/views/";
     private static $pagesList = array();
     private static $defaultSorting = 'position ASC, published_on DESC';
+    public static  $editableFilters = array('ace','textile','markdown','codemirror');
     private static $defaultPageFields = array(
                                             'id',
                                             'title',

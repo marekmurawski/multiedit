@@ -3,9 +3,9 @@ MultiEdit for Wolf CMS
 
 Plugin for editing multiple pages interactively.
 
-This plugin helps you to edit multiple pages based on jQuery, so you don't have to wait for page reload and click "Save and continue editing" to see the changes.  All changes are made (almost) instantly.
+This plugin helps you to edit multiple pages based on jQuery, so you don't have to wait for page reload and click "Save and continue editing" to see the changes.  All changes are made (almost) instantly. If you want you can also edit pages' metadata and parts in **frontend**.
 
-You can also edit page parts but only those *without filter* applied. Page parts with filters are listed below each page. If you have Part Revisions plugin enabled, the changes in page part contents will be stored as a revision.
+MultiEdit provides page parts editing and changing names of existing page parts. If you have Part Revisions plugin enabled, the changes in page part contents will be stored as a revision.
 
 Installation
 ------------
@@ -14,6 +14,34 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 
 Changelog
 ---------
+
+0.2.0
+
+- editing **extended page fields** - like _comment status_ from Comments plugin
+- option to **autosize** page part contents to fit contents into textarea
+- new view settings to **customize visible fields**
+- option to **rename page parts** _(click part name label)_
+- highlighting filters without proper plugin activated
+- page parts with _ace, codemirror, markdown and textile_ filters are editable by default
+- new icons and some visual improvements
+- minor bugfixes
+- **new role Multieditor**
+
+    This role gives users full MultiEdit access. You can assign roles to users in Wolf CMS Users tab.
+
+- **new permissions introduced**
+
+  - **multiedit_view** - tab access in backend
+  - **multiedit_basic** - view/edit basic page fields
+  - **multiedit_advanced** - view/edit extended (plugin-provided) page fields
+  - **multiedit_parts** - view/edit page parts
+  - **multiedit_frontend** - frontend access to MultiEdit
+
+  By default role "Editor" is granted multiedit_view, multiedit_basic and multiedit_frontend permissions.
+
+  Role "Developer" is granted multiedit_view, multiedit_basic, multiedit_parts and multiedit_frontend permissions.
+
+  Permissions and roles can be manipulated using Roles Manager plugin by **andrewmman**.
 
 0.1.1
 

@@ -42,6 +42,7 @@ $success = $success && mmInstaller::assignPermissionToRole( 'multiedit_frontend'
 
 $success = $success && mmInstaller::assignPermissionToRole( 'multiedit_view',     'developer' );
 $success = $success && mmInstaller::assignPermissionToRole( 'multiedit_basic',    'developer' );
+$success = $success && mmInstaller::assignPermissionToRole( 'multiedit_parts',    'developer' );
 $success = $success && mmInstaller::assignPermissionToRole( 'multiedit_frontend', 'developer' );
 
 if ( $success ) {

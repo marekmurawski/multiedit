@@ -297,7 +297,7 @@ visibility: visible;
 .multiedit-item .header .actions span,
 .multiedit-item .header .actions a {margin-left: 5px}
 
- #multiedit-header #reload-list {float: right; position: relative; top: 2px;}
+ #multiedit-header #reload-list {float: right; position: relative; top: 8px;}
 
  /* FRONTEND CSS */
  #multiedit-wrapper.frontend {margin: 0; position: fixed; bottom: 0px; right: 3%; left: 3%; width: 94%; z-index: 999;}
