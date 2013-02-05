@@ -116,10 +116,68 @@ if (newname.trim()===$(this).html().trim()) {showMessageBox ('Same name specifie
 				},
 			error: function( data ) {
                                     reloadButton.trigger('click');
-                                    showMessageBox (data.message,data.status); 
+                                    showMessageBox (data.message,data.status);
 
 				}
 			})
+});
+
+$('.multiedit-delete-field').live('click',function(){
+
+var fieldname = $(this).attr('data-field-name');
+var confirm = window.confirm('<?php echo __('Are you ABSOLUTELY sure you want to delete field'); ?>' +
+                            '\n' + '\n === ' + fieldname + ' === ??? \n' + '\n' +
+                            '<?php echo __('Deleting this field will permanently erase ALL data in this field in ALL pages!'); ?>');
+//var newname = window.prompt
+
+if (confirm !== true) {showMessageBox ('Cancelled field deletion','OK'); return false;}
+else {
+        $.ajax({
+        url:	"<?php echo get_url('plugin/multiedit/field_delete'); ?>",
+        type:   'POST',
+        data:	{
+                        'field_name': fieldname
+                },
+        dataType: 'json',
+        success: function(data){
+                    //reloadButton.trigger('click');
+                    showMessageBox (data.message,data.status);
+                },
+        error: function( data ) {
+                    //reloadButton.trigger('click');
+                    showMessageBox (data.message,data.status);
+                }
+        })
+    }
+});
+
+$('.multiedit-rename-field').live('click',function(){
+
+var fieldname = $(this).attr('data-field-name');
+//var confirm = window.confirm('<?php echo __('Are you ABSOLUTELY sure you want to delete field'); ?>' +
+//                            '\n' + '\n === ' + fieldname + ' === ??? \n' + '\n' +
+//                            '<?php echo __('Deleting this field will permanently erase ALL data in this field in ALL pages!'); ?>');
+//var newname = window.prompt
+
+//if (confirm !== true) {showMessageBox ('Cancelled field deletion','OK'); return false;}
+//else {
+        $.ajax({
+        url:	"<?php echo get_url('plugin/multiedit/field_rename'); ?>",
+        type:   'POST',
+        data:	{
+                        'field_name': fieldname
+                },
+        dataType: 'json',
+        success: function(data){
+                    //reloadButton.trigger('click');
+                    showMessageBox (data.message,data.status);
+                },
+        error: function( data ) {
+                    //reloadButton.trigger('click');
+                    showMessageBox (data.message,data.status);
+                }
+        })
+//    }
 });
 
 $("#reload-list").live('click',function(){

@@ -324,6 +324,57 @@ class MultieditController extends PluginController {
 
     }
 
+    public function field_rename() {
+        if (!AuthUser::hasPermission('multiedit_advanced')) $this->failure ( __('Insufficent permissions for fields manipulation'));
+        $out = '';
+        //$fieldname = trim($_POST['fieldname'])
+        $fieldname = trim($_POST['field_name']);
+
+        if (empty($fieldname)) {
+                $this->failure(__('No field name specified'));
+            }
+
+            //Page::find();
+            $stmt = Record::getConnection()->prepare('describe page '.Record::escape( $fieldname ) );
+            if (!$stmt->execute()) {
+                $this->failure(__('DB error!'));
+            }
+            $r = $stmt->fetchObject();
+
+            $out .= echo_r($r,true);
+
+        $this->success($out);
+        //$parts = PagePart::findByPageId($page_id);
+
+    }
+
+    public function field_delete() {
+        if (!AuthUser::hasPermission('multiedit_advanced'))
+            $this->failure ( __('Insufficent permissions for fields manipulation!'));
+
+        if (empty($_POST['field_name']))
+            $this->failure ( __('No field name specified!'));
+
+        $fieldname = trim($_POST['field_name']);
+
+        if ( in_array($fieldname,self::$defaultPageFields) )
+            $this->failure ( __('Cannot delete default fields!'));
+
+
+        $page = Record::findOneFrom('Page', '1=1');
+        if ( property_exists($page, $fieldname)!==true )
+            $this->failure ( __('Field not found in Page model - ') . $fieldname );
+
+        if (empty($fieldname))
+            $this->failure(__('No field name specified'));
+
+            $PDO = Record::getConnection();
+            $PDO->exec("ALTER TABLE page DROP " . $fieldname  );
+
+        $this->success(echo_r($PDO->errorInfo(),true));
+
+    }
+
     public function setvalue() {
 		$fieldsAffectingUpdatedOn = array('title','breadcrumb','slug','keywords','description');
 		// Page part changes always update "updated_on" field

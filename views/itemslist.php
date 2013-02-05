@@ -7,7 +7,8 @@ if (!defined('IN_CMS')) { exit(); }
 // initialize variables
 //$behaviors = Behavior::findAll();
 
-if (!isset($force)) $force=false;
+if (!isset($force))  $force = false;
+if (!isset($isRoot)) $isRoot = false;
 
 $show_line_1 = (((!isset($_COOKIE['r1']) || $_COOKIE['r1']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
 $show_line_2 = (((!isset($_COOKIE['r2']) || $_COOKIE['r2']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
@@ -188,10 +189,17 @@ $editable_filters = MultieditController::$editableFilters;
                             <td class="fieldlabel"><span title="<?php echo __('Extended field') . ' [' . $ext_field . ']'; ?>"><?php echo Inflector::humanize($ext_field); ?></span></td>
                                     <td>
                                             <input type="text" class="multiedit-field" id="<?php echo $ext_field . '-' . $k->id; ?>" name="<?php echo $ext_field . '-' . $k->id; ?>" value="<?php echo $k->{$ext_field}; ?>"/>
-                                            <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>">
+                                            <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>"/>
                                     </td>
                                     <td class="counter">
-
+                                        <?php if ($isRoot): ?>
+                                                <span class="multiedit-delete-field" data-field-name="<?php echo $ext_field; ?>">
+                                                    <img src="<?php echo PLUGINS_URI.'multiedit/icons/cross.png'; ?>" alt="<?php echo __('Delete this field'); ?>" title="<?php echo __('Delete this field'); ?>"/>
+                                                </span>
+                                                <span class="multiedit-rename-field" data-field-name="<?php echo $ext_field; ?>">
+                                                    <img src="<?php echo PLUGINS_URI.'multiedit/icons/pencil.png'; ?>" alt="<?php echo __('Rename this field'); ?>" title="<?php echo __('Rename this field'); ?>"/>
+                                                </span>
+                                        <?php endif; ?>
                                     </td>
 
                             <?php
