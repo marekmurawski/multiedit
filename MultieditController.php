@@ -80,6 +80,19 @@ class MultieditController extends PluginController {
 //                                            'needs_login',
                                             'tags',
                                             );
+    private static $fieldTemplates = array(
+        array('varchar 10'    , 'VARCHAR(10)'),
+        array('varchar 20'    , 'VARCHAR(20)'),
+        array('varchar 32'    , 'VARCHAR(32)'),
+        array('varchar 64'    , 'VARCHAR(64)'),
+        array('varchar 255'   , 'VARCHAR(255)'),
+        array('varchar 1000'  , 'VARCHAR(1000)'),
+        array('text'          , 'TEXT'),
+        array('int 1'         , 'INT(1)'),
+        array('int 8'         , 'INT(8)'),
+        array('int 16'        , 'INT(16)'),
+        array('datetime'      , 'DATETIME'),
+    );
 
     public function __construct() {
         $this->AJAXResponse = array();
@@ -326,6 +339,7 @@ class MultieditController extends PluginController {
      * Rename field (column) in Page model
      *
      * uses $_POST['field_name']
+     *      $_POST['field_new_name']
      *
      */
     public function field_rename() {
@@ -338,20 +352,51 @@ class MultieditController extends PluginController {
         // sanitize input
         $fieldname = trim($_POST['field_name']);
         if (empty($fieldname))
-            $this->failure(__('No field name specified'));
+            $this->failure(__('No field source field name specified!'));
 
+        $fieldnewname = trim($_POST['field_new_name']);
+        if (preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#', $fieldnewname) !== 1)
+            $this->failure(__('Invalid target field name!'));
 
-            $stmt = Record::getConnection()->prepare('describe page '.Record::escape( $fieldname ) );
-            if (!$stmt->execute()) {
-                $this->failure(__('DB error!'));
+        // strtolower new name
+        $fieldnewname = strtolower($fieldnewname);
+
+        // check new name existence
+        $page = Record::findOneFrom('Page', '1=1');
+        if ( property_exists($page, $fieldnewname) )
+            $this->failure ( __('Field already exists in Page model - ') . $fieldnewname );
+
+            $PDO = Record::getConnection();
+
+            $stmt1 = $PDO->prepare('describe page '.Record::escape( $fieldname ) );
+            if (!$stmt1->execute()) {
+                $this->failure(__('DB error reading Page table structure!'));
             }
-            $r = $stmt->fetchObject();
 
-            $out .= echo_r($r,true);
+            $structure = $stmt1->fetchObject();
+
+            $out .= '======= STRUCTURE =======';
+            $out .= echo_r($PDO->errorInfo(),true);
+            $out .= echo_r($stmt1,true);
+            $out .= echo_r($structure,true);
+
+
+            $nullString = ( (!empty($structure->Null) && (strtolower( $structure->Null) === 'yes' || $structure->Null === '1') ) ) ? ' NULL ' : ' NOT NULL ';
+            $defaultString = (!empty($structure->Default)) ? ' DEFAULT '. Record::escape($structure->Default) : '';
+
+            $result = $PDO->exec("ALTER TABLE page CHANGE " .
+                            $structure->Field . ' ' .
+                            $fieldnewname . ' ' .
+                            $structure->Type .
+                            $nullString .
+                            $defaultString
+                    );
+
+            $out .= '======= RENAMING =======';
+            $out .= echo_r($PDO->errorInfo(),true);
+            $out .= echo_r($result,true);
 
         $this->success($out);
-        //$parts = PagePart::findByPageId($page_id);
-
     }
 
     /**
