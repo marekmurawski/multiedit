@@ -80,24 +80,42 @@ class MultieditController extends PluginController {
 //                                            'needs_login',
                                             'tags',
                                             );
-    private static $fieldTemplates = array(
-        array('varchar 10'    , 'VARCHAR(10)'),
-        array('varchar 20'    , 'VARCHAR(20)'),
-        array('varchar 32'    , 'VARCHAR(32)'),
-        array('varchar 64'    , 'VARCHAR(64)'),
-        array('varchar 255'   , 'VARCHAR(255)'),
-        array('varchar 1000'  , 'VARCHAR(1000)'),
-        array('text'          , 'TEXT'),
-        array('int 1'         , 'INT(1)'),
-        array('int 8'         , 'INT(8)'),
-        array('int 16'        , 'INT(16)'),
-        array('datetime'      , 'DATETIME'),
+    public static $fieldTemplates = array(
+        'mysql' => array(
+                array('description'=>'varchar 10'    , 'query'=>':field_name: VARCHAR( 10 )   NOT NULL'),
+                array('description'=>'varchar 20'    , 'query'=>':field_name: VARCHAR( 20 )   NOT NULL'),
+                array('description'=>'varchar 32'    , 'query'=>':field_name: VARCHAR( 32 )   NOT NULL'),
+                array('description'=>'varchar 64'    , 'query'=>':field_name: VARCHAR( 64 )   NOT NULL'),
+                array('description'=>'varchar 255'   , 'query'=>':field_name: VARCHAR( 255 )  NOT NULL'),
+                array('description'=>'varchar 1000'  , 'query'=>':field_name: VARCHAR( 1000 ) NOT NULL'),
+                array('description'=>'text'          , 'query'=>':field_name: TEXT            NOT NULL'),
+                array('description'=>'int 1'         , 'query'=>':field_name: INT( 1 )        NOT NULL'),
+                array('description'=>'int 8'         , 'query'=>':field_name: INT( 8 )        NOT NULL'),
+                array('description'=>'int 16'        , 'query'=>':field_name: INT( 16 )       NOT NULL'),
+                array('description'=>'datetime'      , 'query'=>':field_name: DATETIME        NOT NULL'),
+            ),
+        'sqlite' => array(
+                array('description'=>'varchar 10'    , 'query'=>':field_name: VARCHAR( 10 )   NOT NULL'),
+                array('description'=>'varchar 20'    , 'query'=>':field_name: VARCHAR( 20 )   NOT NULL'),
+                array('description'=>'varchar 32'    , 'query'=>':field_name: VARCHAR( 32 )   NOT NULL'),
+                array('description'=>'varchar 64'    , 'query'=>':field_name: VARCHAR( 64 )   NOT NULL'),
+                array('description'=>'varchar 255'   , 'query'=>':field_name: VARCHAR( 255 )  NOT NULL'),
+                array('description'=>'varchar 1000'  , 'query'=>':field_name: VARCHAR( 1000 ) NOT NULL'),
+                array('description'=>'text'          , 'query'=>':field_name: TEXT            NOT NULL'),
+                array('description'=>'int 1'         , 'query'=>':field_name: INT( 1 )        NOT NULL'),
+                array('description'=>'int 8'         , 'query'=>':field_name: INT( 8 )        NOT NULL'),
+                array('description'=>'int 16'        , 'query'=>':field_name: INT( 16 )       NOT NULL'),
+                array('description'=>'datetime'      , 'query'=>':field_name: DATETIME        NOT NULL'),
+            ),
     );
 
+    private static $supportedDrivers = array('mysql','sqlite');
+
     public function __construct() {
-        $this->AJAXResponse = array();
 
         if (!AuthUser::hasPermission('multiedit_view')) die ('Access denied');
+
+        $this->DB_driver = strtolower(Record::getConnection()->getAttribute(PDO::ATTR_DRIVER_NAME));
 
         $this->setLayout('backend');
 
@@ -253,7 +271,8 @@ class MultieditController extends PluginController {
         self::makePagesListRecursive($page->id);
                       $list = new View(self::PLUGIN_REL_VIEW_FOLDER.'header', array(
                                 'pagesList' => self::$pagesList,
-                      'rootPage' => $page
+                                'db_driver' => $this->DB_driver,
+                              'rootPage' => $page
                             ));
         $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY '.self::$defaultSorting, array($page->id));
 
@@ -301,7 +320,8 @@ class MultieditController extends PluginController {
 
     public function rename_page_part() {
 
-        if (!AuthUser::hasPermission('multiedit_parts')) $this->failure ( __('Insufficent permissions for parts editing'));
+        if (!AuthUser::hasPermission('multiedit_parts'))
+            $this->failure ( __('Insufficent permissions for parts editing'));
 
         if (empty($_POST['page_id']) || empty($_POST['old_name']) || empty($_POST['new_name'])) {
             $this->failure(__('No data specified'));
@@ -336,6 +356,59 @@ class MultieditController extends PluginController {
     }
 
     /**
+     * Add field (column) in Page model
+     *
+     * uses $_POST['template_id']
+     * uses $_POST['name']
+     *
+     */
+    public function field_add() {
+        // check permissions
+        if (!AuthUser::hasPermission('multiedit_advanced'))
+            $this->failure ( __('Insufficent permissions for fields manipulation'));
+
+        // check DB driver
+        if (!in_array($this->DB_driver,self::$supportedDrivers))
+            $this->failure ( __('Unsupported DB driver'));
+
+        // sanitize input
+        if ( !isset($_POST['template_id']) )
+            $this->failure(__('No field template specified!'));
+
+        $template_id = (int) $_POST['template_id'];
+
+        $fieldnewname = trim($_POST['name']);
+        if (preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#', $fieldnewname) !== 1)
+            $this->failure(__('Invalid target field name!'));
+
+        // strtolower new name
+        $fieldnewname = strtolower($fieldnewname);
+
+        // check new name existence
+        $page = Record::findOneFrom('Page', '1=1');
+        if ( property_exists($page, $fieldnewname) )
+            $this->failure ( __('Field already exists in Page model - ') . $fieldnewname );
+
+            /**
+             * Do the actual adding
+             */
+
+            $PDO = Record::getConnection();
+
+            $trans = array(':field_name:' => $fieldnewname);
+            $result = $PDO->exec("ALTER TABLE ".TABLE_PREFIX."page ADD " .
+                            strtr(self::$fieldTemplates[$this->DB_driver][$template_id]['query'], $trans)
+                    );
+
+            $out = '';
+            $out .= '======= ADDING =======';
+            $out .= echo_r($PDO->errorInfo(),true);
+            $out .= echo_r($result,true);
+
+        $this->success($out);
+    }
+
+    /**
      * Rename field (column) in Page model
      *
      * uses $_POST['field_name']
@@ -343,11 +416,14 @@ class MultieditController extends PluginController {
      *
      */
     public function field_rename() {
-        $out = '';
 
         // check permissions
         if (!AuthUser::hasPermission('multiedit_advanced'))
             $this->failure ( __('Insufficent permissions for fields manipulation'));
+
+        // check DB driver
+        if (!in_array($this->DB_driver,self::$supportedDrivers))
+            $this->failure ( __('Unsupported DB driver'));
 
         // sanitize input
         $fieldname = trim($_POST['field_name']);
@@ -368,13 +444,14 @@ class MultieditController extends PluginController {
 
             $PDO = Record::getConnection();
 
-            $stmt1 = $PDO->prepare('describe page '.Record::escape( $fieldname ) );
+            $stmt1 = $PDO->prepare('describe '.TABLE_PREFIX.'page '.Record::escape( $fieldname ) );
             if (!$stmt1->execute()) {
                 $this->failure(__('DB error reading Page table structure!'));
             }
 
             $structure = $stmt1->fetchObject();
 
+            $out = '';
             $out .= '======= STRUCTURE =======';
             $out .= echo_r($PDO->errorInfo(),true);
             $out .= echo_r($stmt1,true);
@@ -384,7 +461,7 @@ class MultieditController extends PluginController {
             $nullString = ( (!empty($structure->Null) && (strtolower( $structure->Null) === 'yes' || $structure->Null === '1') ) ) ? ' NULL ' : ' NOT NULL ';
             $defaultString = (!empty($structure->Default)) ? ' DEFAULT '. Record::escape($structure->Default) : '';
 
-            $result = $PDO->exec("ALTER TABLE page CHANGE " .
+            $result = $PDO->exec("ALTER TABLE ".TABLE_PREFIX."page CHANGE " .
                             $structure->Field . ' ' .
                             $fieldnewname . ' ' .
                             $structure->Type .
@@ -411,6 +488,10 @@ class MultieditController extends PluginController {
         if (!AuthUser::hasPermission('multiedit_advanced'))
             $this->failure ( __('Insufficent permissions for fields manipulation!'));
 
+        // check DB driver
+        if (!in_array($this->DB_driver,self::$supportedDrivers))
+            $this->failure ( __('Unsupported DB driver'));
+
         // sanitize input
         $fieldname = trim($_POST['field_name']);
         if (empty($fieldname))
@@ -426,7 +507,7 @@ class MultieditController extends PluginController {
             $this->failure ( __('Field not found in Page model - ') . $fieldname );
 
             $PDO = Record::getConnection();
-            $PDO->exec("ALTER TABLE page DROP " . $fieldname  );
+            $PDO->exec("ALTER TABLE ".TABLE_PREFIX."page DROP " . $fieldname  );
 
         $this->success(echo_r($PDO->errorInfo(),true));
 

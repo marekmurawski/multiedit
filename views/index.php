@@ -142,6 +142,7 @@ else {
         success: function(data){
                     //reloadButton.trigger('click');
                     showMessageBox (data.message,data.status);
+                    if (data.status==='OK') $("#reload-list").trigger('click');
                 },
         error: function( data ) {
                     //reloadButton.trigger('click');
@@ -151,33 +152,54 @@ else {
     }
 });
 
-$('.multiedit-rename-field').live('click',function(){
+$('#multiedit-add-field').live('click',function(){
 
-var fieldname = $(this).attr('data-field-name');
-//var confirm = window.confirm('<?php echo __('Are you ABSOLUTELY sure you want to delete field'); ?>' +
-//                            '\n' + '\n === ' + fieldname + ' === ??? \n' + '\n' +
-//                            '<?php echo __('Deleting this field will permanently erase ALL data in this field in ALL pages!'); ?>');
-//var newname = window.prompt
+var template_id = $('#multiedit-add-field-template').val();
+var newname = window.prompt('<?php echo __('Specify new field name '); ?>');
 
-//if (confirm !== true) {showMessageBox ('Cancelled field deletion','OK'); return false;}
-//else {
         $.ajax({
-        url:	"<?php echo get_url('plugin/multiedit/field_rename'); ?>",
+        url:	"<?php echo get_url('plugin/multiedit/field_add'); ?>",
         type:   'POST',
         data:	{
-                        'field_name': fieldname
+                        'template_id':    template_id,
+                        'name': newname
                 },
         dataType: 'json',
         success: function(data){
                     //reloadButton.trigger('click');
                     showMessageBox (data.message,data.status);
+                    if (data.status==='OK') $("#reload-list").trigger('click');
                 },
         error: function( data ) {
                     //reloadButton.trigger('click');
                     showMessageBox (data.message,data.status);
                 }
         })
-//    }
+});
+
+$('.multiedit-rename-field').live('click',function(){
+
+var fieldname = $(this).attr('data-field-name');
+var newname = window.prompt('<?php echo __('Specify new name for field '); ?>' + fieldname);
+
+        $.ajax({
+        url:	"<?php echo get_url('plugin/multiedit/field_rename'); ?>",
+        type:   'POST',
+        data:	{
+                        'field_name':    fieldname,
+                        'field_new_name': newname
+                },
+        dataType: 'json',
+        success: function(data){
+                    //reloadButton.trigger('click');
+                    showMessageBox (data.message,data.status);
+                    if (data.status==='OK') $("#reload-list").trigger('click');
+                },
+        error: function( data ) {
+                    //reloadButton.trigger('click');
+                    showMessageBox (data.message,data.status);
+                }
+        })
 });
 
 $("#reload-list").live('click',function(){
