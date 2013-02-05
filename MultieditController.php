@@ -320,21 +320,27 @@ class MultieditController extends PluginController {
         } else {
             $this->failure(__('Page part not found'));
         }
-        //$parts = PagePart::findByPageId($page_id);
-
     }
 
+    /**
+     * Rename field (column) in Page model
+     *
+     * uses $_POST['field_name']
+     *
+     */
     public function field_rename() {
-        if (!AuthUser::hasPermission('multiedit_advanced')) $this->failure ( __('Insufficent permissions for fields manipulation'));
         $out = '';
-        //$fieldname = trim($_POST['fieldname'])
+
+        // check permissions
+        if (!AuthUser::hasPermission('multiedit_advanced'))
+            $this->failure ( __('Insufficent permissions for fields manipulation'));
+
+        // sanitize input
         $fieldname = trim($_POST['field_name']);
+        if (empty($fieldname))
+            $this->failure(__('No field name specified'));
 
-        if (empty($fieldname)) {
-                $this->failure(__('No field name specified'));
-            }
 
-            //Page::find();
             $stmt = Record::getConnection()->prepare('describe page '.Record::escape( $fieldname ) );
             if (!$stmt->execute()) {
                 $this->failure(__('DB error!'));
@@ -348,25 +354,31 @@ class MultieditController extends PluginController {
 
     }
 
+    /**
+     * Delete field (column) from Page model
+     *
+     * uses $_POST['field_name']
+     *
+     */
     public function field_delete() {
+
+        // check permissions
         if (!AuthUser::hasPermission('multiedit_advanced'))
             $this->failure ( __('Insufficent permissions for fields manipulation!'));
 
-        if (empty($_POST['field_name']))
+        // sanitize input
+        $fieldname = trim($_POST['field_name']);
+        if (empty($fieldname))
             $this->failure ( __('No field name specified!'));
 
-        $fieldname = trim($_POST['field_name']);
-
+        // check for default/protected fields
         if ( in_array($fieldname,self::$defaultPageFields) )
             $this->failure ( __('Cannot delete default fields!'));
 
-
+        // check field's existence - security reasons
         $page = Record::findOneFrom('Page', '1=1');
         if ( property_exists($page, $fieldname)!==true )
             $this->failure ( __('Field not found in Page model - ') . $fieldname );
-
-        if (empty($fieldname))
-            $this->failure(__('No field name specified'));
 
             $PDO = Record::getConnection();
             $PDO->exec("ALTER TABLE page DROP " . $fieldname  );
@@ -375,6 +387,11 @@ class MultieditController extends PluginController {
 
     }
 
+    /**
+     * Set value of Page model field
+     *
+     * @return boolean
+     */
     public function setvalue() {
 		$fieldsAffectingUpdatedOn = array('title','breadcrumb','slug','keywords','description');
 		// Page part changes always update "updated_on" field
@@ -564,14 +581,14 @@ class MultieditController extends PluginController {
 
     private function respond($message='', $status='OK',$arr=array()) {
         // set messages
-        $res = array(
+        $default = array(
                 'message'=>$message,
                 'status' => $status,
             );
         // add any additional fields
-        $res = array_merge($arr, $res);
+        $response = array_merge($default, $arr);
 
-        echo json_encode($res);
+        echo json_encode($response);
         die();
     }
 
