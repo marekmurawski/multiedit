@@ -70,13 +70,14 @@ $autosizepageparts = (isset( $_COOKIE['aspp'] ) && $_COOKIE['aspp'] == '1') ? ' 
                 <input type="checkbox" class="multiedit-items-select secondary" name="autosizepageparts" id="autosizepageparts" value="1" <?php echo $autosizepageparts; ?>/>
                 <label for="autosizepageparts"><img alt="<?php echo __( 'Auto-size page parts' ); ?>" title="<?php echo __( 'Auto-size page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Auto-size page parts' ); ?></label>
                 <div class="clear"></div>
-
+                <p>New field
                 <select id="multiedit-add-field-template" >
                     <?php foreach ( MultieditController::$fieldTemplates[$db_driver] as $k => $fieldTemplate ): ?>
                         <option value="<?php echo $k; ?>"><?php echo $fieldTemplate['description']; ?></option>
                     <?php endforeach; ?>
                 </select>
-                <input type="button" id="multiedit-add-field" value="<?php echo 'Add new field'; ?>"/>
+                <input type="button" id="multiedit-add-field" value="<?php echo 'Add new field'; ?>"/> (DB: <b><?php echo $db_driver; ?></b>)
+                </p>
             <?php endif; ?>
             <div class="clear"></div>
         </td>

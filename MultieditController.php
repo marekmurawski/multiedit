@@ -95,17 +95,9 @@ class MultieditController extends PluginController {
                 array('description'=>'datetime'      , 'query'=>':field_name: DATETIME        NOT NULL'),
             ),
         'sqlite' => array(
-                array('description'=>'varchar 10'    , 'query'=>':field_name: VARCHAR( 10 )   NOT NULL'),
-                array('description'=>'varchar 20'    , 'query'=>':field_name: VARCHAR( 20 )   NOT NULL'),
-                array('description'=>'varchar 32'    , 'query'=>':field_name: VARCHAR( 32 )   NOT NULL'),
-                array('description'=>'varchar 64'    , 'query'=>':field_name: VARCHAR( 64 )   NOT NULL'),
-                array('description'=>'varchar 255'   , 'query'=>':field_name: VARCHAR( 255 )  NOT NULL'),
-                array('description'=>'varchar 1000'  , 'query'=>':field_name: VARCHAR( 1000 ) NOT NULL'),
-                array('description'=>'text'          , 'query'=>':field_name: TEXT            NOT NULL'),
-                array('description'=>'int 1'         , 'query'=>':field_name: INT( 1 )        NOT NULL'),
-                array('description'=>'int 8'         , 'query'=>':field_name: INT( 8 )        NOT NULL'),
-                array('description'=>'int 16'        , 'query'=>':field_name: INT( 16 )       NOT NULL'),
-                array('description'=>'datetime'      , 'query'=>':field_name: DATETIME        NOT NULL'),
+                array('description'=>'TEXT'          , 'query'=>'COLUMN :field_name: TEXT          NULL'),
+                array('description'=>'INTEGER'       , 'query'=>'COLUMN :field_name: INTEGER       NULL'),
+                array('description'=>'DATETIME'      , 'query'=>'COLUMN :field_name: DATETIME      NULL'),
             ),
     );
 
@@ -319,30 +311,31 @@ class MultieditController extends PluginController {
     }
 
     public function rename_page_part() {
-
+        // check permissions
         if (!AuthUser::hasPermission('multiedit_parts'))
             $this->failure ( __('Insufficent permissions for parts editing'));
-
+        // sanitize input
         if (empty($_POST['page_id']) || empty($_POST['old_name']) || empty($_POST['new_name'])) {
             $this->failure(__('No data specified'));
             }
-
+        // sanitize input
         if ( trim($_POST['old_name']) === trim($_POST['new_name']) ) {
             $this->failure(__('Same name specified'));
             }
-
+        // sanitize input
         if ( strlen(trim($_POST['new_name']))===0 ) {
             $this->failure(__('No name specified'));
             }
-
+        // sanitize input
         if (  preg_match("/[^a-zA-Z0-9\-\+_\.]/", $_POST['new_name'])===1 ) {
             $this->failure(__('Invalid characters in page part name. Only english letters and + - . _ are allowed'));
             }
 
-
+        // check new name existence
         if (Record::existsIn('PagePart', 'page_id=? AND name=?', array($_POST['page_id'],trim($_POST['new_name'])))) {
             $this->failure(__('Page part <b>:new</b> already exists in page id=<b>:page</b>', array(':new'=>trim($_POST['new_name']),':page' => $_POST['page_id'])));
         }
+
         if ($part = Record::findOneFrom('PagePart', 'page_id=? AND name=?', array($_POST['page_id'],$_POST['old_name']))) {
             $part->name = trim($_POST['new_name']);
             if ($part->save()) {
@@ -402,8 +395,8 @@ class MultieditController extends PluginController {
 
             $out = '';
             $out .= '======= ADDING =======';
-            $out .= echo_r($PDO->errorInfo(),true);
-            $out .= echo_r($result,true);
+            $out .= print_r($PDO->errorInfo(),true);
+            $out .= print_r($result,true);
 
         $this->success($out);
     }
@@ -453,9 +446,9 @@ class MultieditController extends PluginController {
 
             $out = '';
             $out .= '======= STRUCTURE =======';
-            $out .= echo_r($PDO->errorInfo(),true);
-            $out .= echo_r($stmt1,true);
-            $out .= echo_r($structure,true);
+            $out .= print_r($PDO->errorInfo(),true);
+            $out .= print_r($stmt1,true);
+            $out .= print_r($structure,true);
 
 
             $nullString = ( (!empty($structure->Null) && (strtolower( $structure->Null) === 'yes' || $structure->Null === '1') ) ) ? ' NULL ' : ' NOT NULL ';
@@ -470,8 +463,8 @@ class MultieditController extends PluginController {
                     );
 
             $out .= '======= RENAMING =======';
-            $out .= echo_r($PDO->errorInfo(),true);
-            $out .= echo_r($result,true);
+            $out .= print_r($PDO->errorInfo(),true);
+            $out .= print_r($result,true);
 
         $this->success($out);
     }
@@ -506,11 +499,90 @@ class MultieditController extends PluginController {
         if ( property_exists($page, $fieldname)!==true )
             $this->failure ( __('Field not found in Page model - ') . $fieldname );
 
-            $PDO = Record::getConnection();
+        $PDO = Record::getConnection();
+
+        // mySQL case
+        if ($this->DB_driver === 'mysql') {
             $PDO->exec("ALTER TABLE ".TABLE_PREFIX."page DROP " . $fieldname  );
+        }
 
-        $this->success(echo_r($PDO->errorInfo(),true));
+        // SQLite case
+        elseif ($this->DB_driver === 'sqlite') {
+            $this->sqlite_table_drop_columns(TABLE_PREFIX.'page', array($fieldname));
+        }
 
+        $this->success(print_r($PDO->errorInfo(),true));
+
+    }
+
+    /**
+     * A sort of Brute-force implementation of drop columns for SQLite function
+     *
+     * @param $table STRING
+     * @param $columns ARRAY
+     */
+    private function sqlite_table_drop_columns( $table, $columns ) {
+
+        $out = '';
+
+        $sql = "SELECT sql FROM sqlite_master WHERE type='table' and name='{$table}'";
+        $stmt = Record::getConnection()->query( $sql );
+        if ( $stmt ) {
+            $struct = $stmt->fetch( PDO::FETCH_COLUMN, 1 );
+        } else
+            $this->error( 'Failed sqlite_master table query!' );
+
+
+        if ( preg_match( '/\(([\s\S\n]+)\)/si', $struct, $match ) ) {
+            $col_sqls = explode( ',', $match[1] );
+            $analyzed = array( );
+            $stmt = Record::getConnection()->query( "PRAGMA table_info({$table})" );
+            if ( $stmt ) {
+                $cols = $stmt->fetchAll( PDO::FETCH_COLUMN, 1 );
+                foreach ( $col_sqls as $num => $col_sql ) {
+                    $test = trim( str_replace( array( '"', "'" ), '', $col_sql ) );
+                    $exp = explode( ' ', $test );
+                    $col_name = array_shift( $exp );
+                    $col_query = implode( ' ', $exp );
+                    $out .= '<span style="color: black">' . $num . '</span> - ';
+                    $out .= '<span style="color: red">' . $col_name . '</span> ';
+                    $out .= '<span style="color: blue">' . $col_query . '</span><br/>';
+                    $out .= '<span style="color: green">' . $col_sql . '</span><br/>';
+                    if ( in_array( $col_name, $cols ) ) {
+//                    $col_sql = $col_name . ' ' . trim(str_replace ( $col_name, '', $col_sql ));
+                        $analyzed[$col_name] = trim( $col_sql );
+                    }
+                }
+                if ( empty( $analyzed ) ) $this->error( 'Table Page analyze failed!' );
+            } else $this->error( 'PRAGMA table_info failure' );
+        } else $this->error( 'Invalid sqlite_master table structure!' );
+
+        if ( $analyzed ) {
+            $fls = array( );
+            foreach ( $analyzed as $key => $definition ) {
+                if ( !in_array( $key, $columns ) ) $fls[$key] = $definition;
+            }
+        } else $this->error( 'Analyzed table empty!' );
+
+        $field_list = implode( ', ', array_keys( $fls ) );
+        $field_list_sql = implode( ', ', array_values( $fls ) );
+
+        $SQL = <<<QUERY
+  BEGIN TRANSACTION;
+        DROP TABLE IF EXISTS {$table}_bak;
+        CREATE TABLE {$table}_bak ( {$field_list_sql} );
+        INSERT INTO {$table}_bak SELECT {$field_list} FROM {$table};
+        DROP TABLE {$table};
+        CREATE TABLE {$table}({$field_list_sql});
+        INSERT INTO {$table} SELECT {$field_list} FROM {$table}_bak;
+        DROP TABLE {$table}_bak;
+  COMMIT;
+QUERY;
+
+        $out .= '<pre>' . print_r( $SQL, true ) . '</pre>';
+        Record::getConnection()->exec( $SQL );
+        $out .= print_r( Record::getConnection()->errorInfo(), true );
+        $this->success( $out );
     }
 
     /**
@@ -523,7 +595,7 @@ class MultieditController extends PluginController {
 		// Page part changes always update "updated_on" field
         	$item = explode('-', $_POST['item']);
 		$field = trim($item[0]);
-		$identifier = $item[1];
+		$ident = $item[1];
 		$value = $_POST['value'];
 		$now_datetime = date('Y-m-d H:i:s');
 		$messagesExt = array(); //extended messages
@@ -542,7 +614,7 @@ class MultieditController extends PluginController {
                 }
                 // ADVANCED FIELDS PERMISSION CHECK
                 else {
-                    $page = Page::findById($identifier);
+                    $page = Page::findById($ident);
                     $extended_fields = array_keys(array_diff_key((array) $page, array_flip(self::$defaultPageFields)));
 
                     if (in_array($field,$extended_fields)) {
@@ -556,9 +628,9 @@ class MultieditController extends PluginController {
 
 		if ($field=='slug') {
 
-				$page = Record::findOneFrom('Page','id=?', array($identifier));
+				$page = Record::findOneFrom('Page','id=?', array($ident));
 				$oldslug = $page->slug;
-				if ($identifier==1) { //root page protection
+				if ($ident==1) { //root page protection
 					$result =  array('message' => __("Slug of root page can't be changed!"),
  						 'oldvalue' => $oldslug,
 						   'status' => 'error');
@@ -591,13 +663,17 @@ class MultieditController extends PluginController {
 				$part_name = $tmpval[1];
 				$revision_save_info = ''; //Part_revisions plugin notice
 
-				Record::update('Page', array($field => $value,
-					'updated_by_id' => AuthUser::getId(),
-					'updated_on' => $now_datetime
-					), 'id=?', array($page_id));
-
 				$part = Record::findOneFrom('PagePart','name=? AND page_id=?', array($part_name, $page_id));
 				$part->content = $value;
+                                ////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////
+                                //todo apply filter!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                                ////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////
+                                ////////////////////////////////////////////////////////////////////////////
 				$part->content_html = $value;
 
 				if (Plugin::isEnabled('part_revisions')) {
@@ -608,6 +684,12 @@ class MultieditController extends PluginController {
 				}
 
 				if ($part->save()) {
+
+                                        $insdata = array(
+                                                'updated_by_id' => AuthUser::getId(),
+                                                'updated_on' => $now_datetime
+                                                );
+                                        Record::update('Page', $insdata , 'id=?', array($page_id));
 
 					$result =  array('message' => __('Updated <b>:part</b> page part in page <b>:page</b>', array(':part'=>$part->name,':page'=>$page_id)) .
 							$revision_save_info,
@@ -625,7 +707,7 @@ class MultieditController extends PluginController {
 
                         $correct = MultieditController::checkdatevalid($value);
 			if (! $correct) {
-				$page = Page::findById((int) $identifier);
+				$page = Page::findById((int) $ident);
 				$result =  array('message' => __('Wrong date - <b>:date</b> - restoring original one', array(':date'=>$value)),
 						 'oldvalue' => $page->{$field},
 						 'status' => 'error');
@@ -639,36 +721,36 @@ class MultieditController extends PluginController {
 		elseif ( $field == 'valid_until' ) {
 
                         if (trim($value,'-/: ')=='') {
-				 Record::getConnection()->exec("UPDATE " . TABLE_PREFIX . "page SET valid_until=NULL WHERE id=".(int)$identifier);
+				 Record::getConnection()->exec("UPDATE " . TABLE_PREFIX . "page SET valid_until=NULL WHERE id=".(int)$ident);
 
-				 $result =  array('message' => __('Cleared <b>valid_until</b> field in page: <b>:page</b>', array(':page'=>$identifier)),
+				 $result =  array('message' => __('Cleared <b>valid_until</b> field in page: <b>:page</b>', array(':page'=>$ident)),
 						  'datetime' => $now_datetime,
-						  'identifier' => $identifier,
+						  'identifier' => $ident,
 						  'status' => 'OK');
         	  		 echo json_encode($result); return false;
 				 };
 			 $correct = MultieditController::checkdatevalid($value);
 			 if (! $correct) {
-				$page = Page::findById((int) $identifier);
+				$page = Page::findById((int) $ident);
 				$result =  array('message' => __('Wrong date - <b>:date</b> - restoring original one', array(':date'=>$value)),
 						 'oldvalue' => $page->{$field},
 						 'status' => 'error');
 				echo json_encode($result); return false;
 			 }
 			if ($value < $now_datetime) {
-					Record::getConnection()->exec("UPDATE " . TABLE_PREFIX . "page SET status_id=".Page::STATUS_ARCHIVED." WHERE id=".(int)$identifier);
+					Record::getConnection()->exec("UPDATE " . TABLE_PREFIX . "page SET status_id=".Page::STATUS_ARCHIVED." WHERE id=".(int)$ident);
 					$messagesExt[] = '<span class="warning">'.__('Warning: Date of <b>:field</b> is in past! Changed page status to archived!', array(':field'=>$field)).'</span>';
 					$returnExt = array('setstatus'=>Page::STATUS_ARCHIVED,
-							  'identifier' => $identifier,
+							  'identifier' => $ident,
 							);
 				}
 		}
 		elseif ($field == 'tags') {
-                        $page = Page::findById((int) $identifier);
+                        $page = Page::findById((int) $ident);
 			$page -> setTags($value);
 
 			$result =  array(
-				'message' => __('Updated <b>tags</b> in page: <b>:page</b>', array(':page'=>$identifier)),
+				'message' => __('Updated <b>tags</b> in page: <b>:page</b>', array(':page'=>$ident)),
 				'status' => 'OK'
 				);
 
@@ -684,17 +766,17 @@ class MultieditController extends PluginController {
 			$toUpdate = array_merge($toUpdate,$updateInfo);}
 
 		// @todo allow NULL values insertion instead of empty strings
-                $pdoResult = Record::update('Page', $toUpdate, 'id=?', array($identifier));
+                $pdoResult = Record::update('Page', $toUpdate, 'id=?', array($ident));
 
 		if (count($messagesExt)>0) {$moreMessages='<br/>'.implode('<br/>', $messagesExt);} else {$moreMessages='';}
 
 		$result =  array_merge(
-			   array('message' => __('Updated field <b>:field</b> in page <b>:page</b>',array(':field'=>$field, ':page'=>$identifier)).$moreMessages,
+			   array('message' => __('Updated field <b>:field</b> in page <b>:page</b>',array(':field'=>$field, ':page'=>$ident)).$moreMessages,
 				'status' => 'OK'),
 			   $returnExt // add extended return
 			  );
 		$timeInfo = array('datetime' => $now_datetime,
-				'identifier' => $identifier);
+				'identifier' => $ident);
 
 		// add modification time to return array if field affects updated_on
 		if (in_array($field, $fieldsAffectingUpdatedOn)) {

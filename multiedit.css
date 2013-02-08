@@ -283,6 +283,8 @@ visibility: visible;
 #multiedit-header select,#multiedit-header input {width: auto; font-size: 14px;}
 #multiedit-header select.secondary,#multiedit-header input.secondary {margin-left: 40px;}
 #multiedit-header input[type=checkbox] {position: relative; top: 2px; border: none;}
+#multiedit-header input[type=button]   {position: relative; padding: 3px 5px; box-shadow: inset 2px 2px 2px rgba(255,255,255,.5); background: #fB4; }
+#multiedit-header input[type=button]:hover   {background: #f80; }
 #multiedit-header label {display: inline;}
 #multiedit-header label img {position: relative; top:3px;}
 

@@ -30,9 +30,11 @@ $(document).ready( function() { // @todo: change counters to be initially PHP pr
 
 	// FLOATING messages
 	var top = $('#multiedit-messages').offset().top - parseFloat($('#multiedit-messages').css('marginTop').replace(/auto/, 0));
+   /*
 	$(window).scroll(function (event) {
 	// what the y position of the scroll is
 	var y = $(this).scrollTop();
+
 
 	// whether that's below the form
 	if (y >= top) {
@@ -42,7 +44,8 @@ $(document).ready( function() { // @todo: change counters to be initially PHP pr
 	// otherwise remove it
 	$('#multiedit-messages').removeClass('fixed');
 	}
-  });
+          });
+  */
         if (autosizepageparts==='1') $('textarea.partedit').autosize();
         //$('#multiedit-list table').toggle();
 })
