@@ -15,6 +15,11 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
+0.2.2
+
+- adding/deleting/renaming extended fields (columns) of Page model (mySQL)
+- adding/deleting extended fields (columns) of Page model (SQLite)
+
 0.2.0
 
 - editing **extended page fields** - like _comment status_ from Comments plugin

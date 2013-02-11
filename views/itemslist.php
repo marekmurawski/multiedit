@@ -192,7 +192,7 @@ $editable_filters = MultieditController::$editableFilters;
                                             <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI.'multiedit/icons/progress.gif'; ?>"/>
                                     </td>
                                     <td class="counter">
-                                        <?php if ($isRoot): ?>
+                                        <?php if ($k->id==1): // editing possible only in root page ?>
                                                 <span class="multiedit-delete-field" data-field-name="<?php echo $ext_field; ?>">
                                                     <img src="<?php echo PLUGINS_URI.'multiedit/icons/cross.png'; ?>" alt="<?php echo __('Delete this field'); ?>" title="<?php echo __('Delete this field'); ?>"/>
                                                 </span>
