@@ -10,7 +10,7 @@
 
 <script>
 
-$(".multiedit-field").live('change',function() {
+$(document.body).delegate(".multiedit-field",'change',function() {
     field = $(this);
     progressIndicator = $('#'+field.attr('id')+'-loader');
     progressIndicator.addClass('visible');
@@ -61,7 +61,7 @@ $(".multiedit-field").live('change',function() {
 });
 
 
-$("#multiedit-fe-show").live('click',function() {
+$(document.body).delegate("#multiedit-fe-show",'click',function() {
 $(this).hide();
 document.cookie = 'mtedfe=1; path=/';
    target=$('#multipage_item-'+<?php echo $page_id; ?>);
@@ -118,7 +118,7 @@ document.cookie = 'mtedfe=1; path=/';
 
 
 
-$("#multiedit-fe-hide").live('click',function() {
+$(document.body).delegate("#multiedit-fe-hide",'click',function() {
     $(this).hide();
     me_eraseCookie('mtedfe');
     target=$('#multipage_item-'+<?php echo $page_id; ?>);

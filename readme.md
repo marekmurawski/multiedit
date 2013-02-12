@@ -15,6 +15,10 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
+0.2.3
+
+- modifying frontend .live() to .delegate() jQuery calls in order to support newer jQuery versions
+
 0.2.2
 
 - adding/deleting/renaming extended fields (columns) of Page model (mySQL)
