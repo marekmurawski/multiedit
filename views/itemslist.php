@@ -28,7 +28,7 @@ $editable_filters = MultieditController::$editableFilters;
                         <span class="reload-item full" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __('Full view'); ?>" title="<?php echo __('Full view'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/zoom.png'; ?>"/></span>
 			<!-- <span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __("Remove from list (doesn't delete the page)"); ?>" title="<?php echo __("Remove from list (doesn't delete the page)"); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/minus.png'; ?>"/></span> -->
 <?php endif; ?>
-			<a class="edit-item" href="/<?php echo ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/pencil.png'; ?>"/></a>
+			<a class="edit-item" href="<?php echo URL_PUBLIC.ADMIN_DIR.'/page/edit/'. $k->id; ?>" target="_blank"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI.'multiedit/icons/pencil.png'; ?>"/></a>
 		</div>
 		<div class="header">
 			<div id="status-indicator-<?php echo $k->id; ?>" class="status-indicator status-<?php echo $k->status_id;?>"></div>
