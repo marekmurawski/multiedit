@@ -2,12 +2,6 @@
 <link href="<?php echo PLUGINS_URI; ?>multiedit/multiedit.css" media="screen" rel="stylesheet" type="text/css" />
 <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>multiedit/js/helpers.js"></script>
 
-<?php if (Plugin::isEnabled('tags_input')): ?>
-<script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>tags_input/assets/jquery.autocomplete.pack.js"></script>
-<script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>tags_input/assets/jquery.tagsinput.min.js"></script>
-<link href="<?php echo PLUGINS_URI; ?>multiedit/css/tags_input.css" media="screen" rel="stylesheet" type="text/css" />
-<?php endif; ?>
-
 <script>
 
 $(document.body).delegate(".multiedit-field",'change',function() {
