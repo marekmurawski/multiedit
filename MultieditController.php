@@ -32,9 +32,9 @@ class MultieditController extends PluginController {
 
     const PLUGIN_REL_VIEW_FOLDER = "../../plugins/multiedit/views/";
 
-    private static $pagesList             = array( );
-    private static $defaultSorting  = 'position ASC, published_on DESC';
-    public static $editableFilters = array( 'ace', 'textile', 'markdown', 'codemirror' );
+    private static $pagesList         = array( );
+    private static $defaultSorting    = 'position ASC, published_on DESC';
+    public static $editableFilters   = array( 'ace', 'textile', 'markdown', 'codemirror' );
     private static $defaultPageFields = array(
                 'id',
                 'title',
@@ -68,7 +68,7 @@ class MultieditController extends PluginController {
                 'updated_by_name',
                 'part',
     );
-    private static $basicFields = array(
+    private static $basicFields       = array(
                 'title',
                 'slug',
                 'breadcrumb',
@@ -85,27 +85,53 @@ class MultieditController extends PluginController {
 //                                            'needs_login',
                 'tags',
     );
-    public static $fieldTemplates = array(
-                'mysql' => array(
+    public static $fieldTemplates    = array(
+                'mysql'  => array(
                             array( 'description' => 'varchar 10', 'query'       => ':field_name: VARCHAR( 10 )   NOT NULL' ),
                             array( 'description' => 'varchar 20', 'query'       => ':field_name: VARCHAR( 20 )   NOT NULL' ),
                             array( 'description' => 'varchar 32', 'query'       => ':field_name: VARCHAR( 32 )   NOT NULL' ),
                             array( 'description' => 'varchar 64', 'query'       => ':field_name: VARCHAR( 64 )   NOT NULL' ),
-                            array( 'description' => 'varchar 255', 'query'      => ':field_name: VARCHAR( 255 )  NOT NULL' ),
-                            array( 'description' => 'varchar 1000', 'query'     => ':field_name: VARCHAR( 1000 ) NOT NULL' ),
-                            array( 'description' => 'text', 'query'             => ':field_name: TEXT            NOT NULL' ),
-                            array( 'description' => 'int 1', 'query'            => ':field_name: INT( 1 )        NOT NULL' ),
-                            array( 'description' => 'int 8', 'query'            => ':field_name: INT( 8 )        NOT NULL' ),
-                            array( 'description' => 'int 16', 'query'           => ':field_name: INT( 16 )       NOT NULL' ),
-                            array( 'description' => 'datetime', 'query'         => ':field_name: DATETIME        NOT NULL' ),
+                            array( 'description' => 'varchar 255', 'query'       => ':field_name: VARCHAR( 255 )  NOT NULL' ),
+                            array( 'description' => 'varchar 1000', 'query'       => ':field_name: VARCHAR( 1000 ) NOT NULL' ),
+                            array( 'description' => 'text', 'query'       => ':field_name: TEXT            NOT NULL' ),
+                            array( 'description' => 'int 1', 'query'       => ':field_name: INT( 1 )        NOT NULL' ),
+                            array( 'description' => 'int 8', 'query'       => ':field_name: INT( 8 )        NOT NULL' ),
+                            array( 'description' => 'int 16', 'query'       => ':field_name: INT( 16 )       NOT NULL' ),
+                            array( 'description' => 'datetime', 'query'       => ':field_name: DATETIME        NOT NULL' ),
                 ),
-                'sqlite'      => array(
-                            array( 'description' => 'TEXT', 'query'             => 'COLUMN :field_name: TEXT          NULL' ),
-                            array( 'description' => 'INTEGER', 'query'          => 'COLUMN :field_name: INTEGER       NULL' ),
-                            array( 'description' => 'DATETIME', 'query'         => 'COLUMN :field_name: DATETIME      NULL' ),
+                'sqlite' => array(
+                            array( 'description' => 'TEXT', 'query'       => 'COLUMN :field_name: TEXT          NULL' ),
+                            array( 'description' => 'INTEGER', 'query'       => 'COLUMN :field_name: INTEGER       NULL' ),
+                            array( 'description' => 'DATETIME', 'query'       => 'COLUMN :field_name: DATETIME      NULL' ),
                 ),
     );
-    private static $supportedDrivers = array( 'mysql', 'sqlite' );
+    private static $supportedDrivers  = array( 'mysql', 'sqlite' );
+    public static $cookie            = array(
+                'showrow1'          => true,
+                'showrow2'          => true,
+                'showrow3'          => true,
+                'showrow4'          => true,
+                'showpageparts'     => true,
+                'autosizepageparts' => false,
+                'pagepartheight'    => 54,
+    );
+
+    public static function read_cookies() {
+        if ( isset( $_COOKIE['MEdit'] ) ) {
+            $cookieExploded = explode( '|', $_COOKIE['MEdit'] );
+            self::$cookie = array(
+                        'showrow1'          => (int) $cookieExploded[0],
+                        'showrow2'          => $cookieExploded[1],
+                        'showrow3'          => ((isset( $cookieExploded[2] )) ? $cookieExploded[2] : ''),
+                        'showrow4'          => !empty( $cookieExploded[3] ),
+                        'showpageparts'     => !empty( $cookieExploded[4] ),
+                        'autosizepageparts' => !empty( $cookieExploded[5] ),
+                        'pagepartheight'    => !empty( $cookieExploded[6] ) ? (int) ( $cookieExploded[6] ) : 54,
+            );
+        }
+
+    }
+
 
     public function __construct() {
 
@@ -113,7 +139,7 @@ class MultieditController extends PluginController {
             die( 'Access denied' );
 
         $this->DB_driver = strtolower( Record::getConnection()->getAttribute( PDO::ATTR_DRIVER_NAME ) );
-
+        self::read_cookies();
         $this->setLayout( 'backend' );
 
         $lang = ( $user = AuthUser::getRecord() ) ? strtolower( $user->language ) : 'en';
@@ -122,8 +148,8 @@ class MultieditController extends PluginController {
         }
         $sidebarContents = new View( self::PLUGIN_REL_VIEW_FOLDER . 'documentation/sidebar/' . $lang );
         $this->assignToLayout( 'sidebar', new View( self::PLUGIN_REL_VIEW_FOLDER . 'sidebar', array(
-                                'sidebarContents' => $sidebarContents
-                    ) ) );
+                    'sidebarContents' => $sidebarContents
+        ) ) );
 
     }
 
@@ -136,7 +162,7 @@ class MultieditController extends PluginController {
                     . " ORDER BY page.position, page.id";
         $pages = array( );
         Record::logQuery( $sql );
-        if ( $stmt = Record::getConnection()->prepare( $sql ) ) {
+        if ( $stmt  = Record::getConnection()->prepare( $sql ) ) {
             $stmt->execute();
             while ( $object  = $stmt->fetchObject() )
                 $pages[] = $object;
@@ -201,16 +227,16 @@ class MultieditController extends PluginController {
         $extended_fields = array_keys( array_diff_key( (array) $items[0], array_flip( self::$defaultPageFields ) ) );
 
         $itemsList = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
-                                'items'           => $items,
-                                'innerOnly'       => true,
-                                'parentUri'       => $parentUri,
-                                'showpageparts'   => $showpageparts,
-                                'showcollapsed'   => $showcollapsed,
-                                'is_frontend'     => $is_frontend === '1',
-                                'filters'         => $filters,
-                                'layouts'         => $layouts,
-                                'extended_fields' => $extended_fields,
-                                'force'           => ($force !== '0'),
+                    'items'           => $items,
+                    'innerOnly'       => true,
+                    'parentUri'       => $parentUri,
+                    'showpageparts'   => $showpageparts,
+                    'showcollapsed'   => $showcollapsed,
+                    'is_frontend'     => $is_frontend === '1',
+                    'filters'         => $filters,
+                    'layouts'         => $layouts,
+                    'extended_fields' => $extended_fields,
+                    'force'           => ($force !== '0'),
                     ) );
         echo $itemsList->render();
 
@@ -241,29 +267,29 @@ class MultieditController extends PluginController {
 
         $parentUri = $parentPage->getUri();
         $rootItem  = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
-                                'items' => array( $parentPage ),
-                                'isRoot'          => true,
-                                'parentUri'       => isset( $parentPage->parent_id ) ? mb_substr( $parentUri, 0, -mb_strlen( strrchr( $parentUri, "/" ) ) ) : '', //trim last slash
-                                'showpageparts'   => $showpageparts,
-                                'showcollapsed'   => $showcollapsed,
-                                'filters'         => $filters,
-                                'layouts'         => $layouts,
-                                'is_frontend'     => false,
-                                'extended_fields' => $extended_fields,
+                    'items'           => array( $parentPage ),
+                    'isRoot'          => true,
+                    'parentUri'       => isset( $parentPage->parent_id ) ? mb_substr( $parentUri, 0, -mb_strlen( strrchr( $parentUri, "/" ) ) ) : '', //trim last slash
+                    'showpageparts'   => $showpageparts,
+                    'showcollapsed'   => $showcollapsed,
+                    'filters'         => $filters,
+                    'layouts'         => $layouts,
+                    'is_frontend'     => false,
+                    'extended_fields' => $extended_fields,
                     ) );
         if ( $showAll === true ) {
             $parentUri = false;
         }
         $itemsList = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
-                                'items'           => $items,
-                                'rootItem'        => $parentPage,
-                                'parentUri'       => $parentUri,
-                                'showpageparts'   => $showpageparts,
-                                'showcollapsed'   => $showcollapsed,
-                                'filters'         => $filters,
-                                'layouts'         => $layouts,
-                                'is_frontend'     => false,
-                                'extended_fields' => $extended_fields,
+                    'items'           => $items,
+                    'rootItem'        => $parentPage,
+                    'parentUri'       => $parentUri,
+                    'showpageparts'   => $showpageparts,
+                    'showcollapsed'   => $showcollapsed,
+                    'filters'         => $filters,
+                    'layouts'         => $layouts,
+                    'is_frontend'     => false,
+                    'extended_fields' => $extended_fields,
                     ) );
         echo $rootItem->render();
         echo $itemsList->render();
@@ -285,14 +311,14 @@ class MultieditController extends PluginController {
 
 
     public function index() {
-        $page = Page::findById( 1 );
+        $page  = Page::findById( 1 );
         self::makePagesListRecursive( $page->id );
-        $list = new View( self::PLUGIN_REL_VIEW_FOLDER . 'header', array(
-                                'pagesList' => self::$pagesList,
-                                'db_driver' => $this->DB_driver,
-                                'rootPage'  => $page
+        $list  = new View( self::PLUGIN_REL_VIEW_FOLDER . 'header', array(
+                    'pagesList' => self::$pagesList,
+                    'db_driver' => $this->DB_driver,
+                    'rootPage'  => $page
                     ) );
-        $items      = Page::findAllFrom( 'Page', 'parent_id=? ORDER BY ' . self::$defaultSorting, array( $page->id ) );
+        $items = Page::findAllFrom( 'Page', 'parent_id=? ORDER BY ' . self::$defaultSorting, array( $page->id ) );
 
         $filters = Filter::findAll();
         $layouts = Record::findAllFrom( 'Layout' );
@@ -301,26 +327,26 @@ class MultieditController extends PluginController {
         $extended_fields = array_keys( array_diff_key( (array) $page, array_flip( self::$defaultPageFields ) ) );
 
         $rootItem = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
-                                'items' => array( $page ),
-                                'isRoot'          => true,
-                                'parentUri'       => '', //uri of root page = ''
-                                'showpageparts'   => '1', //show page parts by default
-                                'showcollapsed'   => '0', // show expanded by default
-                                'filters'         => $filters,
-                                'layouts'         => $layouts,
-                                'is_frontend'     => false,
-                                'extended_fields' => $extended_fields,
+                    'items'           => array( $page ),
+                    'isRoot'          => true,
+                    'parentUri'       => '', //uri of root page = ''
+                    'showpageparts'   => '1', //show page parts by default
+                    'showcollapsed'   => '0', // show expanded by default
+                    'filters'         => $filters,
+                    'layouts'         => $layouts,
+                    'is_frontend'     => false,
+                    'extended_fields' => $extended_fields,
                     ) );
 
         $itemsList = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
-                                'items'           => $items,
-                                'parentUri'       => '', //uri of root page = ''
-                                'showpageparts'   => '1', //show page parts by default
-                                'showcollapsed'   => '0', // show expanded by default
-                                'filters'         => $filters,
-                                'layouts'         => $layouts,
-                                'is_frontend'     => false,
-                                'extended_fields' => $extended_fields,
+                    'items'           => $items,
+                    'parentUri'       => '', //uri of root page = ''
+                    'showpageparts'   => '1', //show page parts by default
+                    'showcollapsed'   => '0', // show expanded by default
+                    'filters'         => $filters,
+                    'layouts'         => $layouts,
+                    'is_frontend'     => false,
+                    'extended_fields' => $extended_fields,
                     ) );
 
         $this->display( 'multiedit/views/index', array(
@@ -593,18 +619,19 @@ class MultieditController extends PluginController {
         $stmt = Record::getConnection()->query( $sql );
         if ( $stmt ) {
             $struct = $stmt->fetch( PDO::FETCH_COLUMN, 1 );
-        } else
+        }
+        else
             $this->failure( 'Fafiled sqlite_master table query!' );
 
 
         if ( preg_match( '/\(([\s\S\n]+)\)/si', $struct, $match ) ) {
             $col_sqls = explode( ',', $match[1] );
             $analyzed = array( );
-            $stmt = Record::getConnection()->query( "PRAGMA table_info({$table})" );
+            $stmt     = Record::getConnection()->query( "PRAGMA table_info({$table})" );
             if ( $stmt ) {
                 $cols = $stmt->fetchAll( PDO::FETCH_COLUMN, 1 );
                 foreach ( $col_sqls as $num => $col_sql ) {
-                    $test = trim( str_replace( array( '"', "'" ), '', $col_sql ) );
+                    $test      = trim( str_replace( array( '"', "'" ), '', $col_sql ) );
                     $exp       = explode( ' ', $test );
                     $col_name  = array_shift( $exp );
                     $col_query = implode( ' ', $exp );
@@ -619,9 +646,11 @@ class MultieditController extends PluginController {
                 }
                 if ( empty( $analyzed ) )
                     $this->failure( 'Table Page analyze failed!' );
-            } else
+            }
+            else
                 $this->failure( 'PRAGMA table_info failure' );
-        } else
+        }
+        else
             $this->failure( 'Invalid sqlite_master table structure!' );
 
         if ( $analyzed ) {
@@ -630,7 +659,8 @@ class MultieditController extends PluginController {
                 if ( !in_array( $key, $columns ) )
                     $fls[$key] = $definition;
             }
-        } else
+        }
+        else
             $this->failure( 'Analyzed table empty!' );
 
         $field_list     = implode( ', ', array_keys( $fls ) );
@@ -667,14 +697,14 @@ QUERY;
     public function setvalue() {
         $fieldsAffectingUpdatedOn = array( 'title', 'breadcrumb', 'slug', 'keywords', 'description' );
         // Page part changes always update "updated_on" field
-        $item         = explode( '-', $_POST['item'] );
-        $field        = trim( $item[0] );
-        $ident        = $item[1];
-        $value        = $_POST['value'];
-        $now_datetime = date( 'Y-m-d H:i:s' );
-        $messagesExt  = array( ); //extended messages
-        $returnExt = array( ); //extended return fields for jquery request
-        $needsReloading = '0';
+        $item                     = explode( '-', $_POST['item'] );
+        $field                    = trim( $item[0] );
+        $ident                    = $item[1];
+        $value                    = $_POST['value'];
+        $now_datetime             = date( 'Y-m-d H:i:s' );
+        $messagesExt              = array( ); //extended messages
+        $returnExt                = array( ); //extended return fields for jquery request
+        $needsReloading           = '0';
 
         // BASIC FIELDS PERMISSION CHECK
         if ( in_array( $field, self::$basicFields ) ) {
@@ -702,7 +732,7 @@ QUERY;
 
         if ( $field == 'slug' ) {
 
-            $page = Record::findOneFrom( 'Page', 'id=?', array( $ident ) );
+            $page    = Record::findOneFrom( 'Page', 'id=?', array( $ident ) );
             $oldslug = $page->slug;
             if ( $ident == 1 ) { //root page protection
                 $result = array( 'message'  => __( "Slug of root page can't be changed!" ),
@@ -725,9 +755,9 @@ QUERY;
                 echo json_encode( $result );
                 return false;
             }
-            $exists    = Record::countFrom( 'Page', 'parent_id=? AND slug=?', array( $page->parent_id, $value ) );
+            $exists = Record::countFrom( 'Page', 'parent_id=? AND slug=?', array( $page->parent_id, $value ) );
             if ( $exists > 0 ) {
-                $result = array( 'message' => __( 'Other sibling page already has this slug - <b>:slug</b> - restoring original one', array( ':slug'    => $value ) ),
+                $result = array( 'message'  => __( 'Other sibling page already has this slug - <b>:slug</b> - restoring original one', array( ':slug' => $value ) ),
                             'oldvalue' => $oldslug,
                             'status'   => 'error' );
                 echo json_encode( $result );
@@ -740,7 +770,7 @@ QUERY;
             $part_name          = $tmpval[1];
             $revision_save_info = ''; //Part_revisions plugin notice
 
-            $part = Record::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
+            $part               = Record::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
             $part->content      = $value;
             ////////////////////////////////////////////////////////////////////////////
             ////////////////////////////////////////////////////////////////////////////
@@ -770,14 +800,14 @@ QUERY;
                 );
                 Record::update( 'Page', $insdata, 'id=?', array( $page_id ) );
 
-                $result = array( 'message' => __( 'Updated <b>:part</b> page part in page <b>:page</b>', array( ':part'      => $part->name, ':page'      => $page_id ) ) .
+                $result = array( 'message'    => __( 'Updated <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ) .
                             $revision_save_info,
                             'datetime'   => $now_datetime,
                             'identifier' => $page_id,
                             'status'     => 'OK' );
             } else {
-                $result = array( 'message' => __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part'  => $part->name, ':page'  => $page_id ) ),
-                            'status' => 'error' );
+                $result = array( 'message' => __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ),
+                            'status'  => 'error' );
             }
             echo json_encode( $result );
             return false;
@@ -786,7 +816,7 @@ QUERY;
             $correct = MultieditController::checkdatevalid( $value );
             if ( !$correct ) {
                 $page   = Page::findById( (int) $ident );
-                $result = array( 'message' => __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date'    => $value ) ),
+                $result = array( 'message'  => __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date' => $value ) ),
                             'oldvalue' => $page->{$field},
                             'status'   => 'error' );
                 echo json_encode( $result );
@@ -801,17 +831,17 @@ QUERY;
             if ( trim( $value, '-/: ' ) == '' ) {
                 Record::getConnection()->exec( "UPDATE " . TABLE_PREFIX . "page SET valid_until=NULL WHERE id=" . (int) $ident );
 
-                $result = array( 'message' => __( 'Cleared <b>valid_until</b> field in page: <b>:page</b>', array( ':page'      => $ident ) ),
+                $result  = array( 'message'    => __( 'Cleared <b>valid_until</b> field in page: <b>:page</b>', array( ':page' => $ident ) ),
                             'datetime'   => $now_datetime,
                             'identifier' => $ident,
                             'status'     => 'OK' );
                 echo json_encode( $result );
                 return false;
             };
-            $correct     = MultieditController::checkdatevalid( $value );
+            $correct = MultieditController::checkdatevalid( $value );
             if ( !$correct ) {
                 $page   = Page::findById( (int) $ident );
-                $result = array( 'message' => __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date'    => $value ) ),
+                $result = array( 'message'  => __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date' => $value ) ),
                             'oldvalue' => $page->{$field},
                             'status'   => 'error' );
                 echo json_encode( $result );
@@ -819,8 +849,8 @@ QUERY;
             }
             if ( $value < $now_datetime ) {
                 Record::getConnection()->exec( "UPDATE " . TABLE_PREFIX . "page SET status_id=" . Page::STATUS_ARCHIVED . " WHERE id=" . (int) $ident );
-                $messagesExt[] = '<span class="warning">' . __( 'Warning: Date of <b>:field</b> is in past! Changed page status to archived!', array( ':field'   => $field ) ) . '</span>';
-                $returnExt = array( 'setstatus'  => Page::STATUS_ARCHIVED,
+                $messagesExt[] = '<span class="warning">' . __( 'Warning: Date of <b>:field</b> is in past! Changed page status to archived!', array( ':field' => $field ) ) . '</span>';
+                $returnExt     = array( 'setstatus'  => Page::STATUS_ARCHIVED,
                             'identifier' => $ident,
                 );
             }
@@ -829,15 +859,15 @@ QUERY;
             $page->setTags( $value );
 
             $result = array(
-                        'message' => __( 'Updated <b>tags</b> in page: <b>:page</b>', array( ':page'  => $ident ) ),
-                        'status' => 'OK'
+                        'message' => __( 'Updated <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident ) ),
+                        'status'  => 'OK'
             );
 
             echo json_encode( $result );
             return false;
         }
 
-        $toUpdate = array( $field      => $value );
+        $toUpdate   = array( $field => $value );
         $updateInfo = array( 'updated_by_id' => AuthUser::getId(),
                     'updated_on'    => $now_datetime );
 
@@ -855,8 +885,8 @@ QUERY;
             $moreMessages = '';
         }
 
-        $result = array_merge(
-                    array( 'message' => __( 'Updated field <b>:field</b> in page <b>:page</b>', array( ':field'  => $field, ':page'   => $ident ) ) . $moreMessages,
+        $result   = array_merge(
+                    array( 'message' => __( 'Updated field <b>:field</b> in page <b>:page</b>', array( ':field' => $field, ':page'  => $ident ) ) . $moreMessages,
                     'status'  => 'OK' ), $returnExt // add extended return
         );
         $timeInfo = array( 'datetime'   => $now_datetime,
@@ -874,7 +904,7 @@ QUERY;
 
     private function respond( $message = '', $status = 'OK', $arr = array( ) ) {
         // set messages
-        $default = array(
+        $default  = array(
                     'message' => $message,
                     'status'  => $status,
         );

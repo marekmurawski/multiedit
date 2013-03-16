@@ -35,14 +35,14 @@ if ( !defined( 'IN_CMS' ) ) {
 <div class="clear"></div>
 
 <?php
-$show_row_1 = (!isset( $_COOKIE['r1'] ) || $_COOKIE['r1'] == '1') ? ' checked="checked"' : '';
-$show_row_2 = (!isset( $_COOKIE['r2'] ) || $_COOKIE['r2'] == '1') ? ' checked="checked"' : '';
-$show_row_3 = (!isset( $_COOKIE['r3'] ) || $_COOKIE['r3'] == '1') ? ' checked="checked"' : '';
-$show_row_4 = (!isset( $_COOKIE['r4'] ) || $_COOKIE['r4'] == '1') ? ' checked="checked"' : '';
-$showpageparts = (!isset( $_COOKIE['shpp'] ) || $_COOKIE['shpp'] == '1') ? ' checked="checked"' : '';
-$autosizepageparts = (isset( $_COOKIE['aspp'] ) && $_COOKIE['aspp'] == '1') ? ' checked="checked"' : '';
+$show_row_1        = (MultieditController::$cookie['showrow1']) ? ' checked="checked"' : '';
+$show_row_2        = (MultieditController::$cookie['showrow2']) ? ' checked="checked"' : '';
+$show_row_3        = (MultieditController::$cookie['showrow3']) ? ' checked="checked"' : '';
+$show_row_4        = (MultieditController::$cookie['showrow4']) ? ' checked="checked"' : '';
+$showpageparts     = (MultieditController::$cookie['showpageparts']) ? ' checked="checked"' : '';
+$autosizepageparts = (MultieditController::$cookie['autosizepageparts']) ? ' checked="checked"' : '';
 ?>
-<table>
+<table border="1">
     <tr>
         <td style="width: 50%">
             <?php if ( AuthUser::hasPermission( 'multiedit_basic' ) ): ?>
@@ -69,14 +69,19 @@ $autosizepageparts = (isset( $_COOKIE['aspp'] ) && $_COOKIE['aspp'] == '1') ? ' 
                 <div class="clear"></div>
                 <input type="checkbox" class="multiedit-items-select secondary" name="autosizepageparts" id="autosizepageparts" value="1" <?php echo $autosizepageparts; ?>/>
                 <label for="autosizepageparts"><img alt="<?php echo __( 'Auto-size page parts' ); ?>" title="<?php echo __( 'Auto-size page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Auto-size page parts' ); ?></label>
+
+                <div class="clear"></div>
+                <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="32" max="1024" step="8" />
+                <label for="partheight"><img alt="<?php echo __( 'Part editing field height' ); ?>" title="<?php echo __( 'Part editing field height' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Part editing field height' ); ?></label>
+
                 <div class="clear"></div>
                 <p>New field
-                <select id="multiedit-add-field-template" >
-                    <?php foreach ( MultieditController::$fieldTemplates[$db_driver] as $k => $fieldTemplate ): ?>
-                        <option value="<?php echo $k; ?>"><?php echo $fieldTemplate['description']; ?></option>
-                    <?php endforeach; ?>
-                </select>
-                <input type="button" id="multiedit-add-field" value="<?php echo 'Add new field'; ?>"/> (DB: <b><?php echo $db_driver; ?></b>)
+                    <select id="multiedit-add-field-template" >
+                        <?php foreach ( MultieditController::$fieldTemplates[$db_driver] as $k => $fieldTemplate ): ?>
+                            <option value="<?php echo $k; ?>"><?php echo $fieldTemplate['description']; ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                    <input type="button" id="multiedit-add-field" value="<?php echo 'Add new field'; ?>"/> (DB: <b><?php echo $db_driver; ?></b>)
                 </p>
             <?php endif; ?>
             <div class="clear"></div>

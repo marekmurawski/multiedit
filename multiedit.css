@@ -248,6 +248,8 @@ visibility: visible;
     height: auto;
 }
 
+#multiedit-wrapper img {margin: 0;}
+
 #multiedit-wrapper input:focus,
 #multiedit-wrapper textarea:focus,
 #multiedit-wrapper select:focus {background: #ffffcc; border: 1px solid #f80; margin: 0px;}
@@ -271,7 +273,7 @@ visibility: visible;
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#bcbcbc',GradientType=0 );
 }
 
-#multiedit-wrapper textarea {resize: vertical; height: 56px;}
+#multiedit-wrapper textarea {resize: vertical;}
 #multiedit-wrapper textarea.partedit {color: #6B0; background: #120; box-shadow: none; font-family: "Monaco", "Courier", serif; }
 #multiedit-wrapper textarea.partedit:hover {color: #8F0; background: black;}
 
@@ -286,6 +288,7 @@ visibility: visible;
 #multiedit-header input[type=button]   {position: relative; padding: 3px 5px; box-shadow: inset 2px 2px 2px rgba(255,255,255,.5); background: #fB4; }
 #multiedit-header input[type=button]:hover   {background: #f80; }
 #multiedit-header label {display: inline;}
+
 #multiedit-header label img {position: relative; top:3px;}
 
 .multiedit-item img.loader {position: absolute; right: 4px; top: 3px; display: none;}
