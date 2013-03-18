@@ -40,9 +40,10 @@ $show_row_2        = (MultieditController::$cookie['showrow2']) ? ' checked="che
 $show_row_3        = (MultieditController::$cookie['showrow3']) ? ' checked="checked"' : '';
 $show_row_4        = (MultieditController::$cookie['showrow4']) ? ' checked="checked"' : '';
 $showpageparts     = (MultieditController::$cookie['showpageparts']) ? ' checked="checked"' : '';
-$autosizepageparts = (MultieditController::$cookie['autosizepageparts']) ? ' checked="checked"' : '';
+$useace = (MultieditController::$cookie['useace']) ? ' checked="checked"' : '';
 ?>
-<table border="1">
+
+<table border="0">
     <tr>
         <td style="width: 50%">
             <?php if ( AuthUser::hasPermission( 'multiedit_basic' ) ): ?>
@@ -67,8 +68,8 @@ $autosizepageparts = (MultieditController::$cookie['autosizepageparts']) ? ' che
                 <input type="checkbox" class="multiedit-items-select" name="showpageparts" id="showpageparts" value="1" <?php echo $showpageparts; ?>/>
                 <label for="showpageparts"><img alt="<?php echo __( 'Load page parts' ); ?>" title="<?php echo __( 'Load page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/snippet.png'; ?>"/> <?php echo __( 'Load page parts' ); ?></label>
                 <div class="clear"></div>
-                <input type="checkbox" class="multiedit-items-select secondary" name="autosizepageparts" id="autosizepageparts" value="1" <?php echo $autosizepageparts; ?>/>
-                <label for="autosizepageparts"><img alt="<?php echo __( 'Auto-size page parts' ); ?>" title="<?php echo __( 'Auto-size page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Auto-size page parts' ); ?></label>
+                <input type="checkbox" class="multiedit-items-select secondary" name="useace" id="useace" value="1" <?php echo $useace; ?>/>
+                <label for="useace"><img alt="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" title="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Use Ace Syntax highlighter' ); ?></label>
 
                 <div class="clear"></div>
                 <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="32" max="1024" step="8" />
@@ -88,4 +89,3 @@ $autosizepageparts = (MultieditController::$cookie['autosizepageparts']) ? ' che
         </td>
     </tr>
 </table>
-

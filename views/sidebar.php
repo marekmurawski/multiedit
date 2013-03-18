@@ -16,17 +16,7 @@ if ( !defined( 'IN_CMS' ) ) {
         <p>Marek Murawski - <a href="http://marekmurawski.pl" />website</a></p>
     </small>
 </div>
-<div class="box" id="multiedit-messages">
-    <h2><?php echo __( 'Messages' ); ?></h2>
-    <div id="multiedit-messagebox">
-    </div>
-</div>
 
-<?php
-/* Security measure */
-if ( !defined( 'IN_CMS' ) )
-    exit();
-?>
 
 <div id="mm_sbox">
     <h2><?php echo __( 'Messages' ); ?></h2>

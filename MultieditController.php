@@ -34,7 +34,6 @@ class MultieditController extends PluginController {
 
     private static $pagesList         = array( );
     private static $defaultSorting    = 'position ASC, published_on DESC';
-    public static $editableFilters   = array( 'ace', 'textile', 'markdown', 'codemirror' );
     private static $defaultPageFields = array(
                 'id',
                 'title',
@@ -107,26 +106,26 @@ class MultieditController extends PluginController {
     );
     private static $supportedDrivers  = array( 'mysql', 'sqlite' );
     public static $cookie            = array(
-                'showrow1'          => true,
-                'showrow2'          => true,
-                'showrow3'          => true,
-                'showrow4'          => true,
-                'showpageparts'     => true,
-                'autosizepageparts' => false,
-                'pagepartheight'    => 54,
+                'showrow1'       => true,
+                'showrow2'       => true,
+                'showrow3'       => true,
+                'showrow4'       => true,
+                'showpageparts'  => true,
+                'useace'         => false,
+                'pagepartheight' => 54,
     );
 
     public static function read_cookies() {
         if ( isset( $_COOKIE['MEdit'] ) ) {
             $cookieExploded = explode( '|', $_COOKIE['MEdit'] );
             self::$cookie = array(
-                        'showrow1'          => (int) $cookieExploded[0],
-                        'showrow2'          => $cookieExploded[1],
-                        'showrow3'          => ((isset( $cookieExploded[2] )) ? $cookieExploded[2] : ''),
-                        'showrow4'          => !empty( $cookieExploded[3] ),
-                        'showpageparts'     => !empty( $cookieExploded[4] ),
-                        'autosizepageparts' => !empty( $cookieExploded[5] ),
-                        'pagepartheight'    => !empty( $cookieExploded[6] ) ? (int) ( $cookieExploded[6] ) : 54,
+                        'showrow1'       => (int) $cookieExploded[0],
+                        'showrow2'       => $cookieExploded[1],
+                        'showrow3'       => ((isset( $cookieExploded[2] )) ? $cookieExploded[2] : ''),
+                        'showrow4'       => !empty( $cookieExploded[3] ),
+                        'showpageparts'  => !empty( $cookieExploded[4] ),
+                        'useace'         => !empty( $cookieExploded[5] ),
+                        'pagepartheight' => !empty( $cookieExploded[6] ) ? (int) ( $cookieExploded[6] ) : 54,
             );
         }
 
@@ -400,7 +399,58 @@ class MultieditController extends PluginController {
             if ( $part->save() ) {
                 $this->success( __( 'Renamed page part <b>:old</b> to <b>:new</b>', array( ':old' => trim( $_POST['old_name'] ), ':new' => trim( $_POST['new_name'] ) ) ) );
             } else {
-                $this->failure( __( 'Error saving new part name' ) );
+                $this->failure( __( 'Error saving new part name!' ) );
+            }
+        } else {
+            $this->failure( __( 'Page part not found' ) );
+        }
+
+    }
+
+
+    public function add_page_part() {
+        // check permissions
+        if ( !AuthUser::hasPermission( 'multiedit_parts' ) )
+            $this->failure( __( 'Insufficent permissions for parts editing' ) );
+        // sanitize input
+        if ( empty( $_POST['page_id'] ) || empty( $_POST['name'] ) ) {
+            $this->failure( __( 'No data specified' ) );
+        }
+        // sanitize input
+        if ( preg_match( "/[^a-zA-Z0-9\-\+_\.]/", $_POST['name'] ) === 1 ) {
+            $this->failure( __( 'Invalid characters in page part name. Only english letters and + - . _ are allowed' ) );
+        }
+
+        // check new name existence
+        if ( Record::existsIn( 'PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], trim( $_POST['name'] ) ) ) ) {
+            $this->failure( __( 'Page part <b>:new</b> already exists in page id=<b>:page</b>', array( ':new'  => trim( $_POST['name'] ), ':page' => $_POST['page_id'] ) ) );
+        }
+
+        $part          = new PagePart();
+        $part->name    = trim( $_POST['name'] );
+        $part->page_id = (int) trim( $_POST['page_id'] );
+        if ( $part->save() ) {
+            $this->success( __( 'Added page part <b>:new</b>', array( ':new' => trim( $_POST['name'] ) ) ) );
+        } else {
+            $this->failure( __( 'Error adding new part!' ) );
+        }
+
+    }
+
+
+    public function delete_page_part() {
+        // check permissions
+        if ( !AuthUser::hasPermission( 'multiedit_parts' ) )
+            $this->failure( __( 'Insufficent permissions for parts editing' ) );
+        // sanitize input
+        if ( empty( $_POST['page_id'] ) || empty( $_POST['name'] ) ) {
+            $this->failure( __( 'No data specified' ) );
+        }
+        if ( $part = PagePart::findOneFrom( 'PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], $_POST['name'] ) ) ) {
+            if ( $part->delete() ) {
+                $this->success( __( 'Deleted page part <b>:name</b>', array( ':name' => $_POST['name'] ) ) );
+            } else {
+                $this->failure( __( 'Error deleting page part!' ) );
             }
         } else {
             $this->failure( __( 'Page part not found' ) );
@@ -459,11 +509,6 @@ class MultieditController extends PluginController {
         } else {
             $this->failure( $result[2] );
         }
-
-//        $out = '';
-//        $out .= '======= ADDING =======';
-//        $out .= print_r( $PDO->errorInfo(), true );
-//        $out .= print_r( $result, true );
 
     }
 
@@ -721,7 +766,7 @@ QUERY;
             $page            = Page::findById( $ident );
             $extended_fields = array_keys( array_diff_key( (array) $page, array_flip( self::$defaultPageFields ) ) );
 
-            if ( in_array( $field, $extended_fields ) ) {
+            if ( in_array( $field, $extended_fields ) || $field === 'partfilter' ) {
                 if ( !AuthUser::hasPermission( 'multiedit_advanced' ) )
                     $this->failure( __( 'Insufficent permissions for editing <b>advanced</b> fields!' ) );
             } else {
@@ -741,15 +786,8 @@ QUERY;
                 echo json_encode( $result );
                 return false;
             }
-            if ( strpos( $value, '/' ) ) {
-                $result = array( 'message'  => __( 'Slug cannot contain slashes!' ),
-                            'oldvalue' => $oldslug,
-                            'status'   => 'error' );
-                echo json_encode( $result );
-                return false;
-            }
-            if ( strlen( $value ) < 1 ) {
-                $result = array( 'message'  => __( 'Slug cannot be empty!' ),
+            if ( !(bool) preg_match( '/^[-a-z0-9_.]++$/D', (string) $value ) ) {
+                $result = array( 'message'  => __( 'Slug cannot be empty and should consist of letters, digits and "_-." characters!' ),
                             'oldvalue' => $oldslug,
                             'status'   => 'error' );
                 echo json_encode( $result );
@@ -763,6 +801,26 @@ QUERY;
                 echo json_encode( $result );
                 return false;
             }
+        } elseif ( $field == 'partfilter' ) {
+            $tmpval             = explode( '_partname_', $_POST['item'] );
+            $page_id            = substr( $tmpval[0], strlen( $field ) + 1 );
+            $part_name          = $tmpval[1];
+            $revision_save_info = ''; //Part_revisions plugin notice
+
+            $part            = PagePart::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
+            $part->filter_id = $value;
+            if ( $part->save() ) {
+
+                $result = array( 'message'    => __( 'Changed filter of <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ),
+                            'reloaditem' => '1',
+                            'identifier' => $page_id,
+                            'status'     => 'OK' );
+            } else {
+                $result = array( 'message' => __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ),
+                            'status'  => 'error' );
+            }
+            echo json_encode( $result );
+            return false;
         } elseif ( $field == 'part' ) {
 
             $tmpval             = explode( '_partname_', $_POST['item'] );
@@ -770,18 +828,8 @@ QUERY;
             $part_name          = $tmpval[1];
             $revision_save_info = ''; //Part_revisions plugin notice
 
-            $part               = Record::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
-            $part->content      = $value;
-            ////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////
-            //todo apply filter!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-            ////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////
-            ////////////////////////////////////////////////////////////////////////////
-            $part->content_html = $value;
+            $part          = PagePart::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
+            $part->content = $value;
 
             if ( Plugin::isEnabled( 'part_revisions' ) ) {
                 if ( save_old_part( $part ) ) {
@@ -901,7 +949,7 @@ QUERY;
 
     }
 
-
+/*
     private function respond( $message = '', $status = 'OK', $arr = array( ) ) {
         // set messages
         $default  = array(
@@ -925,6 +973,55 @@ QUERY;
 
     private function failure( $message, $arr = array( ) ) {
         $this->respond( $message, 'error', $arr );
+
+    }
+*/
+
+    const GLUE        = '<br/>';
+
+    public static $messages = array( );
+
+    /**
+     *
+     * @param type $message
+     * @param type $status
+     * @param type $arr
+     */
+    public static function respond( $message = '', $status = 'OK', $arr = array( ) ) {
+        // set messages
+        $msg_text = (count( self::$messages ) > 0) ? implode( self::GLUE, self::$messages ) . self::GLUE . $message : $message;
+        $default  = array(
+                    'message'  => $msg_text,
+                    'exe_time' => execution_time(),
+                    'mem_used' => memory_usage(),
+                    'status'   => $status,
+        );
+
+        // add any additional fields
+        $response = array_merge( $default, $arr );
+
+        echo json_encode( $response );
+        if ( $status !== 'OK' )
+            header( "HTTP/1.0 404 Not found" );
+        die();
+
+    }
+
+
+    public static function success( $message, $arr = array( ) ) {
+        self::respond( $message, 'OK', $arr );
+
+    }
+
+
+    public static function appendResult( $message ) {
+        self::$messages[] = $message;
+
+    }
+
+
+    public static function failure( $message, $arr = array( ) ) {
+        self::respond( $message, 'error', $arr );
 
     }
 

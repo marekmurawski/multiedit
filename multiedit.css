@@ -1,123 +1,140 @@
 #multiedit-messages {
-  position: absolute;
-  /* just used to show how to include the margin in the effect */
-  margin-top: 20px;
-  padding-top: 19px;
-  right: 1%;
-  width: 18%;
+ position: absolute;
+ /* just used to show how to include the margin in the effect */
+ margin-top: 20px;
+ padding-top: 19px;
+ right: 1%;
+ width: 18%;
 }
 
 #multiedit-messages.fixed {
-  position: fixed;
-  top: 0;
+ position: fixed;
+ top: 0;
 }
 
 #multiedit-messagebox {
-    margin-bottom: 5px;
-    padding: 5px 5px;
-    min-height: 50px;
+ margin-bottom: 5px;
+ padding: 5px 5px;
+ min-height: 50px;
 }
 #multiedit-messagebox.success {
-    color: green;
-    background: #cfc;
-    border: 1px solid #6f6;
+ color: green;
+ background: #cfc;
+ border: 1px solid #6f6;
 }
 #multiedit-messagebox.error {
-    color: red;
-    background: #fcc;
-    border: 1px solid #f66;
+ color: red;
+ background: #fcc;
+ border: 1px solid #f66;
 }
 
+
+
+/* SIDEBAR INFOBOX */
+#mm_sbox { position: absolute; margin-top: 12px; padding-top: 12px; right: 1%; width: 25%; margin-bottom: 5px; min-height: 50px; }
+#mm_sbox.fixed { position: fixed; top: 0; }
+
+#mmsg_wrap { padding: 10px; min-height: 50px; margin: 4px 0px 0px 0px; transition: background-color .5s; }
+#mmsg_wrap.success { color: #334d00; background: #b8db70; border: 1px solid #8ab82e; }
+#mmsg_wrap.error { color: #990000; background: #ebadad; border: 1px solid #d65c5c; }
+#mmsg_wrap.progress { color: #666666; background: #e6e6e6 url("../icons/progress-big.gif") no-repeat center center; border: 1px solid #cccccc; }
+#mmsg_wrap.progress.init { background: #e6e6e6; }
+
+#mmsg_stats { margin-bottom: 8px; padding: 1px 4px; color: #bfaa40; background: #e6ddb3; font-size: 10px; text-align: right; }
+
+.mm_copyr { clear: both; text-align: right; }
+
+
 #multiedit-header {
-    margin-bottom: 10px;
-    padding: 5px 15px;
-    border: 1px solid #bbb;
-    font-size: 14px;
-    position: relative;
-    background: #ddd;
+ margin-bottom: 10px;
+ padding: 5px 15px;
+ border: 1px solid #bbb;
+ font-size: 14px;
+ position: relative;
+ background: #ddd;
 }
 #multiedit-list-preloader {
-    display: none;
-    margin: 20px auto;
+ display: none;
+ margin: 20px auto;
 }
 #multiedit-list-preloader.preloading {
-    display: block;
+ display: block;
 }
 .multiedit-item {
-    background: #ddd;
-    margin-bottom: 8px;
-    margin-left: 10px;
-    padding: 0px;
-    border: 1px solid white;
-    font-size: 12px;
-    font-family: sans-serif;
-    position: relative;
-    box-sizing: content-box;
+ background: #ddd;
+ margin-bottom: 8px;
+ margin-left: 10px;
+ padding: 0px;
+ border: 1px solid white;
+ font-size: 12px;
+ font-family: sans-serif;
+ position: relative;
+ box-sizing: content-box;
 }
 .multiedit-item em.error {
-    color: red;
+ color: red;
 }
 
 .multiedit-item-root {
-    margin-left: 0px;
+ margin-left: 0px;
 }
 .multiedit-item tbody tr:nth-child(even) td, tbody tr.even td {
-    background: transparent;
-    box-sizing: content-box;
+ background: transparent;
+ box-sizing: content-box;
 }
 .multiedit-item:hover {
-    background: #ccc;
-    border: 1px solid #333;
+ background: #ccc;
+ border: 1px solid #333;
 }
 
 .multiedit-item table, .multiedit-item table tbody tr:nth-child(even), .multiedit-item table tbody tr:nth-child(odd) {background: transparent; box-sizing: content-box; border: none; }
 
 .multiedit-item td.wasmodified {
-    color: green;
-    text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
-    font-weight: bold;
+ color: green;
+ text-shadow: 1px 1px 1px rgba(0,0,0,0.5);
+ font-weight: bold;
 }
 
 .multiedit-item div.header {
-    background: #B4B4B4;
-    color: #000;
-    font-size: 14px;
-    font-weight: bold;
-    height: 18px;
-    line-height: 14px;
-    overflow: hidden;
-    margin-left: 0px;
-    padding: 4px 10px 0px 82px;
-    cursor: pointer;
-    box-sizing: content-box;
-    /* text-shadow: 1px 1px 1px rgba(0,0,0,.2); */
+ background: #B4B4B4;
+ color: #000;
+ font-size: 14px;
+ font-weight: bold;
+ height: 18px;
+ line-height: 14px;
+ overflow: hidden;
+ margin-left: 0px;
+ padding: 4px 10px 0px 82px;
+ cursor: pointer;
+ box-sizing: content-box;
+ /* text-shadow: 1px 1px 1px rgba(0,0,0,.2); */
 }
 
 .status-indicator {width: 22px; height: 22px; position: absolute; left: 0px; top: 0px; border:none; box-sizing: content-box;}
-.status-1   { background-color: red; }
-.status-10  { background-color: orange; }
+.status-1 { background-color: red; }
+.status-10 { background-color: orange; }
 .status-100 { background-color: #5B9700;}
 .status-101 { background-color: #B5C09F; }
 .status-200 { background-color: #6E88BB; }
 
 .multiedit-item .page-id {
-    position: absolute;
-    display: block;
-    color: #FFF;
-    left: 22px;
-    top: 3px;
-    text-align: center;
-    width: 60px;
-    font-size: 14px;
-    text-shadow: 1px 1px 1px black;
-    cursor: default;
+ position: absolute;
+ display: block;
+ color: #FFF;
+ left: 22px;
+ top: 3px;
+ text-align: center;
+ width: 60px;
+ font-size: 14px;
+ text-shadow: 1px 1px 1px black;
+ cursor: default;
 }
 
 .multiedit-item div.header .titleslug{
-    display: inline;
-    color: #444;
-    font-weight: bold;
-    /* text-shadow: 1px 1px 1px rgba(0,0,0,.2); */
+ display: inline;
+ color: #444;
+ font-weight: bold;
+ /* text-shadow: 1px 1px 1px rgba(0,0,0,.2); */
 
 }
 
@@ -126,126 +143,163 @@
 .multiedit-item .multiedit-slugifier {visibility: hidden}
 
 .multiedit-item .actions {
-    position: absolute;
-    color: white;
-    right: 4px;
-    top: 4px;
-    font-size: 14px;
+ position: absolute;
+ color: white;
+ right: 4px;
+ top: 4px;
+ font-size: 14px;
 }
 .multiedit-item:hover .actions,
 .multiedit-item:hover .multiedit-breadcrumber,
 .multiedit-item:hover .multiedit-slugifier {
-visibility: visible;
+ visibility: visible;
 }
 
+
+
+.multiedit-item div.part_label_tab {
+ display: inline-block;
+ position: relative;
+ cursor: default;
+ background: #bbb;
+ font-size: 12px;
+ color: black;
+ padding: 2px 40px 2px 6px;
+ margin: 0px 2px 4px 0px;
+ border-radius: 0px;
+ border-bottom-right-radius: 8px !important;
+}
+
+.multiedit-item div.part_label_tab.active {
+ background: #120;
+ color: white;
+}
+
+.multiedit-item .add_page_part {
+ cursor: pointer;
+ opacity: 0;
+
+}
+.multiedit-item:hover .add_page_part {opacity: 1;}
+
+.multiedit-item .delete_page_part,
 .multiedit-item .rename_page_part {
-    cursor: pointer;
-    font-weight: bold;
+ cursor: pointer;
+ position: absolute;
+ top: 2px;
+ opacity: 0;
 }
 
-.multiedit-item .rename_page_part:hover {
-    color: #F80;
-    text-shadow: 1px 1px 2px rgba(255,255,255,.8);
+.multiedit-item .rename_page_part {right: 18px;}
+.multiedit-item .delete_page_part {right: 1px;}
+
+.multiedit-item div.part_label_tab:hover {
+    background-color: #888;
 }
 
-.multiedit-item table {
-    width: 100%;
-    margin: 0px;
-    border-collapse: collapse;
-    border-spacing: 0;
-}
-
-.multiedit-item div.filteredparts {
-    display: inline-block;
-    background: white;
-    font-size: 11px;
-    padding: 1px 5px;
-    margin: 2px;
-    border-radius: 3px;
-}
-
-.multiedit-item td {
-    padding: 1px;
-    position: relative;
-    vertical-align: top;
-}
-
-.multiedit-item table tbody tr.page_part_row {
-    background: #D4D4D4;
-}
-
-.multiedit-item:hover table tbody tr.page_part_row {
-    background: #C4C4C4;
-}
-
-.multiedit-item table tbody tr.extended_fields_row {
-    background: #DACFC4;
-}
-
-.multiedit-item:hover table tbody tr.extended_fields_row {
-    background: #FDC488;
-}
-
-.multiedit-item td.warning {
-    color: red;
-    opacity: 0;
-}
-
-.multiedit-item:hover td.warning {
+.multiedit-item div.part_label_tab:hover .delete_page_part,
+.multiedit-item div.part_label_tab:hover .rename_page_part {
     opacity: 1;
 }
 
-.multiedit-item td.fieldlabel {
-    font-size: 12px;
-    text-align: right;
-    width: 80px;
-    max-width: 80px;
-    color: #888;
-    cursor: default;
-    overflow: hidden;
-    white-space: nowrap;
+.me_tablabel {
+ font-weight: bold;
 }
 
+.me_tabfilter {
+font-size: 9px;
+}
+
+.multiedit-item table {
+ width: 100%;
+ margin: 0px;
+ border-collapse: collapse;
+ border-spacing: 0;
+}
+
+.multiedit-item td {
+ padding: 1px;
+ position: relative;
+ vertical-align: top;
+}
+
+.multiedit-item table tbody tr.page_part_row {
+ background: #D4D4D4;
+}
+
+.multiedit-item table tbody tr.page_part_row td {
+ padding: 0;
+}
+
+.multiedit-item:hover table tbody tr.page_part_row {
+ background: #C4C4C4;
+}
+
+.multiedit-item table tbody tr.extended_fields_row { background: #DACFC4;}
+
+.multiedit-item:hover table tbody tr.extended_fields_row { background: #FDC488;}
+
+.multiedit-item td.warning { color: red; opacity: 0; }
+
+.multiedit-item:hover td.warning { opacity: 1;}
+
+.multiedit-item span.fieldlabel {
+    display: inline-block;
+}
+.multiedit-item span.fieldlabel,
+.multiedit-item td.fieldlabel {
+ font-size: 12px;
+ text-align: right;
+ width: 80px;
+ max-width: 80px;
+ color: #888;
+ cursor: default;
+ overflow: hidden;
+ white-space: nowrap;
+}
+
+
+
 .multiedit-item td.textareacontainer {
-    padding-right: 12px;
+ padding-right: 12px;
 }
 
 .multiedit-item td.timecolumn {
-    width: 140px;
-    padding-right: 12px;
+ width: 140px;
+ padding-right: 12px;
 }
 
 .multiedit-item td.counter {
-    font-size: 12px;
-    width: 36px;
+ font-size: 12px;
+ width: 36px;
 }
 
 .multiedit-item td.counter div{
-    text-align: left;
-    margin-left: 8px;
-    color: #888;
+ text-align: left;
+ margin-left: 8px;
+ color: #888;
 }
 
 .multiedit-item td.counter div.red{
-    color: red;
+ color: red;
 }
 
 .multiedit-item td.counter div.green{
-    color: green;
+ color: green;
 }
 
 #multiedit-wrapper input,
 #multiedit-wrapper textarea,
 #multiedit-wrapper select {
-    border: 1px solid #AAA;
-    width: 100%;
-    font-size: 12px;
-    outline: none;
-    padding: 0px;
-    border-radius: 0px;
-    box-shadow: inset 0 2px 2px rgba(180,180,180,.5);
-    margin: 0px;
-    height: auto;
+ border: 1px solid #AAA;
+ width: 100%;
+ font-size: 12px;
+ outline: none;
+ padding: 0px;
+ border-radius: 0px;
+ box-shadow: inset 0 2px 2px rgba(180,180,180,.5);
+ margin: 0px;
+ height: auto;
 }
 
 #multiedit-wrapper img {margin: 0;}
@@ -259,22 +313,21 @@ visibility: visible;
 #multiedit-wrapper select:hover {background: #ffffdd; margin: 0px;}
 
 #multiedit-wrapper select {
-   padding: 0px;
-   -webkit-appearance: none;
-   -moz-appearance: none;
-    appearance: none;
-    background: rgb(224,224,224);
-    background: -moz-linear-gradient(top,  rgba(224,224,224,1) 0%, rgba(188,188,188,1) 100%);
-    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(224,224,224,1)), color-stop(100%,rgba(188,188,188,1)));
-    background: -webkit-linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
-    background: -o-linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
-    background: -ms-linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
-    background: linear-gradient(top,  rgba(224,224,224,1) 0%,rgba(188,188,188,1) 100%);
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#e0e0e0', endColorstr='#bcbcbc',GradientType=0 );
+ padding: 0px;
+ -webkit-appearance: none;
+ -moz-appearance: none;
+ appearance: none;
+ background-color: #CCC;
 }
 
+#multiedit-wrapper div.partedit_container {display: none;}
+#multiedit-wrapper div.partedit_container.visible {display: block;}
+#multiedit-wrapper .ace_options select {width: auto; background: #000; color: #8F0;}
+#multiedit-wrapper .ace_options label {width: 82px; display: inline-block; text-align: right; padding: 0; margin: 0;}
+#multiedit-wrapper .ace_editor {border: none;}
+
 #multiedit-wrapper textarea {resize: vertical;}
-#multiedit-wrapper textarea.partedit {color: #6B0; background: #120; box-shadow: none; font-family: "Monaco", "Courier", serif; }
+#multiedit-wrapper textarea.partedit {color: #6B0; background: black; border: none; box-shadow: none; font-family: "Monaco", "Courier", serif;}
 #multiedit-wrapper textarea.partedit:hover {color: #8F0; background: black;}
 
 #multiedit-wrapper input.error {border: 1px solid red;}
@@ -285,8 +338,8 @@ visibility: visible;
 #multiedit-header select,#multiedit-header input {width: auto; font-size: 14px;}
 #multiedit-header select.secondary,#multiedit-header input.secondary {margin-left: 40px;}
 #multiedit-header input[type=checkbox] {position: relative; top: 2px; border: none;}
-#multiedit-header input[type=button]   {position: relative; padding: 3px 5px; box-shadow: inset 2px 2px 2px rgba(255,255,255,.5); background: #fB4; }
-#multiedit-header input[type=button]:hover   {background: #f80; }
+#multiedit-header input[type=button] {position: relative; padding: 3px 5px; box-shadow: inset 2px 2px 2px rgba(255,255,255,.5); background: #fB4; }
+#multiedit-header input[type=button]:hover {background: #f80; }
 #multiedit-header label {display: inline;}
 
 #multiedit-header label img {position: relative; top:3px;}
@@ -296,18 +349,18 @@ visibility: visible;
 .multiedit-item img.visible {display: block;}
 
 .multiedit-breadcrumber, .multiedit-slugifier, .reload-item, #multiedit-header #reload-list, .multiedit-item .hide-item, .multiedit-item .edit-item {
-    cursor: pointer;
-    display: inline;
+ cursor: pointer;
+ display: inline;
 }
 .multiedit-item .header .actions span,
 .multiedit-item .header .actions a {margin-left: 5px}
 
- #multiedit-header #reload-list {float: right; position: relative; top: 8px;}
+#multiedit-header #reload-list {float: right; position: relative; top: 8px;}
 
- /* FRONTEND CSS */
- #multiedit-wrapper.frontend {margin: 0; position: fixed; bottom: 0px; right: 3%; left: 3%; width: 94%; z-index: 999;}
- #multiedit-fe-hide {display:none; background:url('icons/cross.png') no-repeat; width:16px; height:16px; cursor: pointer; opacity: .7;}
- #multiedit-fe-hide:hover {opacity: 1;}
- #multiedit-fe-show {background:url('icons/multiedit_trigger.png') no-repeat; width:128px; height:32px; cursor: pointer; opacity: .7; position: relative; top: 2px;}
- #multiedit-fe-show:hover {opacity: 1;top: 0px;}
+/* FRONTEND CSS */
+#multiedit-wrapper.frontend {margin: 0; position: fixed; bottom: -10px; right: 3%; left: 3%; width: 94%; z-index: 999;}
+#multiedit-fe-hide {display:none; background:url('icons/cross.png') no-repeat; width:16px; height:16px; cursor: pointer; opacity: .7;}
+#multiedit-fe-hide:hover {opacity: 1;}
+#multiedit-fe-show {background:url('icons/multiedit_trigger.png') no-repeat; width:128px; height:32px; cursor: pointer; opacity: .7; position: relative; top: -9px;}
+#multiedit-fe-show:hover {opacity: 1;top: -11px;}
 

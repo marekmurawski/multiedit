@@ -10,25 +10,15 @@ if ( !defined( 'IN_CMS' ) ) {
 //$behaviors = Behavior::findAll();
 
 if ( !isset( $force ) )
-    $force  = false;
+    $force         = false;
 if ( !isset( $isRoot ) )
-    $isRoot = false;
-
-/*
-  $show_line_1 = (((!isset($_COOKIE['r1']) || $_COOKIE['r1']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
-  $show_line_2 = (((!isset($_COOKIE['r2']) || $_COOKIE['r2']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
-  $show_line_3 = (((!isset($_COOKIE['r3']) || $_COOKIE['r3']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_basic')) ? true : false;
-  $show_line_4 = (((!isset($_COOKIE['r4']) || $_COOKIE['r4']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_advanced')) ? true : false;
-  $showpageparts = (((!isset($_COOKIE['shpp']) || $_COOKIE['shpp']=='1') || $force || $is_frontend) && AuthUser::hasPermission('multiedit_parts')) ? true : false;
- * 
- */
+    $isRoot        = false;
+$filters       = Filter::findAll();
 $show_line_1   = ((MultieditController::$cookie['showrow1'] || $force ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
 $show_line_2   = ((MultieditController::$cookie['showrow2'] || $force ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
 $show_line_3   = ((MultieditController::$cookie['showrow3'] || $force ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
 $show_line_4   = ((MultieditController::$cookie['showrow4'] || $force ) && AuthUser::hasPermission( 'multiedit_advanced' )) ? true : false;
 $showpageparts = ((MultieditController::$cookie['showpageparts'] || $force ) && AuthUser::hasPermission( 'multiedit_parts' )) ? true : false;
-
-$editable_filters = MultieditController::$editableFilters;
 ?>
 
 <?php foreach ( $items as $k ): ?>
@@ -43,9 +33,8 @@ $editable_filters = MultieditController::$editableFilters;
             <?php if ( !$is_frontend ): ?>
                 <span class="reload-item" id="reload-item<?php echo $k->id; ?>" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __( 'Refresh item' ); ?>" title="<?php echo __( 'Refresh item' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh.png'; ?>"/></span>
                 <span class="reload-item full" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __( 'Full view' ); ?>" title="<?php echo __( 'Full view' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/zoom.png'; ?>"/></span>
-                <!-- <span class="hide-item" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __( "Remove from list (doesn't delete the page)" ); ?>" title="<?php echo __( "Remove from list (doesn't delete the page)" ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/minus.png'; ?>"/></span> -->
             <?php endif; ?>
-            <a class="edit-item" href="<?php echo URL_PUBLIC . ADMIN_DIR . '/page/edit/' . $k->id; ?>" target="_blank"><img alt="<?php echo __( 'Edit in default editor' ); ?>" title="<?php echo __( 'Edit in default editor' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/pencil.png'; ?>"/></a>
+            <a class="edit-item" href="<?php echo URL_PUBLIC . ADMIN_DIR . '/page/edit/' . $k->id; ?>" target="multiedit_tab"><img alt="<?php echo __( 'Edit in default editor' ); ?>" title="<?php echo __( 'Edit in default editor' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/pencil.png'; ?>"/></a>
         </div>
         <div class="header">
             <div id="status-indicator-<?php echo $k->id; ?>" class="status-indicator status-<?php echo $k->status_id; ?>"></div>
@@ -67,7 +56,7 @@ $editable_filters = MultieditController::$editableFilters;
             }
             ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
         </div>
-        <table>
+        <table border="0">
 
             <?php if ( $show_line_1 ): ?>
                 <tr>
@@ -93,7 +82,7 @@ $editable_filters = MultieditController::$editableFilters;
                         <img id="created_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
                     </td>
                 </tr>
-            <?php endif; //$show_line_1  ?>
+            <?php endif; //$show_line_1    ?>
             <?php if ( $show_line_2 ): ?>
                 <tr>
                     <td class="fieldlabel">B-crumb</td>
@@ -120,22 +109,22 @@ $editable_filters = MultieditController::$editableFilters;
                         <img id="published_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
                     </td>
                 </tr>
-            <?php endif; //$show_line_2  ?>
+            <?php endif; //$show_line_2    ?>
             <?php if ( $show_line_3 ): ?>
                 <tr>
                     <td class="fieldlabel">
-                        <?php if ( $k->id != 1 ): //root page slug protection  ?>
+                        <?php if ( $k->id != 1 ): //root page slug protection    ?>
                             Slug
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php if ( $k->id != 1 ): //root page slug protection  ?>
+                        <?php if ( $k->id != 1 ): //root page slug protection    ?>
                             <input type="text" class="multiedit-field multiedit-slugfield" id="slug-<?php echo $k->id; ?>" name="slug-<?php echo $k->id; ?>" value="<?php echo $k->slug; ?>"/>
                             <img id="slug-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
                         <?php endif; ?>
                     </td>
                     <td class="counter">
-                        <?php if ( $k->id != 1 ): //root page slug protection   ?>
+                        <?php if ( $k->id != 1 ): //root page slug protection     ?>
                             <?php if ( $show_line_1 ): ?>
                                 <div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI . 'multiedit/icons/arrow-top-left.png'; ?>" alt="<?php echo __( 'Make slug from title' ); ?>" title="<?php echo __( 'Make slug from title' ); ?>"/></span></div>
                             <?php endif; ?>
@@ -180,12 +169,12 @@ $editable_filters = MultieditController::$editableFilters;
                 </tr>
                 <tr>
                     <td class="fieldlabel">
-                        <?php if ( $k->id != 1 ): //root page status protection  ?>
+                        <?php if ( $k->id != 1 ): //root page status protection    ?>
                             Status
                         <?php endif; ?>
                     </td>
                     <td>
-                        <?php if ( $k->id != 1 ): //root page status protection   ?>
+                        <?php if ( $k->id != 1 ): //root page status protection     ?>
                             <select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field status-select" rel="status-indicator-<?php echo $k->id; ?>" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
                                 <option class="status-<?php echo Page::STATUS_DRAFT; ?>" value="<?php echo Page::STATUS_DRAFT; ?>"<?php echo $k->status_id == Page::STATUS_DRAFT ? ' selected="selected"' : ''; ?>><?php echo __( 'Draft' ); ?></option>
                                 <option class="status-<?php echo Page::STATUS_PREVIEW; ?>" value="<?php echo Page::STATUS_PREVIEW; ?>"<?php echo $k->status_id == Page::STATUS_PREVIEW ? ' selected="selected"' : ''; ?>><?php echo __( 'Preview' ); ?></option>
@@ -197,7 +186,7 @@ $editable_filters = MultieditController::$editableFilters;
                     </td>
                     <td></td>
                 </tr>
-            <?php endif; //$show_line_3  ?>
+            <?php endif; //$show_line_3    ?>
 
             <?php
             if ( $show_line_4 ):
@@ -213,7 +202,7 @@ $editable_filters = MultieditController::$editableFilters;
                             <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>"/>
                         </td>
                         <td class="counter">
-                            <?php if ( $k->id == 1 ): // editing possible only in root page  ?>
+                            <?php if ( $k->id == 1 ): // editing possible only in root page    ?>
                                 <span class="multiedit-delete-field" data-field-name="<?php echo $ext_field; ?>">
                                     <img src="<?php echo PLUGINS_URI . 'multiedit/icons/cross.png'; ?>" alt="<?php echo __( 'Delete this field' ); ?>" title="<?php echo __( 'Delete this field' ); ?>"/>
                                 </span>
@@ -226,7 +215,7 @@ $editable_filters = MultieditController::$editableFilters;
                         <?php
                         if ( ($cnt % 2) === 0 && $cnt !== $total_ext_fields ) {
                             echo '<td class="warning" colspan="2">' . $warning . '</td></tr><tr class="extended_fields_row">';
-                            $warning   = '';
+                            $warning = '';
                         }
                         $cnt++;
                     endforeach; //extended fields
@@ -237,74 +226,80 @@ $editable_filters = MultieditController::$editableFilters;
                         echo '<td class="warning" colspan="2">' . $warning . '</td>';
                     ?>
                 </tr>
-            <?php endif; //$show_line_4 ?>
-            <?php
-            $partstyle = 2;
-            ?>
-            <?php if ( $showpageparts && ($partstyle === 1) ): ?>
+            <?php endif; //$show_line_4   ?>
+            <?php if ( $showpageparts ): ?>
                 <?php
-                $parts = PagePart::findByPageId( $k->id );
-                foreach ( $parts as $part ) :
-                    if ( empty( $part->filter_id ) || in_array( $part->filter_id, $editable_filters ) ) :
-
-                        $filter_class = (!in_array( $part->filter_id, $filters ) && !empty( $part->filter_id )) ? ' class="error" title="' . __( 'Plugin for this filter seems to be disabled!' ) . '"' : '';
-                        ?>
-                        <tr class="page_part_row">
-                            <td class="fieldlabel"><span class="rename_page_part" rel="<?php echo $k->id; ?>"><?php echo $part->name; ?></span><br/>
-                                <?php
-                                echo '[<em' . $filter_class . '>';
-                                echo (empty( $part->filter_id )) ? '-' . __( 'none' ) . '-' : $part->filter_id;
-                                echo '</em>]';
-                                ?></td>
-                            <td colspan="7" class="textareacontainer"><textarea class="multiedit-field partedit" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>" style="height: <?php echo MultieditController::$cookie['pagepartheight']; ?>px"><?php echo htmlentities( $part->content, ENT_COMPAT, 'UTF-8' ); ?></textarea></td>
-                        </tr>
-                        <?php
-                    endif; //editable parts
-                endforeach; //foreach
+                $active_frontend_tab_name = (isset( $_COOKIE['MEfet'] )) ? $_COOKIE['MEfet'] : false;
                 ?>
                 <tr class="page_part_row">
-                    <td class="fieldlabel">
-                    </td>
-                    <td colspan="7">
+                    <td colspan="8">
+                        <?php
+                        $parts                    = PagePart::findByPageId( $k->id );
+                        $active_tab               = !$is_frontend;
+                        ?>
+
                         <?php foreach ( $parts as $part ): ?>
                             <?php
-                            if ( !empty( $part->filter_id ) && !in_array( $part->filter_id, $editable_filters ) ):
-                                echo '<div class="filteredparts"><span class="rename_page_part" rel="' . $k->id . '">' . $part->name . '</span> [<em>' . $part->filter_id . '</em>]</div>';
-                            endif;
+                            if ( $is_frontend )
+                                $active_tab = ($part->name === $active_frontend_tab_name);
                             ?>
+                            <div class="partedit_container<?php echo ($active_tab) ? ' visible' : ''; ?>" id="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>-container">
+
+                                <span class="fieldlabel">
+                                    <?php echo __('Filter'); ?>
+                                </span>
+                                <span class="fieldlabel">
+                                    <select class="multiedit-field" name="partfilter-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>" title="" class="full">
+                                        <option value="" <?php echo $part->filter_id == '' ? ' selected="selected"' : ''; ?>>&#8212; <?php echo __( 'none' ); ?> &#8212;</option>
+                                        <?php foreach ( $filters as $id => $fname ): ?>
+                                            <option value="<?php echo $fname; ?>" <?php echo ($fname === $part->filter_id) ? ' selected="selected"' : ''; ?>><?php echo $fname; ?></option>
+                                        <?php endforeach; ?>
+                                    </select>
+                                </span>
+                                <span class="partedit_toolbar" id="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>-toolbar">
+                                </span>
+
+
+                                <textarea class="multiedit-field partedit"
+                                          name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
+                                          id="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
+                                          style="height: <?php echo MultieditController::$cookie['pagepartheight']; ?>px;"><?php echo htmlentities( $part->content, ENT_COMPAT, 'UTF-8' ); ?></textarea>
+                                          <?php $active_tab = false; ?>
+                            </div>
                         <?php endforeach; ?>
                     </td>
                 </tr>
-            <?php else: // showpageparts   ?>
                 <tr class="page_part_row">
-                    <?php
-                    $parts = PagePart::findByPageId( $k->id );
-                    foreach ( $parts as $part ) :
-                        $filter_class = (!in_array( $part->filter_id, $filters ) && !empty( $part->filter_id )) ? ' class="error" title="' . __( 'Plugin for this filter seems to be disabled!' ) . '"' : '';
-                        ?>
-                        <td class="fieldlabel"><span class="rename_page_part" rel="<?php echo $k->id; ?>"><?php echo $part->name; ?></span><br/>
+                    <td colspan="6">
+                        <?php
+                        $active_tab = !$is_frontend;
+                        foreach ( $parts as $part ):
+                            if ( $is_frontend )
+                                $active_tab   = ($part->name === $active_frontend_tab_name);
+                            ?>
+                            <div data-part-name="<?php echo $part->name; ?>" class="me_pt_<?php echo $part->name; ?> part_label_tab<?php echo ($active_tab) ? ' active' : ''; ?>" data-target="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>">
+                                <span class="me_tablabel"><?php echo $part->name; ?></span><br/>
+                                <?php
+                                $filter_class = (!in_array( $part->filter_id, $filters ) && !empty( $part->filter_id )) ? ' class="me_tabfilter" style="color: red" title="' . __( 'Plugin for this filter seems to be disabled!' ) . '"' : ' class="me_tabfilter"';
+                                echo '<span ' . $filter_class . '>';
+                                echo (empty( $part->filter_id )) ? '&#8212; ' . __( 'none' ) . ' &#8212;' : $part->filter_id;
+                                echo '</span>';
+                                ?>
+                                <?php if ( !$is_frontend ): ?>
+                                    <img class="rename_page_part" oldname="<?php echo $part->name; ?>" rel="<?php echo $k->id; ?>" alt="<?php echo __( 'Rename page part' ); ?>" title="<?php echo __( 'Rename page part' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/pencil.png'; ?>"/>
+                                    <img class="delete_page_part" data-name="<?php echo $part->name; ?>" data-page-id="<?php echo $k->id; ?>" alt="<?php echo __( 'Delete page part' ); ?>" title="<?php echo __( 'Delete page part' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/minus.png'; ?>"/>
+                                <?php endif; ?>
+                            </div>
                             <?php
-                            echo '[<em' . $filter_class . '>';
-                            echo (empty( $part->filter_id )) ? '-' . __( 'none' ) . '-' : $part->filter_id;
-                            echo '</em>]';
-                            ?></td>
-                        <td colspan="7" class="textareacontainer"><textarea class="multiedit-field partedit" name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>" style="height: <?php echo MultieditController::$cookie['pagepartheight']; ?>px"><?php echo htmlentities( $part->content, ENT_COMPAT, 'UTF-8' ); ?></textarea></td>
-                        <?php
-                    endforeach; //foreach
-                    ?>
-                </tr>
-                <tr class="page_part_row">
-                    <td class="fieldlabel">
-                    </td>
-                    <td colspan="7">
-                        <?php
-                        foreach ( $parts as $part ) {
-                            echo '<div class="filteredparts"><span class="rename_page_part" rel="' . $k->id . '">' . $part->name . '</span> [<em>' . $part->filter_id . '</em>]</div>';
-                        }
+                            $active_tab = false;
+                        endforeach;
                         ?>
+                        
+                        <img class="add_page_part" rel="<?php echo $k->id; ?>" alt="<?php echo __( 'Add page part' ); ?>" title="<?php echo __( 'Add page part' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/plus.png'; ?>"/>
+                        
                     </td>
                 </tr>
-            <?php endif; ?>
+            <?php endif; // showparts   ?>
         </table>
         <?php if ( !isset( $innerOnly ) ): ?>
         </div>
