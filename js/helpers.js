@@ -169,25 +169,35 @@ $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
 });
 
 
+
 $(".multiedit-item .reload-item").live('click', function() {
     var meUrl = $('#multiedit-controller-url').attr('data-url');
-    if ($(this).hasClass('full')) {
-        showfull = '/1';
-    } else
-        showfull = '/0';
+    showfull = ($(this).hasClass('full')) ? '1' : '0';
+    is_frontend = ($(this).attr('data-is-frontend')=='1') ? '1' : '0';
+
     id = $(this).attr('rel').split('-', 2)[1];
     target = $('#' + $(this).attr('rel'));
     target.fadeTo('fast', 0.3, function() {
-        $.get(meUrl + '/getonepage/' + id + '/1/1/0' + showfull,
-                function(data) {
-                    target.html(data);
-                    $(".multiedit-countchars").trigger('keyup');
-                    $(".multiedit-counttags").trigger('keyup');
-                    target.fadeTo('fast', 1);
-                    // trigger click to activate Ace
-                    target.find('.part_label_tab.active').trigger('click');
-                    //showMessageBox ('Reloaded item ' + id,'OK');
-                });
+
+        $.ajax({
+            url: meUrl + '/getoneitem',
+            type: 'POST',
+            data: {
+                'page_id': id,
+                'force_full_view': showfull,
+                'frontend': is_frontend
+            },
+            success: function(data) {
+                target.html(data);
+                $(".multiedit-countchars").trigger('keyup');
+                $(".multiedit-counttags").trigger('keyup');
+                target.fadeTo('fast', 1);
+                // trigger click to activate Ace
+                target.find('.part_label_tab.active').trigger('click');
+                //showMessageBox ('Reloaded item ' + id,'OK');
+            }
+        });
+
     });
 });
 
@@ -199,9 +209,8 @@ $(document).delegate(".add_page_part", 'click', function() {
     var pageid = $(this).attr('rel');
     var newname = window.prompt('New page part name ');
     reloadButton = $('#reload-item' + pageid);
-    if (newname === null) { /* showMessageBox ('Cancelled page part name change','error'); */
+    if (newname === null) 
         return false;
-    }
     $.ajax({
         url: meUrl + '/add_page_part',
         type: 'POST',
@@ -211,14 +220,7 @@ $(document).delegate(".add_page_part", 'click', function() {
         },
         dataType: 'json',
         success: function(data) {
-            // reloadButton.hide();
             reloadButton.trigger('click');
-            // showMessageBox(data.message, data.status);
-        },
-        error: function(data) {
-            //reloadButton.hide();
-            reloadButton.trigger('click');
-            // showMessageBox(data.message, data.status);
         }
     });
 });
@@ -243,10 +245,6 @@ $(document).delegate('.delete_page_part', 'click', function() {
         },
         dataType: 'json',
         success: function(data) {
-            reloadButton.trigger('click');
-
-        },
-        error: function(data) {
             reloadButton.trigger('click');
 
         }
@@ -291,4 +289,29 @@ $(document).delegate('.rename_page_part', 'click', function() {
 
         }
     });
+});
+
+
+$(document).delegate(".multiedit-item .header", 'click', function(e) {
+
+    if (e.ctrlKey) {
+        target = $(this).parent();
+        target.fadeOut('normal', function() {
+            target.remove();
+        });
+        return false;
+    }
+
+    if (($('#showrow1').is(':checked') === false) &&
+            ($('#showrow2').is(':checked') === false) &&
+            ($('#showrow3').is(':checked') === false) &&
+            ($('#showrow4').is(':checked') === false) &&
+            ($('#showpageparts').is(':checked') === false) &&
+            ($(this).parent().find('tr').length === 0)
+            ) {
+        $(this).parent().find('span.reload-item.full').trigger('click');
+        return false;
+    }
+
+    $(this).parent().find('table').toggle();
 });

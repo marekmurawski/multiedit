@@ -208,21 +208,25 @@ class MultieditController extends PluginController {
 
     }
 
-
-    public function getonepage( $page_id, $showpageparts = 1, $showcollapsed = 0, $is_frontend = 0, $force = 0 ) {
-        $items[] = Page::findById( (int) $page_id ); // add one item to array;
-
-        if ( $page_id > 1 ) {
+    /**
+     * Retrieves single page view
+     *
+     * {
+     * page_id
+     * frontend
+     * force_full_view
+     * }
+     */
+    public function getoneitem() {
+        if ( empty( $_POST['page_id'] ) )
+            $this->failure( __( 'Page ID not specified' ) );
+        $page_id    = (int) $_POST['page_id'];
+        $items[]    = Page::findById( (int) $page_id ); // add one item to array;
+        if ( $page_id > 1 )
             $parentPage = Page::findById( $items[0]->parent_id );
-        }
-        if ( isset( $parentPage ) ) {
-            $parentUri = $parentPage->getUri();
-        } else {
-            $parentUri = '';
-        }
 
-        $filters = Filter::findAll();
-        $layouts = Record::findAllFrom( 'Layout' );
+        $is_frontend     = !empty( $_POST['frontend'] ) && $_POST['frontend'];
+        $force_full_view = !empty( $_POST['force_full_view'] ) && $_POST['force_full_view'];
 
         // extracting extended fields
         $extended_fields = array_keys( array_diff_key( (array) $items[0], array_flip( self::$defaultPageFields ) ) );
@@ -230,17 +234,40 @@ class MultieditController extends PluginController {
         $itemsList = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
                     'items'           => $items,
                     'innerOnly'       => true,
-                    'parentUri'       => $parentUri,
-                    'showpageparts'   => $showpageparts,
-                    'is_frontend'     => $is_frontend === '1',
-                    'filters'         => $filters,
-                    'layouts'         => $layouts,
+                    'parentUri'       => ( isset( $parentPage ) ) ? $parentPage->getUri() : '',
+                    'is_frontend'     => $is_frontend,
+                    'filters'         => Filter::findAll(),
+                    'layouts'         => Record::findAllFrom( 'Layout' ),
                     'extended_fields' => $extended_fields,
-                    'force'           => ($force !== '0'),
+                    'force_full_view' => $force_full_view,
                     ) );
         echo $itemsList->render();
 
     }
+
+
+//    public function getonepage( $page_id, $showpageparts = 1, $showcollapsed = 0, $is_frontend = 0, $force = 0 ) {
+//        $items[] = Page::findById( (int) $page_id ); // add one item to array;
+//
+//        if ( $page_id > 1 )
+//            $parentPage = Page::findById( $items[0]->parent_id );
+//
+//        // extracting extended fields
+//        $extended_fields = array_keys( array_diff_key( (array) $items[0], array_flip( self::$defaultPageFields ) ) );
+//
+//        $itemsList = new View( self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
+//                    'items'           => $items,
+//                    'innerOnly'       => true,
+//                    'parentUri'       => ( isset( $parentPage ) ) ? $parentPage->getUri() : '',
+//                    'is_frontend'     => $is_frontend === '1',
+//                    'filters'         => Filter::findAll(),
+//                    'layouts'         => Record::findAllFrom( 'Layout' ),
+//                    'extended_fields' => $extended_fields,
+//                    'force_full_view' => ($force !== '0'),
+//                    ) );
+//        echo $itemsList->render();
+//
+//    }
 
 
     public function getsubpages( $page_id, $sorting = "id", $order = "ASC", $showpageparts = 1, $showcollapsed = 0 ) {
@@ -270,7 +297,7 @@ class MultieditController extends PluginController {
                     'items'           => array( $parentPage ),
                     'isRoot'          => true,
                     'parentUri'       => isset( $parentPage->parent_id ) ? mb_substr( $parentUri, 0, -mb_strlen( strrchr( $parentUri, "/" ) ) ) : '', //trim last slash
-                    'showpageparts'   => $showpageparts,
+//                    'showpageparts'   => $showpageparts,
 //                    'showcollapsed'   => $showcollapsed,
                     'filters'         => $filters,
                     'layouts'         => $layouts,
@@ -284,7 +311,7 @@ class MultieditController extends PluginController {
                     'items'           => $items,
                     'rootItem'        => $parentPage,
                     'parentUri'       => $parentUri,
-                    'showpageparts'   => $showpageparts,
+//                    'showpageparts'   => $showpageparts,
 //                    'showcollapsed'   => $showcollapsed,
                     'filters'         => $filters,
                     'layouts'         => $layouts,

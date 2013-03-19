@@ -79,7 +79,7 @@ if ( !defined( 'IN_CMS' ) ) {
         }
     });
 
-    $(".multiedit-items-select").live('change', function() {
+    $(".multiedit-header-field").live('change', function() {
 
         setMEcookie();
         if ($(this).val() == '0')
@@ -217,6 +217,7 @@ if ( !defined( 'IN_CMS' ) ) {
         $height = $(this).val();
         setMEcookie();
         $('.partedit').css('height', $height + "px");
+        // Ace-backend specific
         $('.ace_editor').css('height', $height + "px");
         $('.ace_resize_btn').trigger('click');
     });
@@ -224,29 +225,7 @@ if ( !defined( 'IN_CMS' ) ) {
 
 
 
-    $(".multiedit-item .header").live('click', function(e) {
 
-        if (e.ctrlKey) {
-            target = $(this).parent();
-            target.fadeOut('normal', function() {
-                target.remove();
-            });
-            return false;
-        }
-
-        if (($('#showrow1').is(':checked') === false) &&
-                ($('#showrow2').is(':checked') === false) &&
-                ($('#showrow3').is(':checked') === false) &&
-                ($('#showrow4').is(':checked') === false) &&
-                ($('#showpageparts').is(':checked') === false) &&
-                ($(this).parent().find('tr').length === 0)
-                ) {
-            $(this).parent().find('span.reload-item.full').trigger('click');
-            return false;
-        }
-
-        $(this).parent().find('table').toggle();
-    });
 
     $(".multiedit-field").live('change', function() {
         field = $(this);

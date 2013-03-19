@@ -9,16 +9,15 @@ if ( !defined( 'IN_CMS' ) ) {
 // initialize variables
 //$behaviors = Behavior::findAll();
 
-if ( !isset( $force ) )
-    $force         = false;
+if ( !isset( $force_full_view ) )
+    $force_full_view         = false;
 if ( !isset( $isRoot ) )
     $isRoot        = false;
-$filters       = Filter::findAll();
-$show_line_1   = ((MultieditController::$cookie['showrow1'] || $force ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
-$show_line_2   = ((MultieditController::$cookie['showrow2'] || $force ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
-$show_line_3   = ((MultieditController::$cookie['showrow3'] || $force ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
-$show_line_4   = ((MultieditController::$cookie['showrow4'] || $force ) && AuthUser::hasPermission( 'multiedit_advanced' )) ? true : false;
-$showpageparts = ((MultieditController::$cookie['showpageparts'] || $force ) && AuthUser::hasPermission( 'multiedit_parts' )) ? true : false;
+$show_line_1   = ((MultieditController::$cookie['showrow1'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
+$show_line_2   = ((MultieditController::$cookie['showrow2'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
+$show_line_3   = ((MultieditController::$cookie['showrow3'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
+$show_line_4   = ((MultieditController::$cookie['showrow4'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_advanced' )) ? true : false;
+$showpageparts = ((MultieditController::$cookie['showpageparts'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_parts' )) ? true : false;
 ?>
 
 <?php foreach ( $items as $k ): ?>
@@ -30,7 +29,7 @@ $showpageparts = ((MultieditController::$cookie['showpageparts'] || $force ) && 
         ?>" id="multipage_item-<?php echo $k->id; ?>">
          <?php endif; ?>
         <div class="actions">
-                <span class="reload-item" id="reload-item<?php echo $k->id; ?>" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __( 'Refresh item' ); ?>" title="<?php echo __( 'Refresh item' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh.png'; ?>"/></span>
+                <span class="reload-item" id="reload-item<?php echo $k->id; ?>" rel="multipage_item-<?php echo $k->id; ?>" data-is-frontend="<?php echo ($is_frontend) ? '1' : '0'; ?>"><img alt="<?php echo __( 'Refresh item' ); ?>" title="<?php echo __( 'Refresh item' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh.png'; ?>"/></span>
             <?php if ( !$is_frontend ): ?>
                 <span class="reload-item full" rel="multipage_item-<?php echo $k->id; ?>"><img alt="<?php echo __( 'Full view' ); ?>" title="<?php echo __( 'Full view' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/zoom.png'; ?>"/></span>
             <?php endif; ?>
@@ -48,7 +47,6 @@ $showpageparts = ((MultieditController::$cookie['showpageparts'] || $force ) && 
                 };
             } else {
                 $listUri = $k->getUri();
-                // echo '[ listuri ='.$listUri.']';
                 echo (isset( $k->parent_id )) ? mb_substr( $listUri, 0, -mb_strlen( strrchr( $listUri, "/" ) ) ) : '';
                 if ( strpos( $listUri, '/' ) !== false ) {
                     echo '/';
@@ -58,7 +56,7 @@ $showpageparts = ((MultieditController::$cookie['showpageparts'] || $force ) && 
         </div>
         <?php
         if ( $is_frontend ) {
-            echo '<div id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedit' ) . '">' . get_url( 'plugin/multiedit' ) . '</div>';
+            echo '<div style="display:none" id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedit' ) . '"></div>';
         }
         ?>
         <table border="0">

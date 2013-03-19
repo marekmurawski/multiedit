@@ -68,9 +68,12 @@
         target = $('#multipage_item-' +<?php echo $page_id; ?>);
         target.fadeOut('fast', function() {
             $.ajax({
-                url: "<?php echo URL_PUBLIC . ADMIN_DIR; ?>/plugin/multiedit/getonepage/"
-                        + <?php echo $page_id; ?> + '/0/0/1',
-                type: 'get',
+                url: "<?php echo URL_PUBLIC . ADMIN_DIR; ?>/plugin/multiedit/getoneitem/",
+                type: 'POST',
+                data: {
+                    page_id : "<?php echo $page_id; ?>",
+                    frontend : "1",
+                },
                 success: function(data) {
                     target.html(data);
                     $(".multiedit-countchars").trigger('keyup');
