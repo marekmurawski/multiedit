@@ -1,34 +1,3 @@
-#multiedit-messages {
- position: absolute;
- /* just used to show how to include the margin in the effect */
- margin-top: 20px;
- padding-top: 19px;
- right: 1%;
- width: 18%;
-}
-
-#multiedit-messages.fixed {
- position: fixed;
- top: 0;
-}
-
-#multiedit-messagebox {
- margin-bottom: 5px;
- padding: 5px 5px;
- min-height: 50px;
-}
-#multiedit-messagebox.success {
- color: green;
- background: #cfc;
- border: 1px solid #6f6;
-}
-#multiedit-messagebox.error {
- color: red;
- background: #fcc;
- border: 1px solid #f66;
-}
-
-
 
 /* SIDEBAR INFOBOX */
 #mm_sbox { position: absolute; margin-top: 12px; padding-top: 12px; right: 1%; width: 25%; margin-bottom: 5px; min-height: 50px; }
@@ -37,7 +6,7 @@
 #mmsg_wrap { padding: 10px; min-height: 50px; margin: 4px 0px 0px 0px; transition: background-color .5s; }
 #mmsg_wrap.success { color: #334d00; background: #b8db70; border: 1px solid #8ab82e; }
 #mmsg_wrap.error { color: #990000; background: #ebadad; border: 1px solid #d65c5c; }
-#mmsg_wrap.progress { color: #666666; background: #e6e6e6 url("../icons/progress-big.gif") no-repeat center center; border: 1px solid #cccccc; }
+#mmsg_wrap.progress { color: #666666; background: #e6e6e6 url("icons/progress-big.gif") no-repeat center center; border: 1px solid #cccccc; }
 #mmsg_wrap.progress.init { background: #e6e6e6; }
 
 #mmsg_stats { margin-bottom: 8px; padding: 1px 4px; color: #bfaa40; background: #e6ddb3; font-size: 10px; text-align: right; }

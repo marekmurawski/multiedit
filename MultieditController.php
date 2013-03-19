@@ -31,7 +31,9 @@ if ( !defined( 'IN_CMS' ) ) {
 class MultieditController extends PluginController {
 
     const PLUGIN_REL_VIEW_FOLDER = "../../plugins/multiedit/views/";
+    const GLUE                   = '<br/>';
 
+    public static $messages          = array( );
     private static $pagesList         = array( );
     private static $defaultSorting    = 'position ASC, published_on DESC';
     private static $defaultPageFields = array(
@@ -230,7 +232,6 @@ class MultieditController extends PluginController {
                     'innerOnly'       => true,
                     'parentUri'       => $parentUri,
                     'showpageparts'   => $showpageparts,
-                    'showcollapsed'   => $showcollapsed,
                     'is_frontend'     => $is_frontend === '1',
                     'filters'         => $filters,
                     'layouts'         => $layouts,
@@ -270,7 +271,7 @@ class MultieditController extends PluginController {
                     'isRoot'          => true,
                     'parentUri'       => isset( $parentPage->parent_id ) ? mb_substr( $parentUri, 0, -mb_strlen( strrchr( $parentUri, "/" ) ) ) : '', //trim last slash
                     'showpageparts'   => $showpageparts,
-                    'showcollapsed'   => $showcollapsed,
+//                    'showcollapsed'   => $showcollapsed,
                     'filters'         => $filters,
                     'layouts'         => $layouts,
                     'is_frontend'     => false,
@@ -284,7 +285,7 @@ class MultieditController extends PluginController {
                     'rootItem'        => $parentPage,
                     'parentUri'       => $parentUri,
                     'showpageparts'   => $showpageparts,
-                    'showcollapsed'   => $showcollapsed,
+//                    'showcollapsed'   => $showcollapsed,
                     'filters'         => $filters,
                     'layouts'         => $layouts,
                     'is_frontend'     => false,
@@ -848,14 +849,13 @@ QUERY;
                 );
                 Record::update( 'Page', $insdata, 'id=?', array( $page_id ) );
 
-                $result = array( 'message'    => __( 'Updated <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ) .
-                            $revision_save_info,
+                $this->success( __( 'Updated <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ) . $revision_save_info, array(
                             'datetime'   => $now_datetime,
                             'identifier' => $page_id,
-                            'status'     => 'OK' );
+                ) );
             } else {
-                $result = array( 'message' => __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ),
-                            'status'  => 'error' );
+                $this->failure( __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ), array(
+                            'status' => 'error' ) );
             }
             echo json_encode( $result );
             return false;
@@ -944,42 +944,12 @@ QUERY;
         if ( in_array( $field, $fieldsAffectingUpdatedOn ) ) {
             $result = array_merge( $result, $timeInfo );
         }
-        echo json_encode( $result );
+        //echo json_encode( $result );
+        $this->success( __( 'Success!' ), $result );
         return false;
 
     }
 
-/*
-    private function respond( $message = '', $status = 'OK', $arr = array( ) ) {
-        // set messages
-        $default  = array(
-                    'message' => $message,
-                    'status'  => $status,
-        );
-        // add any additional fields
-        $response = array_merge( $default, $arr );
-
-        echo json_encode( $response );
-        die();
-
-    }
-
-
-    private function success( $message, $arr = array( ) ) {
-        $this->respond( $message, 'OK', $arr );
-
-    }
-
-
-    private function failure( $message, $arr = array( ) ) {
-        $this->respond( $message, 'error', $arr );
-
-    }
-*/
-
-    const GLUE        = '<br/>';
-
-    public static $messages = array( );
 
     /**
      *

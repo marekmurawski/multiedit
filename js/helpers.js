@@ -104,14 +104,15 @@ $(document).delegate(".multiedit-slugfield", 'keyup', function() {
  */
 $(document).delegate('.part_label_tab', 'click', function(e) {
     target = $(this).attr('data-target');
+    shortID = $(this).attr('data-short-id');
 
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
     $('#' + target).parents('td').find('.partedit_container.visible').removeClass('visible');
 
-     $('#' + target + '-container').addClass('visible');
-     $('#' + target).addClass('visible');
+    $('#' + target + '-container').addClass('visible');
+    $('#' + target).addClass('visible');
 
     me_createCookie('MEfet', $(this).attr('data-part-name'));
 
@@ -122,21 +123,20 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
     /**
      * setup Ace
      */
-    if (($('#aceeditorME' + target).length < 1) && ($('#ace-live-settings').length > 0)) {
+    if (($('#aceeditor' + 'ME' + shortID).length < 1) && ($('#ace-live-settings').length > 0)) {
         // in backend use height specified in MultiEdit settings
         if ($('#partheight').length > 0) {
-            setupEditor('ME' + target, $('#' + target + '-toolbar'), $('#' + target), {
+            setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), {
                 'editorheight': $('#partheight').val()
             });
             // hide standard textareas
             $('#' + target).parents('td').find('textarea.partedit').hide();
         } else {
-            setupEditor('ME' + target, $('#' + target + '-toolbar'), $('#' + target));
+            setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target));
             // hide standard textareas
             $('#' + target).parents('td').find('textarea.partedit').hide();
         }
     }
-
 
 });
 
@@ -154,7 +154,7 @@ $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
     $('#' + target).parents('td').find('.partedit_container.visible').removeClass('visible');
 
     // removing Aces
-    $('#'+target).parent().children('.ace_editor, .ace_options').remove();
+    $('#' + target).parent().children('.ace_editor, .ace_options').remove();
     // showing textareas
     $('#' + target).parents('td').find('textarea').show();
     // displaying container
@@ -166,4 +166,129 @@ $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
         $('.me_pt_' + $(this).attr('data-part-name')).trigger('contextmenu');
     }
 
+});
+
+
+$(".multiedit-item .reload-item").live('click', function() {
+    var meUrl = $('#multiedit-controller-url').attr('data-url');
+    if ($(this).hasClass('full')) {
+        showfull = '/1';
+    } else
+        showfull = '/0';
+    id = $(this).attr('rel').split('-', 2)[1];
+    target = $('#' + $(this).attr('rel'));
+    target.fadeTo('fast', 0.3, function() {
+        $.get(meUrl + '/getonepage/' + id + '/1/1/0' + showfull,
+                function(data) {
+                    target.html(data);
+                    $(".multiedit-countchars").trigger('keyup');
+                    $(".multiedit-counttags").trigger('keyup');
+                    target.fadeTo('fast', 1);
+                    // trigger click to activate Ace
+                    target.find('.part_label_tab.active').trigger('click');
+                    //showMessageBox ('Reloaded item ' + id,'OK');
+                });
+    });
+});
+
+/**
+ * Handler for add_page_part button
+ */
+$(document).delegate(".add_page_part", 'click', function() {
+    var meUrl = $('#multiedit-controller-url').attr('data-url');
+    var pageid = $(this).attr('rel');
+    var newname = window.prompt('New page part name ');
+    reloadButton = $('#reload-item' + pageid);
+    if (newname === null) { /* showMessageBox ('Cancelled page part name change','error'); */
+        return false;
+    }
+    $.ajax({
+        url: meUrl + '/add_page_part',
+        type: 'POST',
+        data: {
+            'page_id': pageid,
+            'name': newname
+        },
+        dataType: 'json',
+        success: function(data) {
+            // reloadButton.hide();
+            reloadButton.trigger('click');
+            // showMessageBox(data.message, data.status);
+        },
+        error: function(data) {
+            //reloadButton.hide();
+            reloadButton.trigger('click');
+            // showMessageBox(data.message, data.status);
+        }
+    });
+});
+
+/**
+ * Handler for delete_page_part button
+ */
+$(document).delegate('.delete_page_part', 'click', function() {
+    var meUrl = $('#multiedit-controller-url').attr('data-url');
+    var name = $(this).attr('data-name');
+    var pageid = $(this).attr('data-page-id');
+    if (window.confirm('Are you sure?') === false)
+        return false;
+
+    reloadButton = reloadButton = $('#reload-item' + pageid);
+    $.ajax({
+        url: meUrl + '/delete_page_part',
+        type: 'POST',
+        data: {
+            'page_id': pageid,
+            'name': name
+        },
+        dataType: 'json',
+        success: function(data) {
+            reloadButton.trigger('click');
+
+        },
+        error: function(data) {
+            reloadButton.trigger('click');
+
+        }
+    });
+});
+
+
+$(document).delegate('.rename_page_part', 'click', function() {
+    var meUrl = $('#multiedit-controller-url').attr('data-url');
+    var oldname = $(this).attr('oldname');
+    var pageid = $(this).attr('rel');
+    var newname = window.prompt('New page part name for ' + oldname, oldname);
+
+    reloadButton = $(this).parents('div.multiedit-item').find('.reload-item');
+    if (newname === null) { /* showMessageBox ('Cancelled page part name change','error'); */
+        return false;
+    }
+    if (newname.trim().length === 0) {
+        showMessageBox('No name specified', 'error');
+        return false;
+    }
+    if (newname.trim() === $(this).html().trim()) {
+        showMessageBox('Same name specified', 'error');
+        return false;
+    }
+    $.ajax({
+        url: meUrl + '/rename_page_part',
+        type: 'POST',
+        data: {
+            'page_id': pageid,
+            'old_name': oldname,
+            'new_name': newname
+        },
+        dataType: 'json',
+        success: function(data) {
+            reloadButton.trigger('click');
+            showMessageBox(data.message, data.status);
+        },
+        error: function(data) {
+            reloadButton.trigger('click');
+            showMessageBox(data.message, data.status);
+
+        }
+    });
 });

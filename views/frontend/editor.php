@@ -3,7 +3,6 @@
 <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>multiedit/js/helpers.js"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/ace_editor.js"></script>
 <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/build/src-min/ace.js"></script>
-<script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/js/jquery.cookie.js"></script>
 <script>
 
     $(document).delegate(".multiedit-field", 'change', function() {
@@ -107,7 +106,6 @@
     });
 
 </script>
-
 <div id="multiedit-wrapper" class="frontend">
     <?php
     /**
@@ -118,6 +116,7 @@
     }
     ?>
     <div id="multiedit-fe-hide"></div>
+
     <div id="multiedit-list" style="display: none;">
         <div class="multiedit-item-root multiedit-item" id="multipage_item-<?php echo $page_id; ?>" style="box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);">
         </div>

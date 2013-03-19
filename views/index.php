@@ -7,7 +7,6 @@ if ( !defined( 'IN_CMS' ) ) {
 <?php if ( Plugin::isEnabled( 'ace' ) ): ?>
     <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/ace_editor.js"></script>
     <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/build/src-min/ace.js"></script>
-    <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/js/jquery.cookie.js"></script>
 <?php endif; ?>
 <div id="multiedit-wrapper">
     <div id="multiedit-header">
@@ -110,108 +109,16 @@ if ( !defined( 'IN_CMS' ) ) {
                         $('.part_label_tab.active').trigger('click');
                     }
                 },
-                error: function(data) {
-                    alert(dump(data));
-                }
-            })
-        })
-
-    });
-
-    $('.rename_page_part').live('click', function() {
-
-        var oldname = $(this).attr('oldname');
-        var pageid = $(this).attr('rel');
-        var newname = window.prompt('<?php echo __( 'New page part name for "' ); ?>' + oldname + '"', oldname);
-
-        reloadButton = $(this).parents('div.multiedit-item').find('.reload-item');
-        if (newname === null) { /* showMessageBox ('Cancelled page part name change','error'); */
-            return false;
-        }
-        if (newname.trim().length === 0) {
-            showMessageBox('No name specified', 'error');
-            return false;
-        }
-        if (newname.trim() === $(this).html().trim()) {
-            showMessageBox('Same name specified', 'error');
-            return false;
-        }
-        $.ajax({
-            url: "<?php echo get_url( 'plugin/multiedit/rename_page_part' ); ?>",
-            type: 'POST',
-            data: {
-                'page_id': pageid,
-                'old_name': oldname,
-                'new_name': newname
-            },
-            dataType: 'json',
-            success: function(data) {
-                reloadButton.trigger('click');
-                showMessageBox(data.message, data.status);
-            },
-            error: function(data) {
-                reloadButton.trigger('click');
-                showMessageBox(data.message, data.status);
-
-            }
+            });
         });
-    });
 
-    $('.delete_page_part').live('click', function() {
-
-        var name = $(this).attr('data-name');
-        var pageid = $(this).attr('data-page-id');
-        if (window.confirm('<?php echo __( 'Are you sure?' ); ?>') === false)
-            return false;
-
-        reloadButton = reloadButton = $('#reload-item' + pageid);
-        $.ajax({
-            url: "<?php echo get_url( 'plugin/multiedit/delete_page_part' ); ?>",
-            type: 'POST',
-            data: {
-                'page_id': pageid,
-                'name': name
-            },
-            dataType: 'json',
-            success: function(data) {
-                reloadButton.trigger('click');
-
-            },
-            error: function(data) {
-                reloadButton.trigger('click');
-
-            }
-        });
     });
 
 
-    $(document).delegate(".add_page_part", 'click', function() {
-        var pageid = $(this).attr('rel');
-        var newname = window.prompt('New page part name ');
-        reloadButton = $('#reload-item' + pageid);
-        if (newname === null) { /* showMessageBox ('Cancelled page part name change','error'); */
-            return false;
-        }
-        $.ajax({
-            url: "<?php echo get_url( 'plugin/multiedit/add_page_part' ); ?>",
-            type: 'POST',
-            data: {
-                'page_id': pageid,
-                'name': newname
-            },
-            dataType: 'json',
-            success: function(data) {
-                // reloadButton.hide();
-                reloadButton.trigger('click');
-                // showMessageBox(data.message, data.status);
-            },
-            error: function(data) {
-                //reloadButton.hide();
-                reloadButton.trigger('click');
-                // showMessageBox(data.message, data.status);
-            }
-        });
-    });
+
+
+
+
 
     $('.multiedit-delete-field').live('click', function() {
 
@@ -315,29 +222,7 @@ if ( !defined( 'IN_CMS' ) ) {
     });
 
 
-    $(".reload-item").live('click', function() {
-        if ($(this).hasClass('full')) {
-            showfull = '/1';
-        } else
-            showfull = '/0';
-        id = $(this).attr('rel').split('-', 2)[1];
-        target = $('#' + $(this).attr('rel'));
-        target.fadeTo('fast', 0.3, function() {
-            $.get("<?php echo get_url( 'plugin/multiedit/getonepage/' ); ?>" + id + '/1/1/0' + showfull,
-                    function(data) {
-                        target.html(data);
-                        $(".multiedit-countchars").trigger('keyup');
-                        $(".multiedit-counttags").trigger('keyup');
 
-                        target.fadeTo('fast', 1);
-
-                        // trigger click to activate Ace
-                        target.find('.part_label_tab.active').trigger('click');
-
-                        //showMessageBox ('Reloaded item ' + id,'OK');
-                    });
-        });
-    });
 
     $(".multiedit-item .header").live('click', function(e) {
 
@@ -370,6 +255,7 @@ if ( !defined( 'IN_CMS' ) ) {
         $.ajax({
             url: "<?php echo get_url( 'plugin/multiedit/setvalue/' ); ?>",
             type: 'post',
+            dataType: 'json',
             data: {
                 item: field.attr('name'),
                 value: field.val()
@@ -379,7 +265,7 @@ if ( !defined( 'IN_CMS' ) ) {
                     field.removeClass('error');
                     field.addClass('success');
 
-                    showMessageBox(data.message, data.status);
+                    mmShowMessage(data);
                     setTimeout(function() {
                         progressIndicator.removeClass('visible');
                     }, 300);
@@ -408,7 +294,7 @@ if ( !defined( 'IN_CMS' ) ) {
                     field.addClass('error');
 
                     field.val(data.oldvalue);
-                    showMessageBox(data.message, data.status);
+                    mmShowMessage(data);
                     setTimeout(function() {
                         progressIndicator.removeClass('visible');
                     }, 300);
@@ -416,10 +302,6 @@ if ( !defined( 'IN_CMS' ) ) {
 
                 }
             },
-            error: function(data) {
-                showMessageBox(dump(data));
-            },
-            dataType: 'json'
         });
     });
 

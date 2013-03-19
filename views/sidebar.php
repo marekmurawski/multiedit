@@ -11,10 +11,6 @@ if ( !defined( 'IN_CMS' ) ) {
     <?php
     echo $sidebarContents;
     ?>
-    <h2><?php echo __( 'Author' ); ?></h2>
-    <small>
-        <p>Marek Murawski - <a href="http://marekmurawski.pl" />website</a></p>
-    </small>
 </div>
 
 
@@ -28,6 +24,17 @@ if ( !defined( 'IN_CMS' ) ) {
 </div>
 
 <script>
+    var safeJSON = function(code) {
+        try {
+            return $.parseJSON(code);
+        } catch (e) {
+            return {
+                status: 'error',
+                message: code
+            };
+        }
+    };
+
     var mmShowMessage = function(data) {
         if (null === data) {
             $('#mmsg_wrap').attr('class', 'error');
@@ -53,7 +60,7 @@ if ( !defined( 'IN_CMS' ) ) {
 
     $(document).ajaxError(function(event, jqXHR, settings, exception) {
         var msg;
-        if (msg = $.parseJSON(jqXHR.responseText)) {
+        if (msg = safeJSON(jqXHR.responseText)) {
             mmShowMessage(msg);
         } else {
             mmShowMessage(jqXHR.responseText);

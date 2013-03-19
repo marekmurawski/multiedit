@@ -35,14 +35,14 @@ if ( !defined( 'IN_CMS' ) ) {
 <div class="clear"></div>
 
 <?php
-$show_row_1        = (MultieditController::$cookie['showrow1']) ? ' checked="checked"' : '';
-$show_row_2        = (MultieditController::$cookie['showrow2']) ? ' checked="checked"' : '';
-$show_row_3        = (MultieditController::$cookie['showrow3']) ? ' checked="checked"' : '';
-$show_row_4        = (MultieditController::$cookie['showrow4']) ? ' checked="checked"' : '';
-$showpageparts     = (MultieditController::$cookie['showpageparts']) ? ' checked="checked"' : '';
-$useace = (MultieditController::$cookie['useace']) ? ' checked="checked"' : '';
+$show_row_1    = (MultieditController::$cookie['showrow1']) ? ' checked="checked"' : '';
+$show_row_2    = (MultieditController::$cookie['showrow2']) ? ' checked="checked"' : '';
+$show_row_3    = (MultieditController::$cookie['showrow3']) ? ' checked="checked"' : '';
+$show_row_4    = (MultieditController::$cookie['showrow4']) ? ' checked="checked"' : '';
+$showpageparts = (MultieditController::$cookie['showpageparts']) ? ' checked="checked"' : '';
+$useace        = (MultieditController::$cookie['useace']) ? ' checked="checked"' : '';
+echo '<div id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedit' ) . '">' . get_url( 'plugin/multiedit' ) . '</div>';
 ?>
-
 <table border="0">
     <tr>
         <td style="width: 50%">
@@ -67,12 +67,13 @@ $useace = (MultieditController::$cookie['useace']) ? ' checked="checked"' : '';
                 <div class="clear"></div>
                 <input type="checkbox" class="multiedit-items-select" name="showpageparts" id="showpageparts" value="1" <?php echo $showpageparts; ?>/>
                 <label for="showpageparts"><img alt="<?php echo __( 'Load page parts' ); ?>" title="<?php echo __( 'Load page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/snippet.png'; ?>"/> <?php echo __( 'Load page parts' ); ?></label>
+                <?php if ( Plugin::isEnabled( 'ace' ) ): ?>
+                    <div class="clear"></div>
+                    <input type="checkbox" class="multiedit-items-select secondary" name="useace" id="useace" value="1" <?php echo $useace; ?>/>
+                    <label for="useace"><img alt="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" title="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Use Ace Syntax highlighter' ); ?></label>
+                <?php endif; ?>
                 <div class="clear"></div>
-                <input type="checkbox" class="multiedit-items-select secondary" name="useace" id="useace" value="1" <?php echo $useace; ?>/>
-                <label for="useace"><img alt="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" title="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Use Ace Syntax highlighter' ); ?></label>
-
-                <div class="clear"></div>
-                <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="32" max="1024" step="8" />
+                <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="40" max="1000" step="10" />
                 <label for="partheight"><img alt="<?php echo __( 'Part editing field height' ); ?>" title="<?php echo __( 'Part editing field height' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Part editing field height' ); ?></label>
 
                 <div class="clear"></div>
