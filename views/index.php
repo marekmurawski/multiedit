@@ -129,7 +129,6 @@ if ( !defined( 'IN_CMS' ) ) {
 //var newname = window.prompt
 
         if (confirm !== true) {
-            showMessageBox('Cancelled field deletion', 'OK');
             return false;
         }
         else {
@@ -142,13 +141,13 @@ if ( !defined( 'IN_CMS' ) ) {
                 dataType: 'json',
                 success: function(data) {
                     //reloadButton.trigger('click');
-                    showMessageBox(data.message, data.status);
+                    mmShowMessage(data);
                     if (data.status === 'OK')
                         $("#reload-list").trigger('click');
                 },
                 error: function(data) {
                     //reloadButton.trigger('click');
-                    showMessageBox(data.message, data.status);
+                    mmShowMessage(data);
                 }
             })
         }
@@ -169,13 +168,13 @@ if ( !defined( 'IN_CMS' ) ) {
             dataType: 'json',
             success: function(data) {
                 //reloadButton.trigger('click');
-                showMessageBox(data.message, data.status);
+                mmShowMessage(data);
                 if (data.status === 'OK')
                     $("#reload-list").trigger('click');
             },
             error: function(data) {
                 //reloadButton.trigger('click');
-                showMessageBox(data.message, data.status);
+                mmShowMessage(data);
             }
         })
     });
@@ -196,13 +195,13 @@ if ( !defined( 'IN_CMS' ) ) {
                 dataType: 'json',
                 success: function(data) {
                     //reloadButton.trigger('click');
-                    showMessageBox(data.message, data.status);
+                    mmShowMessage(data);
                     if (data.status === 'OK')
                         $("#reload-list").trigger('click');
                 },
                 error: function(data) {
                     //reloadButton.trigger('click');
-                    showMessageBox(data.message, data.status);
+                    mmShowMessage(data);
                 }
             });
         }

@@ -170,10 +170,10 @@ $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
 
 
 
-$(".multiedit-item .reload-item").live('click', function() {
+$(document).delegate('.multiedit-item .reload-item', 'click', function() {
     var meUrl = $('#multiedit-controller-url').attr('data-url');
     showfull = ($(this).hasClass('full')) ? '1' : '0';
-    is_frontend = ($(this).attr('data-is-frontend')=='1') ? '1' : '0';
+    is_frontend = ($(this).attr('data-is-frontend') == '1') ? '1' : '0';
 
     id = $(this).attr('rel').split('-', 2)[1];
     target = $('#' + $(this).attr('rel'));
@@ -182,9 +182,10 @@ $(".multiedit-item .reload-item").live('click', function() {
         $.ajax({
             url: meUrl + '/getoneitem',
             type: 'POST',
+            global: false,
             data: {
                 'page_id': id,
-                'force_full_view': showfull,
+                'force_full_view': showfull || is_frontend,
                 'frontend': is_frontend
             },
             success: function(data) {
@@ -194,7 +195,7 @@ $(".multiedit-item .reload-item").live('click', function() {
                 target.fadeTo('fast', 1);
                 // trigger click to activate Ace
                 target.find('.part_label_tab.active').trigger('click');
-                //showMessageBox ('Reloaded item ' + id,'OK');
+                //mmShowMessage ('Reloaded item ' + id,'OK');
             }
         });
 
@@ -209,7 +210,7 @@ $(document).delegate(".add_page_part", 'click', function() {
     var pageid = $(this).attr('rel');
     var newname = window.prompt('New page part name ');
     reloadButton = $('#reload-item' + pageid);
-    if (newname === null) 
+    if (newname === null)
         return false;
     $.ajax({
         url: meUrl + '/add_page_part',
@@ -221,6 +222,7 @@ $(document).delegate(".add_page_part", 'click', function() {
         dataType: 'json',
         success: function(data) {
             reloadButton.trigger('click');
+            mmShowMessage(data);
         }
     });
 });
@@ -246,7 +248,7 @@ $(document).delegate('.delete_page_part', 'click', function() {
         dataType: 'json',
         success: function(data) {
             reloadButton.trigger('click');
-
+            mmShowMessage(data);
         }
     });
 });
@@ -259,17 +261,9 @@ $(document).delegate('.rename_page_part', 'click', function() {
     var newname = window.prompt('New page part name for ' + oldname, oldname);
 
     reloadButton = $(this).parents('div.multiedit-item').find('.reload-item');
-    if (newname === null) { /* showMessageBox ('Cancelled page part name change','error'); */
+    if (newname === null)
         return false;
-    }
-    if (newname.trim().length === 0) {
-        showMessageBox('No name specified', 'error');
-        return false;
-    }
-    if (newname.trim() === $(this).html().trim()) {
-        showMessageBox('Same name specified', 'error');
-        return false;
-    }
+
     $.ajax({
         url: meUrl + '/rename_page_part',
         type: 'POST',
@@ -281,12 +275,7 @@ $(document).delegate('.rename_page_part', 'click', function() {
         dataType: 'json',
         success: function(data) {
             reloadButton.trigger('click');
-            showMessageBox(data.message, data.status);
-        },
-        error: function(data) {
-            reloadButton.trigger('click');
-            showMessageBox(data.message, data.status);
-
+            mmShowMessage(data);
         }
     });
 });
