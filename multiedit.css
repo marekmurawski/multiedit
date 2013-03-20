@@ -1,6 +1,6 @@
 
 /* SIDEBAR INFOBOX */
-#mm_sbox { position: absolute; margin-top: 12px; padding-top: 12px; right: 1%; width: 25%; margin-bottom: 5px; min-height: 50px; }
+#mm_sbox { position: absolute; margin-top: 12px; padding-top: 12px; right: 1%; width: 25%; margin-bottom: 5px; min-height: 50px; z-index: 1999;}
 #mm_sbox.fixed { position: fixed; top: 0; }
 
 #mmsg_wrap { padding: 10px; min-height: 50px; margin: 4px 0px 0px 0px; transition: background-color .5s; }
@@ -79,6 +79,7 @@
  /* text-shadow: 1px 1px 1px rgba(0,0,0,.2); */
 }
 
+.view-frontend-page {position: relative; left: -16px; cursor: pointer;}
 .status-indicator {width: 22px; height: 22px; position: absolute; left: 0px; top: 0px; border:none; box-sizing: content-box;}
 .status-1 { background-color: red; }
 .status-10 { background-color: orange; }

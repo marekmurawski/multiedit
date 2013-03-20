@@ -79,7 +79,7 @@
                     target.html(data);
                     $(".multiedit-countchars").trigger('keyup');
                     $(".multiedit-counttags").trigger('keyup');
-                    target.show('fast');
+                    target.fadeIn('fast');
                     $('#multiedit-list').show();
                     $("#multiedit-fe-hide").fadeIn('slow');
                     $('.part_label_tab.active').trigger('click');
@@ -97,7 +97,7 @@
         $(this).hide();
         me_eraseCookie('MEfe');
         target = $('#multipage_item-' +<?php echo $page_id; ?>);
-        target.hide('fast', function() {
+        target.fadeOut('fast', function() {
             $("#multiedit-fe-show").fadeIn('fast');
         });
     });
@@ -128,7 +128,7 @@
         if (data.hasOwnProperty('exe_time'))
             $('#mmsg_stats').html('<?php echo __('Execution time'); ?>: <b>' + data.exe_time + '</b><br/>' + '<?php echo __('Memory usage'); ?>: <b>' + data.mem_used + '</b>');
         (data.hasOwnProperty('message')) ? $('#mmsg_out').html(data.message) : $('#mmsg_out').html(data);
-        $('#mm_sbox').delay(4000).fadeOut('slow');
+        $('#mm_sbox').delay(2000).fadeOut('slow');
     };
 
     $(document).ajaxSend(function() {

@@ -153,17 +153,22 @@ if ( !defined('IN_CMS') ) {
             },
             dataType: 'json',
             success: function(data) {
-                //reloadButton.trigger('click');
                 mmShowMessage(data);
                 if (data.status === 'OK')
                     $("#reload-list").trigger('click');
             },
             error: function(data) {
-                //reloadButton.trigger('click');
                 mmShowMessage(data);
             }
         })
     });
+
+    $(document).delegate('.view-frontend-page', 'click', function() {
+        $baseUrl = $(this).parents('div.multiedit-item').find('.baseurl').text();
+        $slug = $(this).parents('div.multiedit-item').find('.titleslug').text();
+        window.location = $baseUrl+$slug;
+    });
+
 
     $(document).delegate('.multiedit-rename-field', 'click', function() {
 

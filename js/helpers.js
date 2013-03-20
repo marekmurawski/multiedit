@@ -105,6 +105,7 @@ $(document).delegate(".multiedit-slugfield", 'keyup', function() {
 $(document).delegate('.part_label_tab', 'click', function(e) {
     target = $(this).attr('data-target');
     shortID = $(this).attr('data-short-id');
+    filterSelect = $(this).attr('data-filter-select');
 
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
@@ -125,20 +126,20 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
      */
     if (($('#aceeditor' + 'ME' + shortID).length < 1) && ($('#ace-live-settings').length > 0)) {
         // in backend use height specified in MultiEdit settings
-        if ($('#partheight').length > 0) {
-            setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), {
-                'editorheight': $('#partheight').val(),
-                'theme' : 'monokai'
+        $options = {
+            'editorheight': $('#partheight').val(),
+            'theme': 'monokai'
+        };
+
+        selectBoxMode = $('#' + filterSelect).val();
+        if ((selectBoxMode === 'textile') || (selectBoxMode === 'markdown'))
+            $.extend($options, {
+                mode: selectBoxMode
             });
-            // hide standard textareas
-            $('#' + target).parents('td').find('textarea.partedit').hide();
-        } else {
-            setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), {
-                'theme' : 'monokai'
-            });
-            // hide standard textareas
-            $('#' + target).parents('td').find('textarea.partedit').hide();
-        }
+
+        setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), $options);
+        // hide standard textareas
+        $('#' + target).parents('td').find('textarea.partedit').hide();
     }
 
 });

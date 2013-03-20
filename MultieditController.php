@@ -858,10 +858,12 @@ QUERY;
                     $this->appendResult(__('Part Revisions plugin active:') . '<br/>' . __('Revision not saved!'));
                 }
             }
-            if ( !in_array($part->filter_id, Filter::findAll()) )
+            // checking if filter actually exists
+            if ( !in_array($part->filter_id, Filter::findAll()) && ($part->filter_id != '') ) {
                 $msg = __('This page part has invalid filter <b>:filter</b>  set! ', array( ':filter' => $part->filter_id )) . '<br/>';
-            $msg = $msg . __('You either dont`t have permissions to use this filter or it`s disabled.');
-            $this->failure($msg);
+                $msg = $msg . __('You either dont`t have permissions to use this filter or it`s disabled.');
+                $this->failure($msg);
+            }
             if ( $part->save() ) {
                 $insdata = array(
                             'updated_by_id' => AuthUser::getId(),
@@ -915,11 +917,8 @@ QUERY;
             }
         } elseif ( $field == 'tags' ) {
             $page = Page::findById((int) $ident);
-            if ( $page->setTags($value) ) {
-                $this->success(__('Updated <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident )));
-            } else {
-                $this->failure(__('Error updating <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident )));
-            }
+            $page->setTags($value);
+            $this->success(__('Updated <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident )));
         }
 
         $toUpdate   = array( $field => $value );

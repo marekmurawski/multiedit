@@ -38,6 +38,9 @@ if ( !$is_frontend )
                 echo '<input type="number" id="partheight" value="' . MultiEditController::$cookie['pagepartheight'] . '" min="40" max="1000" step="10" style="display: none;"/>';
             }
             ?>
+            <?php if ( !$is_frontend ) : ?>
+                <img class="view-frontend-page" src="<?php echo PLUGINS_URI . 'multiedit/icons/link.png'; ?>"/>
+            <?php endif; ?>
             <span class="reload-item" id="reload-item<?php echo $k->id; ?>" rel="multipage_item-<?php echo $k->id; ?>" data-is-frontend="<?php echo ($is_frontend) ? '1' : '0'; ?>"><img alt="<?php echo __('Refresh item'); ?>" title="<?php echo __('Refresh item'); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh.png'; ?>"/></span>
             <span class="reload-item full" rel="multipage_item-<?php echo $k->id; ?>" data-is-frontend="<?php echo ($is_frontend) ? '1' : '0'; ?>"><img alt="<?php echo __('Full view'); ?>" title="<?php echo __('Full view'); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/zoom.png'; ?>"/></span>
             <a class="edit-item" href="<?php echo URL_PUBLIC . ADMIN_DIR . '/page/edit/' . $k->id; ?>" target="multiedit_tab"><img alt="<?php echo __('Edit in default editor'); ?>" title="<?php echo __('Edit in default editor'); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/pencil.png'; ?>"/></a>
@@ -45,21 +48,22 @@ if ( !$is_frontend )
         <div class="header">
             <div id="status-indicator-<?php echo $k->id; ?>" class="status-indicator status-<?php echo $k->status_id; ?>"></div>
             <div class="page-id"><?php echo $k->id; ?></div>
-            <?php
-            echo URL_PUBLIC;
-            if ( $parentUri !== false ) {
-                echo $parentUri;
-                if ( strlen($parentUri) > 0 ) {
-                    echo '/';
-                };
-            } else {
-                $listUri = $k->getUri();
-                echo (isset($k->parent_id)) ? mb_substr($listUri, 0, -mb_strlen(strrchr($listUri, "/"))) : '';
-                if ( strpos($listUri, '/') !== false ) {
-                    echo '/';
-                };
-            }
-            ?><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
+            <span class="baseurl">
+                <?php
+                echo URL_PUBLIC;
+                if ( $parentUri !== false ) {
+                    echo $parentUri;
+                    if ( strlen($parentUri) > 0 ) {
+                        echo '/';
+                    };
+                } else {
+                    $listUri = $k->getUri();
+                    echo (isset($k->parent_id)) ? mb_substr($listUri, 0, -mb_strlen(strrchr($listUri, "/"))) : '';
+                    if ( strpos($listUri, '/') !== false ) {
+                        echo '/';
+                    };
+                }
+                ?></span><div class="titleslug" id="slug-<?php echo $k->id; ?>-title"><?php echo $k->slug; ?></div>
         </div>
         <?php
         if ( $is_frontend ) {
@@ -186,7 +190,7 @@ if ( !$is_frontend )
                         ?>
                     </td>
                     <td>
-        <?php if ( $k->id != 1 ): //root page status protection         ?>
+                        <?php if ( $k->id != 1 ): //root page status protection         ?>
                             <select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field status-select" rel="status-indicator-<?php echo $k->id; ?>" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
                                 <option class="status-<?php echo Page::STATUS_DRAFT; ?>" value="<?php echo Page::STATUS_DRAFT; ?>"<?php echo $k->status_id == Page::STATUS_DRAFT ? ' selected="selected"' : ''; ?>><?php echo __('Draft'); ?></option>
                                 <option class="status-<?php echo Page::STATUS_PREVIEW; ?>" value="<?php echo Page::STATUS_PREVIEW; ?>"<?php echo $k->status_id == Page::STATUS_PREVIEW ? ' selected="selected"' : ''; ?>><?php echo __('Preview'); ?></option>
@@ -194,7 +198,7 @@ if ( !$is_frontend )
                                 <option class="status-<?php echo Page::STATUS_HIDDEN; ?>" value="<?php echo Page::STATUS_HIDDEN; ?>"<?php echo $k->status_id == Page::STATUS_HIDDEN ? ' selected="selected"' : ''; ?>><?php echo __('Hidden'); ?></option>
                                 <option class="status-<?php echo Page::STATUS_ARCHIVED; ?>" value="<?php echo Page::STATUS_ARCHIVED; ?>"<?php echo $k->status_id == Page::STATUS_ARCHIVED ? ' selected="selected"' : ''; ?>><?php echo __('Archived'); ?></option>
                             </select>
-        <?php endif; ?>
+                        <?php endif; ?>
                     </td>
                     <td></td>
                 </tr>
@@ -207,21 +211,21 @@ if ( !$is_frontend )
                 $warning          = '&lArr; ' . __('Plugin fields. Use with caution!');
                 ?>
                 <tr class="extended_fields_row">
-        <?php foreach ( $extended_fields as $ext_field ): ?>
+                    <?php foreach ( $extended_fields as $ext_field ): ?>
                         <td class="fieldlabel"><span title="<?php echo __('Extended field') . ' [' . $ext_field . ']'; ?>"><?php echo Inflector::humanize($ext_field); ?></span></td>
                         <td>
                             <input type="text" class="multiedit-field" id="<?php echo $ext_field . '-' . $k->id; ?>" name="<?php echo $ext_field . '-' . $k->id; ?>" value="<?php echo $k->{$ext_field}; ?>"/>
                             <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>"/>
                         </td>
                         <td class="counter">
-            <?php if ( $k->id == 1 ): // editing possible only in root page        ?>
+                            <?php if ( $k->id == 1 ): // editing possible only in root page        ?>
                                 <span class="multiedit-delete-field" data-field-name="<?php echo $ext_field; ?>">
                                     <img src="<?php echo PLUGINS_URI . 'multiedit/icons/cross.png'; ?>" alt="<?php echo __('Delete this field'); ?>" title="<?php echo __('Delete this field'); ?>"/>
                                 </span>
                                 <span class="multiedit-rename-field" data-field-name="<?php echo $ext_field; ?>">
                                     <img src="<?php echo PLUGINS_URI . 'multiedit/icons/pencil.png'; ?>" alt="<?php echo __('Rename this field'); ?>" title="<?php echo __('Rename this field'); ?>"/>
                                 </span>
-            <?php endif; ?>
+                            <?php endif; ?>
                         </td>
 
                         <?php
@@ -258,14 +262,14 @@ if ( !$is_frontend )
                             <div class="partedit_container<?php echo ($active_tab) ? ' visible' : ''; ?>" id="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>-container">
 
                                 <span class="fieldlabel">
-            <?php echo __('Filter'); ?>
+                                    <?php echo __('Filter'); ?>
                                 </span>
                                 <span class="fieldlabel">
-                                    <select class="multiedit-field" name="partfilter-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>" title="" class="full">
+                                    <select class="multiedit-field" name="partfilter-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>" id="partfilter-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>" class="full">
                                         <option value="" <?php echo $part->filter_id == '' ? ' selected="selected"' : ''; ?>>&#8212; <?php echo __('none'); ?> &#8212;</option>
                                         <?php foreach ( $filters as $id => $fname ): ?>
                                             <option value="<?php echo $fname; ?>" <?php echo ($fname === $part->filter_id) ? ' selected="selected"' : ''; ?>><?php echo $fname; ?></option>
-            <?php endforeach; ?>
+                                        <?php endforeach; ?>
                                     </select>
                                 </span>
                                 <span class="partedit_toolbar" id="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>-toolbar">
@@ -276,9 +280,9 @@ if ( !$is_frontend )
                                           name="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
                                           id="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
                                           style="height: <?php echo MultieditController::$cookie['pagepartheight']; ?>px;"><?php echo htmlentities($part->content, ENT_COMPAT, 'UTF-8'); ?></textarea>
-                            <?php $active_tab = false; ?>
+                                          <?php $active_tab = false; ?>
                             </div>
-        <?php endforeach; ?>
+                        <?php endforeach; ?>
                     </td>
                 </tr>
                 <tr class="page_part_row">
@@ -293,6 +297,7 @@ if ( !$is_frontend )
                                 data-part-name="<?php echo $part->name; ?>"
                                 class="me_pt_<?php echo $part->name; ?> part_label_tab<?php echo ($active_tab) ? ' active' : ''; ?>"
                                 data-target="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
+                                data-filter-select="partfilter-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
                                 data-short-id="p<?php echo $k->id; ?>_<?php echo $part->name; ?>"
                                 >
                                 <span class="me_tablabel"><?php echo $part->name; ?></span><br/>
@@ -315,12 +320,12 @@ if ( !$is_frontend )
 
                     </td>
                     <td colspan="2" class="me_hinttext">
-        <?php echo nl2br($page_part_tab_title) ?>
+                        <?php echo nl2br($page_part_tab_title) ?>
                     </td>
                 </tr>
-        <?php endif; // showparts     ?>
+            <?php endif; // showparts     ?>
         </table>
-    <?php if ( !isset($innerOnly) ): ?>
+        <?php if ( !isset($innerOnly) ): ?>
         </div>
     <?php endif; ?>
 <?php endforeach; ?>
