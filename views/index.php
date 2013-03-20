@@ -57,7 +57,7 @@ if ( !defined( 'IN_CMS' ) ) {
         }
     });
 
-    $(".multiedit-header-field").live('change', function() {
+$(document).delegate(".multiedit-header-field",'change', function() {
 
         setMEcookie();
         if ($(this).val() == '0')
@@ -95,7 +95,7 @@ if ( !defined( 'IN_CMS' ) ) {
 
 
 
-    $("#partheight").live('change', function() {
+$(document).delegate("#partheight",'change', function() {
         $height = $(this).val();
         setMEcookie();
         $('.partedit').css('height', $height + "px");
@@ -107,7 +107,7 @@ if ( !defined( 'IN_CMS' ) ) {
 
 
 
-    $('.multiedit-delete-field').live('click', function() {
+$(document).delegate('.multiedit-delete-field','click', function() {
 
         var fieldname = $(this).attr('data-field-name');
         var confirm = window.confirm('<?php echo __( 'Are you ABSOLUTELY sure you want to delete field' ); ?>' +
@@ -138,7 +138,7 @@ if ( !defined( 'IN_CMS' ) ) {
         }
     });
 
-    $('#multiedit-add-field').live('click', function() {
+$(document).delegate('#multiedit-add-field','click', function() {
 
         var template_id = $('#multiedit-add-field-template').val();
         var newname = window.prompt('<?php echo __( 'Specify new field name ' ); ?>');
@@ -164,7 +164,7 @@ if ( !defined( 'IN_CMS' ) ) {
         })
     });
 
-    $('.multiedit-rename-field').live('click', function() {
+    $(document).delegate('.multiedit-rename-field', 'click', function() {
 
         var fieldname = $(this).attr('data-field-name');
         var newname = window.prompt('<?php echo __( 'Specify new name for field ' ); ?>' + fieldname);
@@ -196,7 +196,7 @@ if ( !defined( 'IN_CMS' ) ) {
         $('#multiedit-pageslist').trigger('change');
     });
 
-    $(".multiedit-field").live('change', function() {
+    $(document).delegate(".multiedit-field", 'change', function() {
         field = $(this);
         progressIndicator = $('#' + field.attr('id') + '-loader');
         progressIndicator.addClass('visible');
