@@ -241,7 +241,7 @@ class MultieditController extends PluginController {
                     'layouts'         => Record::findAllFrom('Layout'),
                     'extended_fields' => $extended_fields,
                     'force_full_view' => $force_full_view,
-                    ));
+        ));
         echo $itemsList->render();
 
     }
@@ -304,7 +304,7 @@ class MultieditController extends PluginController {
                     'layouts'         => $layouts,
                     'is_frontend'     => false,
                     'extended_fields' => $extended_fields,
-                    ));
+        ));
         if ( $showAll === true ) {
             $parentUri = false;
         }
@@ -318,7 +318,7 @@ class MultieditController extends PluginController {
                     'layouts'         => $layouts,
                     'is_frontend'     => false,
                     'extended_fields' => $extended_fields,
-                    ));
+        ));
         echo $rootItem->render();
         echo $itemsList->render();
 
@@ -345,7 +345,7 @@ class MultieditController extends PluginController {
                     'pagesList' => self::$pagesList,
                     'db_driver' => $this->DB_driver,
                     'rootPage'  => $page
-                    ));
+        ));
         $items = Page::findAllFrom('Page', 'parent_id=? ORDER BY ' . self::$defaultSorting, array( $page->id ));
 
         $filters = Filter::findAll();
@@ -364,7 +364,7 @@ class MultieditController extends PluginController {
                     'layouts'         => $layouts,
                     'is_frontend'     => false,
                     'extended_fields' => $extended_fields,
-                    ));
+        ));
 
         $itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
                     'items'           => $items,
@@ -375,7 +375,7 @@ class MultieditController extends PluginController {
                     'layouts'         => $layouts,
                     'is_frontend'     => false,
                     'extended_fields' => $extended_fields,
-                    ));
+        ));
 
         $this->display('multiedit/views/index', array(
                     'pagesList' => $list,
@@ -420,7 +420,7 @@ class MultieditController extends PluginController {
 
         // check new name existence
         if ( Record::existsIn('PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], trim($_POST['new_name']) )) ) {
-            $this->failure(__('Page part <b>:new</b> already exists in page id=<b>:page</b>', array( ':new'  => trim($_POST['new_name']), ':page' => $_POST['page_id'] )));
+            $this->failure(__('Page part <b>:new</b> already exists in page <b>:page</b>', array( ':new'  => trim($_POST['new_name']), ':page' => $_POST['page_id'] )));
         }
 
         if ( $part = Record::findOneFrom('PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], $_POST['old_name'] )) ) {
@@ -452,7 +452,7 @@ class MultieditController extends PluginController {
 
         // check new name existence
         if ( Record::existsIn('PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], trim($_POST['name']) )) ) {
-            $this->failure(__('Page part <b>:new</b> already exists in page id=<b>:page</b>', array( ':new'  => trim($_POST['name']), ':page' => $_POST['page_id'] )));
+            $this->failure(__('Page part <b>:new</b> already exists in page <b>:page</b>', array( ':new'  => trim($_POST['name']), ':page' => $_POST['page_id'] )));
         }
 
         $part          = new PagePart();
@@ -498,7 +498,7 @@ class MultieditController extends PluginController {
     public function field_add() {
         // check permissions
         if ( !AuthUser::hasPermission('multiedit_advanced') )
-            $this->failure(__('Insufficent permissions for fields manipulation'));
+            $this->failure(__('Insufficent permissions for fields manipulation!'));
 
         // check DB driver
         if ( !in_array($this->DB_driver, self::$supportedDrivers) )
@@ -534,7 +534,7 @@ class MultieditController extends PluginController {
 
         $result = $PDO->errorInfo();
         if ( $result[0] == 0 ) {
-            $this->success(__('Successfully added field :field to Page table', array( ':field' => $fieldnewname )));
+            $this->success(__('Successfully added field <b>:field</b> to Page table', array( ':field' => $fieldnewname )));
         } else {
             $this->failure($result[2]);
         }
@@ -553,7 +553,7 @@ class MultieditController extends PluginController {
 
         // check permissions
         if ( !AuthUser::hasPermission('multiedit_advanced') )
-            $this->failure(__('Insufficent permissions for fields manipulation'));
+            $this->failure(__('Insufficent permissions for fields manipulation!'));
 
         // check DB driver
         if ( !in_array($this->DB_driver, self::$supportedDrivers) )
@@ -562,7 +562,7 @@ class MultieditController extends PluginController {
         // sanitize input
         $fieldname = trim($_POST['field_name']);
         if ( empty($fieldname) )
-            $this->failure(__('No field source field name specified!'));
+            $this->failure(__('No source field name specified!'));
 
         $fieldnewname = trim($_POST['field_new_name']);
         if ( preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#', $fieldnewname) !== 1 )
@@ -574,7 +574,7 @@ class MultieditController extends PluginController {
         // check new name existence
         $page = Record::findOneFrom('Page', '1=1');
         if ( property_exists($page, $fieldnewname) )
-            $this->failure(__('Field already exists in Page model - ') . $fieldnewname);
+            $this->failure(__('Field <b>:field</b> already exists in Page model!', array( ':field' => $fieldnewname )));
 
         $PDO = Record::getConnection();
 
@@ -607,7 +607,7 @@ class MultieditController extends PluginController {
 
             $result = $PDO->errorInfo();
             if ( $result[0] == 0 ) {
-                $this->success(__('Successfully renamed field :from to :to', array( ':from' => $structure->Field, ':to'   => $fieldnewname )));
+                $this->success(__('Successfully renamed field <b>:from</b> to <b>:to</b>!', array( ':from' => $structure->Field, ':to'   => $fieldnewname )));
             } else {
                 $this->failure($result[2]);
             }
@@ -816,7 +816,7 @@ QUERY;
                 return false;
             }
             if ( !(bool) preg_match('/^[-a-z0-9_.]++$/D', (string) $value) ) {
-                $this->failure(__('Slug cannot be empty and should consist of letters, digits and "_-." characters!'), array(
+                $this->failure(__('Slug cannot be empty and should consist of [a-z] and [_-.] characters!'), array(
                             'oldvalue' => $oldslug,
                             'status'   => 'error' ));
             }
@@ -859,9 +859,9 @@ QUERY;
                 }
             }
             if ( !in_array($part->filter_id, Filter::findAll()) )
-                $this->failure(__('This page part has invalid filter "<b>:filter</b>"  set! <br/> You either dont`t have permissions to use this filter or it`s disabled.', array(
-                            ':filter' => $part->filter_id,
-                )));
+                $msg = __('This page part has invalid filter <b>:filter</b>  set! ', array( ':filter' => $part->filter_id )) . '<br/>';
+            $msg = $msg . __('You either dont`t have permissions to use this filter or it`s disabled.');
+            $this->failure($msg);
             if ( $part->save() ) {
                 $insdata = array(
                             'updated_by_id' => AuthUser::getId(),

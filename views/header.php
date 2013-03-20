@@ -78,7 +78,7 @@ echo '<div style="display: none" id="multiedit-controller-url" data-url="' . get
                 <?php if ( Plugin::isEnabled('ace') ): ?>
                     <div class="clear"></div>
                     <input type="checkbox" class="multiedit-header-field secondary" name="useace" id="useace" value="1" <?php echo $useace; ?>/>
-                    <label for="useace"><img alt="<?php echo __('Use Ace Syntax highlighter'); ?>" title="<?php echo __('Use Ace Syntax highlighter'); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __('Use Ace Syntax highlighter'); ?></label>
+                    <label for="useace"><img alt="<?php echo __('Use <b>Ace Syntax Highlighter</b>'); ?>" title="<?php echo __('Use <b>Ace Syntax Highlighter</b>'); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __('Use <b>Ace Syntax Highlighter</b>'); ?></label>
                 <?php endif; ?>
 
                 <div class="clear"></div>

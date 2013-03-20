@@ -68,7 +68,7 @@ if ( !$is_frontend )
         ?>
         <table border="0">
 
-    <?php if ( $show_line_1 ): ?>
+            <?php if ( $show_line_1 ): ?>
                 <tr>
                     <td class="fieldlabel">Title</td>
                     <td>
@@ -78,7 +78,7 @@ if ( !$is_frontend )
                     <td class="counter">
                         <div id="title-<?php echo $k->id; ?>-cnt"></div>
                     </td>
-                    <td class="fieldlabel">Description</td>
+                    <td class="fieldlabel"><?php echo __('Description'); ?></td>
                     <td>
                         <input type="text" class="multiedit-field multiedit-countchars" id="description-<?php echo $k->id; ?>" name="description-<?php echo $k->id; ?>" value="<?php echo $k->description; ?>"/>
                         <img id="description-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
@@ -86,16 +86,16 @@ if ( !$is_frontend )
                     <td class="counter">
                         <div id="description-<?php echo $k->id; ?>-cnt"></div>
                     </td>
-                    <td class="fieldlabel">Created</td>
+                    <td class="fieldlabel"><?php echo __('Created on'); ?></td>
                     <td class="timecolumn">
                         <input type="text" class="multiedit-field" id="created_on-<?php echo $k->id; ?>" name="created_on-<?php echo $k->id; ?>" value="<?php echo $k->created_on; ?>"/>
                         <img id="created_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
                     </td>
                 </tr>
-    <?php endif; //$show_line_1      ?>
-    <?php if ( $show_line_2 ): ?>
+            <?php endif; //$show_line_1      ?>
+            <?php if ( $show_line_2 ): ?>
                 <tr>
-                    <td class="fieldlabel">B-crumb</td>
+                    <td class="fieldlabel"><?php echo __('Breadcrumb'); ?></td>
                     <td>
                         <input type="text" class="multiedit-field" id="breadcrumb-<?php echo $k->id; ?>" name="breadcrumb-<?php echo $k->id; ?>" value="<?php echo $k->breadcrumb; ?>"/>
                         <img id="breadcrumb-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
@@ -103,9 +103,9 @@ if ( !$is_frontend )
                     <td class="counter">
                         <?php if ( $show_line_1 ): ?>
                             <div><span class="multiedit-breadcrumber" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI . 'multiedit/icons/arrow-top-left.png'; ?>" alt="<?php echo __('Copy breadcrumb from title'); ?>" title="<?php echo __('Copy breadcrumb from title'); ?>" /></span></div>
-        <?php endif; ?>
+                        <?php endif; ?>
                     </td>
-                    <td class="fieldlabel">Keywords</td>
+                    <td class="fieldlabel"><?php echo __('Keywords'); ?></td>
                     <td>
                         <input type="text" class="multiedit-field multiedit-countchars" id="keywords-<?php echo $k->id; ?>" name="keywords-<?php echo $k->id; ?>" value="<?php echo $k->keywords; ?>"/>
                         <img id="keywords-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
@@ -113,14 +113,14 @@ if ( !$is_frontend )
                     <td class="counter">
                         <div id="keywords-<?php echo $k->id; ?>-cnt"></div>
                     </td>
-                    <td class="fieldlabel">Published</td>
+                    <td class="fieldlabel"><?php echo __('Published'); ?></td>
                     <td class="timecolumn">
                         <input type="text" class="multiedit-field" id="published_on-<?php echo $k->id; ?>" name="published_on-<?php echo $k->id; ?>" value="<?php echo $k->published_on; ?>"/>
                         <img id="published_on-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
                     </td>
                 </tr>
-    <?php endif; //$show_line_2      ?>
-                    <?php if ( $show_line_3 ): ?>
+            <?php endif; //$show_line_2      ?>
+            <?php if ( $show_line_3 ): ?>
                 <tr>
                     <td class="fieldlabel">
                         <?php if ( $k->id != 1 ): //root page slug protection     ?>
@@ -137,10 +137,10 @@ if ( !$is_frontend )
                         <?php if ( $k->id != 1 ): //root page slug protection       ?>
                             <?php if ( $show_line_1 ): ?>
                                 <div><span class="multiedit-slugifier" rel="slug-<?php echo $k->id; ?>"><img src="<?php echo PLUGINS_URI . 'multiedit/icons/arrow-top-left.png'; ?>" alt="<?php echo __('Make slug from title'); ?>" title="<?php echo __('Make slug from title'); ?>"/></span></div>
-            <?php endif; ?>
-        <?php endif; ?>
+                            <?php endif; ?>
+                        <?php endif; ?>
                     </td>
-                    <td rowspan="3" class="fieldlabel">Tags</td>
+                    <td rowspan="3" class="fieldlabel"><?php echo __('Tags'); ?></td>
                     <td rowspan="3">
                         <textarea class="multiedit-field multiedit-counttags multiedit-field-tags" id="tags-<?php echo $k->id; ?>" name="tags-<?php echo $k->id; ?>"><?php echo implode(', ', $k->tags()); ?></textarea>
                         <img id="tags-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
@@ -150,7 +150,7 @@ if ( !$is_frontend )
                     </td>
 
 
-                    <td class="fieldlabel">Valid until</td>
+                    <td class="fieldlabel"><?php echo __('Valid until'); ?></td>
                     <td class="timecolumn">
                         <input type="text" class="multiedit-field" id="valid_until-<?php echo $k->id; ?>" name="valid_until-<?php echo $k->id; ?>" value="<?php echo $k->valid_until; ?>"/>
                         <img id="valid_until-<?php echo $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>">
@@ -166,25 +166,27 @@ if ( !$is_frontend )
                             <option value="0">&#8212; <?php echo __('inherit'); ?> &#8212;</option>
                             <?php foreach ( $layouts as $layout ): ?>
                                 <option value="<?php echo $layout->id; ?>"<?php echo $layout->id == $k->layout_id ? ' selected="selected"' : ''; ?>><?php echo $layout->name; ?></option>
-        <?php endforeach; ?>
+                            <?php endforeach; ?>
                         </select>
                     </td>
                     <td>
 
                     </td>
-                    <td class="fieldlabel">Updated on</td>
+                    <td class="fieldlabel"><?php echo __('Updated on'); ?></td>
                     <td id="updated_on-<?php echo $k->id; ?>">
-        <?php echo $k->updated_on; ?>
+                        <?php echo $k->updated_on; ?>
                     </td>
                 </tr>
                 <tr>
                     <td class="fieldlabel">
-                        <?php if ( $k->id != 1 ): //root page status protection     ?>
-                            Status
-                        <?php endif; ?>
+                        <?php
+                        if ( $k->id != 1 ) { //root page status protection
+                            echo __('Status');
+                        }
+                        ?>
                     </td>
                     <td>
-        <?php if ( $k->id != 1 ): //root page status protection        ?>
+        <?php if ( $k->id != 1 ): //root page status protection         ?>
                             <select id="status_id-<?php echo $k->id; ?>" class="multiedit-select multiedit-field status-select" rel="status-indicator-<?php echo $k->id; ?>" id="status_id-<?php echo $k->id; ?>" name="status_id-<?php echo $k->id; ?>">
                                 <option class="status-<?php echo Page::STATUS_DRAFT; ?>" value="<?php echo Page::STATUS_DRAFT; ?>"<?php echo $k->status_id == Page::STATUS_DRAFT ? ' selected="selected"' : ''; ?>><?php echo __('Draft'); ?></option>
                                 <option class="status-<?php echo Page::STATUS_PREVIEW; ?>" value="<?php echo Page::STATUS_PREVIEW; ?>"<?php echo $k->status_id == Page::STATUS_PREVIEW ? ' selected="selected"' : ''; ?>><?php echo __('Preview'); ?></option>
@@ -196,7 +198,7 @@ if ( !$is_frontend )
                     </td>
                     <td></td>
                 </tr>
-            <?php endif; //$show_line_3     ?>
+            <?php endif; //$show_line_3      ?>
 
             <?php
             if ( $show_line_4 ):
@@ -212,14 +214,14 @@ if ( !$is_frontend )
                             <img id="<?php echo $ext_field . '-' . $k->id; ?>-loader" class="loader" src="<?php echo PLUGINS_URI . 'multiedit/icons/progress.gif'; ?>"/>
                         </td>
                         <td class="counter">
-            <?php if ( $k->id == 1 ): // editing possible only in root page       ?>
+            <?php if ( $k->id == 1 ): // editing possible only in root page        ?>
                                 <span class="multiedit-delete-field" data-field-name="<?php echo $ext_field; ?>">
                                     <img src="<?php echo PLUGINS_URI . 'multiedit/icons/cross.png'; ?>" alt="<?php echo __('Delete this field'); ?>" title="<?php echo __('Delete this field'); ?>"/>
                                 </span>
                                 <span class="multiedit-rename-field" data-field-name="<?php echo $ext_field; ?>">
                                     <img src="<?php echo PLUGINS_URI . 'multiedit/icons/pencil.png'; ?>" alt="<?php echo __('Rename this field'); ?>" title="<?php echo __('Rename this field'); ?>"/>
                                 </span>
-                        <?php endif; ?>
+            <?php endif; ?>
                         </td>
 
                         <?php
@@ -313,10 +315,10 @@ if ( !$is_frontend )
 
                     </td>
                     <td colspan="2" class="me_hinttext">
-                <?php echo nl2br($page_part_tab_title) ?>
+        <?php echo nl2br($page_part_tab_title) ?>
                     </td>
                 </tr>
-        <?php endif; // showparts    ?>
+        <?php endif; // showparts     ?>
         </table>
     <?php if ( !isset($innerOnly) ): ?>
         </div>
