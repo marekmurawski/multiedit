@@ -148,15 +148,6 @@
     });
 
     $(document).ready(function() {
-        var top = $('#mm_sbox').offset().top - parseFloat($('#mm_sbox').css('marginTop').replace(/auto/, 0));
-        $(window).scroll(function(event) {
-            var y = $(this).scrollTop();
-            if (y >= top) {
-                $('#mm_sbox').addClass('fixed');
-            } else {
-                $('#mm_sbox').removeClass('fixed');
-            }
-        });
         if (me_readCookie("MEfe") === '1') {
             //alert("hello again");
             $("#multiedit-fe-show").trigger('click');
@@ -165,7 +156,7 @@
     });
 
 </script>
-<div id="mm_sbox" style="display:none;">
+<div id="mm_sbox" style="display:none; position: fixed; bottom: -16px; right: 3%;">
     <div id="mmsg_wrap" class="progress init">
         <div id="mmsg_out"></div>
     </div>
