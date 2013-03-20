@@ -1,8 +1,8 @@
 <?php
 
 /* Security measure */
-if (!defined('IN_CMS')) {
-	exit();
+if ( !defined('IN_CMS') ) {
+    exit();
 }
 
 /**
@@ -17,32 +17,30 @@ if (!defined('IN_CMS')) {
  * @copyright Marek Murawski, 2012
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
  */
-
-AutoLoader::addFolder(PLUGINS_ROOT.'/multiedit/lib');
+AutoLoader::addFolder(PLUGINS_ROOT . '/multiedit/lib');
 AutoLoader::load('mmInstaller');
 
 $success = true;
 
 
-$success = $success && mmInstaller::deletePermission( 'multiedit_view' );
-$success = $success && mmInstaller::deletePermission( 'multiedit_basic' );
-$success = $success && mmInstaller::deletePermission( 'multiedit_advanced' );
-$success = $success && mmInstaller::deletePermission( 'multiedit_parts' );
-$success = $success && mmInstaller::deletePermission( 'multiedit_frontend' );
+$success = $success && mmInstaller::deletePermission('multiedit_view');
+$success = $success && mmInstaller::deletePermission('multiedit_basic');
+$success = $success && mmInstaller::deletePermission('multiedit_advanced');
+$success = $success && mmInstaller::deletePermission('multiedit_parts');
+$success = $success && mmInstaller::deletePermission('multiedit_frontend');
 
-$success = $success && mmInstaller::deleteRole( 'multieditor' );
+$success = $success && mmInstaller::deleteRole('multieditor');
 
 if ( $success ) {
-    Flash::set( 'success', __( 'Successfully deactivated plugin' ) . ' ' . 'MultiEdit' );
-    if ( !empty( mmInstaller::$infoMessages ) ) {
-        Flash::set( 'info', implode( '<br/>', mmInstaller::$infoMessages ) );
+    Flash::set('success', __('Successfully deactivated plugin') . ' ' . 'MultiEdit');
+    if ( !empty(mmInstaller::$infoMessages) ) {
+        Flash::set('info', implode('<br/>', mmInstaller::$infoMessages));
     }
-}
-else {
-    Flash::set( 'error', __( 'Problems occured while deactivating plugin ' ) . ' MultiEdit:<br/>' .
-            implode( '<br/>', mmInstaller::$errorMessages ) );
-    if ( !empty( mmInstaller::$infoMessages ) ) {
-        Flash::set( 'info', implode( '<br/>', mmInstaller::$infoMessages ) );
+} else {
+    Flash::set('error', __('Problems occured while deactivating plugin ') . ' MultiEdit:<br/>' .
+                implode('<br/>', mmInstaller::$errorMessages));
+    if ( !empty(mmInstaller::$infoMessages) ) {
+        Flash::set('info', implode('<br/>', mmInstaller::$infoMessages));
     }
 }
 

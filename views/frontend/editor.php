@@ -116,7 +116,7 @@
     var mmShowMessage = function(data) {
         if (null === data) {
             $('#mmsg_wrap').attr('class', 'error');
-            $('#mmsg_out').html('<?php echo __( 'Empty response!' ); ?>');
+            $('#mmsg_out').html('<?php echo __('Empty response!'); ?>');
         } else
         if (data.hasOwnProperty('status')) {
             if (data.status === 'OK') {
@@ -126,7 +126,7 @@
         } else
             $('#mmsg_wrap').attr('class', 'success');
         if (data.hasOwnProperty('exe_time'))
-            $('#mmsg_stats').html('<?php echo __( 'Execution time' ); ?>: <b>' + data.exe_time + '</b><br/>' + '<?php echo __( 'Memory usage' ); ?>: <b>' + data.mem_used + '</b>');
+            $('#mmsg_stats').html('<?php echo __('Execution time'); ?>: <b>' + data.exe_time + '</b><br/>' + '<?php echo __('Memory usage'); ?>: <b>' + data.mem_used + '</b>');
         (data.hasOwnProperty('message')) ? $('#mmsg_out').html(data.message) : $('#mmsg_out').html(data);
         $('#mm_sbox').delay(4000).fadeOut('slow');
     };
@@ -135,7 +135,7 @@
         $('#mm_sbox').fadeIn('fast');
         $('#mmsg_wrap').attr('class', 'progress');
         $('#mmsg_stats').html('');
-        $('#mmsg_out').html('<?php echo __( 'Sending request...' ); ?>');
+        $('#mmsg_out').html('<?php echo __('Sending request...'); ?>');
     });
 
     $(document).ajaxError(function(event, jqXHR, settings, exception) {
@@ -177,8 +177,8 @@
     /**
      * Notify ACE plugin to include it's hidden settings div
      */
-    if ( Plugin::isEnabled( 'ace' ) ) {
-        Observer::notify( 'view_backend_list_plugin', 'ace' );
+    if ( Plugin::isEnabled('ace') ) {
+        Observer::notify('view_backend_list_plugin', 'ace');
     }
     ?>
     <div id="multiedit-fe-hide"></div>

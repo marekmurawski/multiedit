@@ -1,13 +1,13 @@
 <?php
 /* Security measure */
-if ( !defined( 'IN_CMS' ) ) {
+if ( !defined('IN_CMS') ) {
     exit();
 }
 ?>
-<p class="button"><a href="<?php echo get_url( 'plugin/multiedit/documentation' ); ?>"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/multiedit/icons/help.png" align="middle" /><?php echo __( 'Documentation' ); ?></a></p>
+<p class="button"><a href="<?php echo get_url('plugin/multiedit/documentation'); ?>"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/multiedit/icons/help.png" align="middle" /><?php echo __('Documentation'); ?></a></p>
 
 <div class="box">
-    <h2><?php echo __( 'MultiEdit' ) . ' - v.' . Plugin::$plugins_infos['multiedit']->version; ?></h2>
+    <h2><?php echo __('MultiEdit') . ' - v.' . Plugin::$plugins_infos['multiedit']->version; ?></h2>
     <?php
     echo $sidebarContents;
     ?>
@@ -15,7 +15,7 @@ if ( !defined( 'IN_CMS' ) ) {
 
 
 <div id="mm_sbox">
-    <h2><?php echo __( 'Messages' ); ?></h2>
+    <h2><?php echo __('Messages'); ?></h2>
     <div id="mmsg_wrap" class="progress init">
         <div id="mmsg_out"></div>
     </div>
@@ -38,7 +38,7 @@ if ( !defined( 'IN_CMS' ) ) {
     var mmShowMessage = function(data) {
         if (null === data) {
             $('#mmsg_wrap').attr('class', 'error');
-            $('#mmsg_out').html('<?php echo __( 'Empty response!' ); ?>');
+            $('#mmsg_out').html('<?php echo __('Empty response!'); ?>');
         } else
         if (data.hasOwnProperty('status')) {
             if (data.status === 'OK') {
@@ -48,14 +48,14 @@ if ( !defined( 'IN_CMS' ) ) {
         } else
             $('#mmsg_wrap').attr('class', 'success');
         if (data.hasOwnProperty('exe_time'))
-            $('#mmsg_stats').html('<?php echo __( 'Execution time' ); ?>: <b>' + data.exe_time + '</b><br/>' + '<?php echo __( 'Memory usage' ); ?>: <b>' + data.mem_used + '</b>');
+            $('#mmsg_stats').html('<?php echo __('Execution time'); ?>: <b>' + data.exe_time + '</b><br/>' + '<?php echo __('Memory usage'); ?>: <b>' + data.mem_used + '</b>');
         (data.hasOwnProperty('message')) ? $('#mmsg_out').html(data.message) : $('#mmsg_out').html(data);
     };
 
     $(document).ajaxSend(function() {
         $('#mmsg_wrap').attr('class', 'progress');
         $('#mmsg_stats').html('');
-        $('#mmsg_out').html('<?php echo __( 'Sending request...' ); ?>');
+        $('#mmsg_out').html('<?php echo __('Sending request...'); ?>');
     });
 
     $(document).ajaxError(function(event, jqXHR, settings, exception) {

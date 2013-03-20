@@ -1,11 +1,11 @@
 <?php
 /* Security measure */
-if ( !defined( 'IN_CMS' ) ) {
+if ( !defined('IN_CMS') ) {
     exit();
 }
 ?>
 <h1>MultiEdit</h1>
-<?php if ( Plugin::isEnabled( 'ace' ) ): ?>
+<?php if ( Plugin::isEnabled('ace') ): ?>
     <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/ace_editor.js"></script>
     <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/build/src-min/ace.js"></script>
 <?php endif; ?>
@@ -65,7 +65,7 @@ if ( !defined( 'IN_CMS' ) ) {
         $('#multiedit-list').fadeOut('fast', function() {
             $('#multiedit-list-preloader').addClass('preloading');
             var request = $.ajax({
-                url: "<?php echo get_url( 'plugin/multiedit/getsubpages/' ); ?>"
+                url: "<?php echo get_url('plugin/multiedit/getsubpages/'); ?>"
                         + $('#multiedit-pageslist').val() + '/' +
                         $("#multiedit-pageslist-sorting").val() + '/' +
                         $("#multiedit-pageslist-order").val() + '/' +
@@ -111,15 +111,15 @@ if ( !defined( 'IN_CMS' ) ) {
     $(document).delegate('.multiedit-delete-field', 'click', function() {
 
         var fieldname = $(this).attr('data-field-name');
-        var confirm = window.confirm('<?php echo __( 'Are you ABSOLUTELY sure you want to delete field' ); ?>' +
+        var confirm = window.confirm('<?php echo __('Are you ABSOLUTELY sure you want to delete field'); ?>' +
                 '\n' + '\n === ' + fieldname + ' === ??? \n' + '\n' +
-                '<?php echo __( 'Deleting this field will permanently erase ALL data in this field in ALL pages!' ); ?>');
+                '<?php echo __('Deleting this field will permanently erase ALL data in this field in ALL pages!'); ?>');
         if (confirm !== true) {
             return false;
         }
         else {
             $.ajax({
-                url: "<?php echo get_url( 'plugin/multiedit/field_delete' ); ?>",
+                url: "<?php echo get_url('plugin/multiedit/field_delete'); ?>",
                 type: 'POST',
                 data: {
                     'field_name': fieldname
@@ -142,10 +142,10 @@ if ( !defined( 'IN_CMS' ) ) {
     $(document).delegate('#multiedit-add-field', 'click', function() {
 
         var template_id = $('#multiedit-add-field-template').val();
-        var newname = window.prompt('<?php echo __( 'Specify new field name ' ); ?>');
+        var newname = window.prompt('<?php echo __('Specify new field name '); ?>');
 
         $.ajax({
-            url: "<?php echo get_url( 'plugin/multiedit/field_add' ); ?>",
+            url: "<?php echo get_url('plugin/multiedit/field_add'); ?>",
             type: 'POST',
             data: {
                 'template_id': template_id,
@@ -168,11 +168,11 @@ if ( !defined( 'IN_CMS' ) ) {
     $(document).delegate('.multiedit-rename-field', 'click', function() {
 
         var fieldname = $(this).attr('data-field-name');
-        var newname = window.prompt('<?php echo __( 'Specify new name for field ' ); ?>' + fieldname);
+        var newname = window.prompt('<?php echo __('Specify new name for field '); ?>' + fieldname);
 
         if (newname.trim()) {
             $.ajax({
-                url: "<?php echo get_url( 'plugin/multiedit/field_rename' ); ?>",
+                url: "<?php echo get_url('plugin/multiedit/field_rename'); ?>",
                 type: 'POST',
                 data: {
                     'field_name': fieldname,
@@ -202,7 +202,7 @@ if ( !defined( 'IN_CMS' ) ) {
         progressIndicator = $('#' + field.attr('id') + '-loader');
         progressIndicator.addClass('visible');
         $.ajax({
-            url: "<?php echo get_url( 'plugin/multiedit/setvalue/' ); ?>",
+            url: "<?php echo get_url('plugin/multiedit/setvalue/'); ?>",
             type: 'post',
             dataType: 'json',
             data: {

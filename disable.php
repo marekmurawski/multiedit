@@ -1,8 +1,8 @@
 <?php
 
 /* Security measure */
-if (!defined('IN_CMS')) {
-	exit();
+if ( !defined('IN_CMS') ) {
+    exit();
 }
 
 /**
@@ -17,14 +17,13 @@ if (!defined('IN_CMS')) {
  * @copyright Marek Murawski, 2012
  * @license http://www.gnu.org/licenses/gpl.html GPLv3 license
  */
-
-AutoLoader::addFolder(PLUGINS_ROOT.'/multiedit/lib');
+AutoLoader::addFolder(PLUGINS_ROOT . '/multiedit/lib');
 AutoLoader::load('mmInstaller');
 
 $success = true;
 
 
-    Flash::set( 'success', __( 'Successfully deactivated plugin' ) . ' ' . 'MultiEdit' );
+Flash::set('success', __('Successfully deactivated plugin') . ' ' . 'MultiEdit');
 
 
 exit();
