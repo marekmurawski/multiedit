@@ -73,7 +73,7 @@ echo '<div id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedi
                     <label for="useace"><img alt="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" title="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Use Ace Syntax highlighter' ); ?></label>
                 <?php endif; ?>
                 <div class="clear"></div>
-                <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="40" max="1000" step="10" />
+                <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="40" max="1000" step="10" />px
                 <label for="partheight"><img alt="<?php echo __( 'Part editing field height' ); ?>" title="<?php echo __( 'Part editing field height' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Part editing field height' ); ?></label>
 
                 <div class="clear"></div>

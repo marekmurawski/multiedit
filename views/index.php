@@ -4,6 +4,7 @@ if ( !defined( 'IN_CMS' ) ) {
     exit();
 }
 ?>
+<h1>MultiEdit</h1>
 <?php if ( Plugin::isEnabled( 'ace' ) ): ?>
     <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/ace_editor.js"></script>
     <script type="text/javascript" charset="utf-8" src="<?php echo PLUGINS_URI; ?>ace/build/src-min/ace.js"></script>
@@ -29,37 +30,14 @@ if ( !defined( 'IN_CMS' ) ) {
     var aceEmbedLimit = 40;
 
     var setMEcookie = function() {
-        if ($('#showrow1').is(':checked')) {
-            showrow1 = '1';
-        } else {
-            showrow1 = '0';
-        }
-        if ($('#showrow2').is(':checked')) {
-            showrow2 = '1';
-        } else {
-            showrow2 = '0';
-        }
-        if ($('#showrow3').is(':checked')) {
-            showrow3 = '1';
-        } else {
-            showrow3 = '0';
-        }
-        if ($('#showrow4').is(':checked')) {
-            showrow4 = '1';
-        } else {
-            showrow4 = '0';
-        }
-        if ($('#showpageparts').is(':checked')) {
-            showpageparts = '1';
-        } else {
-            showpageparts = '0';
-        }
-        if ($('#useace').is(':checked')) {
-            useace = '1';
-        } else {
-            useace = '0';
-        }
-        pagepartheight = $('#partheight').val();
+
+        showrow1 = ($('#showrow1').is(':checked')) ? '1' : '0';
+        showrow2 = ($('#showrow2').is(':checked')) ? '1' : '0';
+        showrow3 = ($('#showrow3').is(':checked')) ? '1' : '0';
+        showrow4 = ($('#showrow4').is(':checked')) ? '1' : '0';
+        showpageparts = ($('#showpageparts').is(':checked')) ? '1' : '0';
+        useace = ($('#useace').is(':checked')) ? '1' : '0';
+        pagepartheight = parseInt($('#partheight').val());
 
         var theCookie = showrow1 + '|' + showrow2 + '|' + showrow3 + '|' + showrow4 + '|' + showpageparts + '|' + useace + '|' + pagepartheight;
         me_createCookie('MEdit', theCookie);
@@ -72,7 +50,7 @@ if ( !defined( 'IN_CMS' ) ) {
 
         /**
          * Use Embed Ace Syntax highlighter
-         * if less than 20 items is displayed
+         * if less than {aceEmbedLimit} items is displayed
          */
         if (($('.multiedit-item').length < aceEmbedLimit) && $('#useace').is(':checked')) {
             $('.part_label_tab.active').trigger('click');
@@ -117,6 +95,15 @@ if ( !defined( 'IN_CMS' ) ) {
 
 
 
+    $("#partheight").live('change', function() {
+        $height = $(this).val();
+        setMEcookie();
+        $('.partedit').css('height', $height + "px");
+        // Ace-backend specific
+        $('.ace_editor').css('height', $height + "px");
+        $('.ace_resize_tb').trigger('click');
+    });
+
 
 
 
@@ -126,8 +113,6 @@ if ( !defined( 'IN_CMS' ) ) {
         var confirm = window.confirm('<?php echo __( 'Are you ABSOLUTELY sure you want to delete field' ); ?>' +
                 '\n' + '\n === ' + fieldname + ' === ??? \n' + '\n' +
                 '<?php echo __( 'Deleting this field will permanently erase ALL data in this field in ALL pages!' ); ?>');
-//var newname = window.prompt
-
         if (confirm !== true) {
             return false;
         }
@@ -210,21 +195,6 @@ if ( !defined( 'IN_CMS' ) ) {
     $("#reload-list").live('click', function() {
         $('#multiedit-pageslist').trigger('change');
     });
-
-
-    $("#partheight").live('change', function() {
-        $height = $(this).val();
-        setMEcookie();
-        $('.partedit').css('height', $height + "px");
-        // Ace-backend specific
-        $('.ace_editor').css('height', $height + "px");
-        $('.ace_resize_btn').trigger('click');
-    });
-
-
-
-
-
 
     $(".multiedit-field").live('change', function() {
         field = $(this);

@@ -109,7 +109,8 @@
 
 .multiedit-item .actions,
 .multiedit-item .multiedit-breadcrumber,
-.multiedit-item .multiedit-slugifier {visibility: hidden}
+.multiedit-item .add_page_part,
+.multiedit-item .multiedit-slugifier {opacity: 0}
 
 .multiedit-item .actions {
  position: absolute;
@@ -120,9 +121,8 @@
 }
 .multiedit-item:hover .actions,
 .multiedit-item:hover .multiedit-breadcrumber,
-.multiedit-item:hover .multiedit-slugifier {
- visibility: visible;
-}
+.multiedit-item:hover .add_page_part,
+.multiedit-item:hover .multiedit-slugifier { opacity: 1; }
 
 
 
@@ -140,16 +140,11 @@
 }
 
 .multiedit-item div.part_label_tab.active {
- background: #120;
+ background: #272822;
  color: white;
 }
 
-.multiedit-item .add_page_part {
- cursor: pointer;
- opacity: 0;
-
-}
-.multiedit-item:hover .add_page_part {opacity: 1;}
+ .multiedit-item .add_page_part { opacity: 0;}
 
 .multiedit-item .delete_page_part,
 .multiedit-item .rename_page_part {
@@ -162,14 +157,10 @@
 .multiedit-item .rename_page_part {right: 18px;}
 .multiedit-item .delete_page_part {right: 1px;}
 
-.multiedit-item div.part_label_tab:hover {
-    background-color: #888;
-}
+.multiedit-item div.part_label_tab:hover { background-color: #888; }
 
 .multiedit-item div.part_label_tab:hover .delete_page_part,
-.multiedit-item div.part_label_tab:hover .rename_page_part {
-    opacity: 1;
-}
+.multiedit-item div.part_label_tab:hover .rename_page_part { opacity: 1; }
 
 .me_tablabel {
  font-weight: bold;
@@ -265,39 +256,44 @@ font-size: 9px;
  font-size: 12px;
  outline: none;
  padding: 0px;
- border-radius: 0px;
- box-shadow: inset 0 2px 2px rgba(180,180,180,.5);
+ /* box-shadow: inset 0 2px 2px rgba(180,180,180,.5); */
  margin: 0px;
  height: auto;
+}
+
+#multiedit-wrapper select {
+ padding: 0px;
+ border: 0px solid transparent;
+ outline: 1px solid #AAA;
+ outline-offset: -1px;
+ background-color: #f4f4f4;
 }
 
 #multiedit-wrapper img {margin: 0;}
 
 #multiedit-wrapper input:focus,
 #multiedit-wrapper textarea:focus,
-#multiedit-wrapper select:focus {background: #ffffcc; border: 1px solid #f80; margin: 0px;}
+#multiedit-wrapper select:focus {background: #ffffcc; outline: 1px solid #f80; outline-offset: -1px;}
 
 #multiedit-wrapper input:hover,
 #multiedit-wrapper textarea:hover,
-#multiedit-wrapper select:hover {background: #ffffdd; margin: 0px;}
+#multiedit-wrapper select:hover {background: #ffffdd;}
 
-#multiedit-wrapper select {
- padding: 0px;
- -webkit-appearance: none;
- -moz-appearance: none;
- appearance: none;
- background-color: #CCC;
-}
 
 #multiedit-wrapper div.partedit_container {display: none;}
 #multiedit-wrapper div.partedit_container.visible {display: block;}
-#multiedit-wrapper .ace_options select {width: auto; background: #000; color: #8F0;}
-#multiedit-wrapper .ace_options label {width: 82px; display: inline-block; text-align: right; padding: 0; margin: 0;}
+
+#multiedit-wrapper .ace_options {width: auto; background: #272822; color: #F80; display: inline-block; height: 20px; padding: 1px 8px; margin-left: 40px; border-top-left-radius: 6px !important; border-top-right-radius: 6px !important;}
+#multiedit-wrapper .ace_options img {position: relative; top:2px; margin-left: 16px; opacity: .3;}
+#multiedit-wrapper .ace_options img:hover {opacity: 1;}
+#multiedit-wrapper .ace_options select {width: auto; color: #F80;  border: 0px solid transparent; outline: 1px solid #666; outline-offset: -1px; background-color: #432;}
+#multiedit-wrapper .ace_options label {color: #ccc; display: inline-block; text-align: right; margin: 0px 6px 0px 18px; }
+#multiedit-wrapper .ace_options input {width: auto; display: inline-block; padding: 0; margin: 0;}
+
 #multiedit-wrapper .ace_editor {border: none;}
 
-#multiedit-wrapper textarea {resize: vertical;}
-#multiedit-wrapper textarea.partedit {color: #6B0; background: black; border: none; box-shadow: none; font-family: "Monaco", "Courier", serif;}
-#multiedit-wrapper textarea.partedit:hover {color: #8F0; background: black;}
+#multiedit-wrapper textarea {resize: vertical; padding: 0; margin:0;}
+#multiedit-wrapper textarea.partedit {color: #F8F8F2; background: #272822; border: none; box-shadow: none; font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro', monospace;}
 
 #multiedit-wrapper input.error {border: 1px solid red;}
 #multiedit-wrapper input.success {border: 1px solid blue;}
@@ -312,6 +308,7 @@ font-size: 9px;
 #multiedit-header label {display: inline;}
 
 #multiedit-header label img {position: relative; top:3px;}
+#multiedit-header #reload-list {float: right; position: relative; top: 8px;}
 
 .multiedit-item img.loader {position: absolute; right: 4px; top: 3px; display: none;}
 .multiedit-item td.timecolumn img.loader {right: 14px;}
@@ -324,7 +321,6 @@ font-size: 9px;
 .multiedit-item .header .actions span,
 .multiedit-item .header .actions a {margin-left: 5px}
 
-#multiedit-header #reload-list {float: right; position: relative; top: 8px;}
 
 /* FRONTEND CSS */
 #multiedit-wrapper.frontend {margin: 0; position: fixed; bottom: -10px; right: 3%; left: 3%; width: 94%; z-index: 999;}

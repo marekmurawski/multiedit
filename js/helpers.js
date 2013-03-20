@@ -127,12 +127,15 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
         // in backend use height specified in MultiEdit settings
         if ($('#partheight').length > 0) {
             setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), {
-                'editorheight': $('#partheight').val()
+                'editorheight': $('#partheight').val(),
+                'theme' : 'monokai'
             });
             // hide standard textareas
             $('#' + target).parents('td').find('textarea.partedit').hide();
         } else {
-            setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target));
+            setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), {
+                'theme' : 'monokai'
+            });
             // hide standard textareas
             $('#' + target).parents('td').find('textarea.partedit').hide();
         }
@@ -147,7 +150,6 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
 $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
     e.preventDefault();
     target = $(this).attr('data-target');
-    // alert(target);
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
@@ -185,7 +187,7 @@ $(document).delegate('.multiedit-item .reload-item', 'click', function() {
             global: false,
             data: {
                 'page_id': id,
-                'force_full_view': showfull || is_frontend,
+                'force_full_view': showfull,
                 'frontend': is_frontend
             },
             success: function(data) {
@@ -285,12 +287,13 @@ $(document).delegate(".multiedit-item .header", 'click', function(e) {
 
     if (e.ctrlKey) {
         target = $(this).parent();
-        target.fadeOut('normal', function() {
+        target.slideUp('normal', function() {
             target.remove();
         });
         return false;
     }
 
+    // if nothing is visible - load full item
     if (($('#showrow1').is(':checked') === false) &&
             ($('#showrow2').is(':checked') === false) &&
             ($('#showrow3').is(':checked') === false) &&
@@ -304,3 +307,5 @@ $(document).delegate(".multiedit-item .header", 'click', function(e) {
 
     $(this).parent().find('table').toggle();
 });
+
+
