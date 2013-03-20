@@ -110,6 +110,8 @@
 .multiedit-item .actions,
 .multiedit-item .multiedit-breadcrumber,
 .multiedit-item .add_page_part,
+.multiedit-item .me_hinttext,
+.multiedit-item .me_tabfilter,
 .multiedit-item .multiedit-slugifier {opacity: 0}
 
 .multiedit-item .actions {
@@ -122,6 +124,8 @@
 .multiedit-item:hover .actions,
 .multiedit-item:hover .multiedit-breadcrumber,
 .multiedit-item:hover .add_page_part,
+.multiedit-item:hover .me_hinttext,
+.multiedit-item:hover .me_tabfilter,
 .multiedit-item:hover .multiedit-slugifier { opacity: 1; }
 
 
@@ -162,13 +166,9 @@
 .multiedit-item div.part_label_tab:hover .delete_page_part,
 .multiedit-item div.part_label_tab:hover .rename_page_part { opacity: 1; }
 
-.me_tablabel {
- font-weight: bold;
-}
-
-.me_tabfilter {
-font-size: 9px;
-}
+.me_tablabel { font-weight: bold;}
+.me_tabfilter {font-size: 9px;}
+.me_hinttext { font-size: 9px; color: #888; }
 
 .multiedit-item table {
  width: 100%;
@@ -286,7 +286,7 @@ font-size: 9px;
 #multiedit-wrapper .ace_options {width: auto; background: #272822; color: #F80; display: inline-block; height: 20px; padding: 1px 8px; margin-left: 40px; border-top-left-radius: 6px !important; border-top-right-radius: 6px !important;}
 #multiedit-wrapper .ace_options img {position: relative; top:2px; margin-left: 16px; opacity: .3;}
 #multiedit-wrapper .ace_options img:hover {opacity: 1;}
-#multiedit-wrapper .ace_options select {width: auto; color: #F80;  border: 0px solid transparent; outline: 1px solid #666; outline-offset: -1px; background-color: #432;}
+#multiedit-wrapper .ace_options select {width: auto; color: #F80;  border: 0px solid transparent; outline: 1px solid #654; outline-offset: -1px; background-color: #432;}
 #multiedit-wrapper .ace_options label {color: #ccc; display: inline-block; text-align: right; margin: 0px 6px 0px 18px; }
 #multiedit-wrapper .ace_options input {width: auto; display: inline-block; padding: 0; margin: 0;}
 

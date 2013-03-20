@@ -72,6 +72,7 @@ $(document).delegate(".multiedit-header-field",'change', function() {
                         showpageparts + '/'
                         ,
                 type: 'get',
+                global: false,
                 success: function(data) {
                     $('#multiedit-list').html(data);
 

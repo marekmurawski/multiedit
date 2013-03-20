@@ -7,7 +7,6 @@ if ( !defined( 'IN_CMS' ) ) {
 
 <?php
 // initialize variables
-//$behaviors = Behavior::findAll();
 
 if ( !isset( $force_full_view ) )
     $force_full_view     = false;
@@ -18,11 +17,11 @@ $show_line_2         = ((MultieditController::$cookie['showrow2'] || $force_full
 $show_line_3         = ((MultieditController::$cookie['showrow3'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_basic' )) ? true : false;
 $show_line_4         = ((MultieditController::$cookie['showrow4'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_advanced' )) ? true : false;
 $showpageparts       = ((MultieditController::$cookie['showpageparts'] || $force_full_view ) && AuthUser::hasPermission( 'multiedit_parts' )) ? true : false;
-$page_part_tab_title = __( 'Left click - :editor', array( ':editor' => Plugin::isEnabled( 'ace' ) ? 'Ace Syntax Highlighter' : __( 'Default editor' ) ) ) . PHP_EOL .
-            __( 'Right click - Default editor' );
+$page_part_tab_title = __( '<b>left click</b> - :editor', array( ':editor' => Plugin::isEnabled( 'ace' ) ? 'Ace Syntax Highlighter' : __( 'Default editor' ) ) ) . PHP_EOL .
+            __( '<b>right click</b> - Default editor' );
 if ( !$is_frontend )
     $page_part_tab_title .= PHP_EOL .
-                __( 'Hold CTRL to switch all editors to this part' );
+                __( 'Hold <b>ctrl<b> to switch all editors to clicked part' );
 ?>
 
 <?php foreach ( $items as $k ): ?>
@@ -311,6 +310,9 @@ if ( !$is_frontend )
 
                         <img class="add_page_part" rel="<?php echo $k->id; ?>" alt="<?php echo __( 'Add page part' ); ?>" title="<?php echo __( 'Add page part' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/plus.png'; ?>"/>
 
+                    </td>
+                    <td colspan="2" class="me_hinttext">
+                        <?php echo nl2br($page_part_tab_title) ?>
                     </td>
                 </tr>
         <?php endif; // showparts    ?>
