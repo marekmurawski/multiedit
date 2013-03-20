@@ -7,7 +7,7 @@ if ( !defined( 'IN_CMS' ) ) {
 <p class="button"><a href="<?php echo get_url( 'plugin/multiedit/documentation' ); ?>"><img src="<?php echo URL_PUBLIC; ?>wolf/plugins/multiedit/icons/help.png" align="middle" /><?php echo __( 'Documentation' ); ?></a></p>
 
 <div class="box">
-    <h2><?php echo __( 'MultiEdit Pages' ) . ' - v.' . Plugin::$plugins_infos['multiedit']->version; ?></h2>
+    <h2><?php echo __( 'MultiEdit' ) . ' - v.' . Plugin::$plugins_infos['multiedit']->version; ?></h2>
     <?php
     echo $sidebarContents;
     ?>

@@ -16,48 +16,47 @@
                 item: field.attr('name'),
                 value: field.val()
             },
+            dataType: 'json',
             success: function(data) {
-                if (data.status === 'OK') {
-                    field.removeClass('error');
-                    field.addClass('success');
 
-                    mmShowMessage(data);
-                    setTimeout(function() {
-                        progressIndicator.removeClass('visible');
-                    }, 300);
-                    if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
-                        $('#updated_on-' + data.identifier).html(data.datetime).addClass('wasmodified');
-                    }
-                    // change status if page has expired
-                    if (data.hasOwnProperty('setstatus') && data.hasOwnProperty('identifier')) {
-                        $('#status_id-' + data.identifier).val(data.setstatus);
-                        indicator = $('#status-indicator-' + data.identifier);
-                        indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
-                        indicator.addClass('status-' + data.setstatus);
-                    }
-                    // status change management @todo DRY status change
-                    if (field.hasClass('status-select')) {
-                        indicator = $('#' + field.attr('rel'));
-                        indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
-                        indicator.addClass('status-' + field.val());
-                    }
-                } else {
-                    field.removeClass('success');
-                    field.addClass('error');
+                field.removeClass('error');
+                field.addClass('success');
 
-                    field.val(data.oldvalue);
-                    mmShowMessage(data);
-                    setTimeout(function() {
-                        progressIndicator.removeClass('visible');
-                    }, 300);
-                    $(".multiedit-slugfield").trigger('keyup');
-
+                mmShowMessage(data);
+                setTimeout(function() {
+                    progressIndicator.removeClass('visible');
+                }, 300);
+                if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
+                    $('#updated_on-' + data.identifier).html(data.datetime).addClass('wasmodified');
+                }
+                if (data.hasOwnProperty('reloaditem') && data.hasOwnProperty('identifier')) {
+                    $('#reload-item' + data.identifier).trigger('click');
+                }
+                // change status if page has expired
+                if (data.hasOwnProperty('setstatus') && data.hasOwnProperty('identifier')) {
+                    $('#status_id-' + data.identifier).val(data.setstatus);
+                    indicator = $('#status-indicator-' + data.identifier);
+                    indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
+                    indicator.addClass('status-' + data.setstatus);
+                }
+                // status change management @todo DRY status change
+                if (field.hasClass('status-select')) {
+                    indicator = $('#' + field.attr('rel'));
+                    indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
+                    indicator.addClass('status-' + field.val());
                 }
             },
             error: function(data) {
-                mmShowMessage(dump(data));
-            },
-            dataType: 'json'
+                field.removeClass('success');
+                field.addClass('error');
+                field.hide();
+                field.val(data.oldvalue);
+                mmShowMessage(data);
+                setTimeout(function() {
+                    progressIndicator.removeClass('visible');
+                }, 300);
+                $(".slugfield").trigger('keyup');
+            }
         });
     });
 

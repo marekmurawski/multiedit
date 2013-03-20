@@ -290,7 +290,6 @@ if ( !$is_frontend )
                                 class="me_pt_<?php echo $part->name; ?> part_label_tab<?php echo ($active_tab) ? ' active' : ''; ?>"
                                 data-target="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
                                 data-short-id="p<?php echo $k->id; ?>_<?php echo $part->name; ?>"
-                                title = "<?php echo $page_part_tab_title ?>"
                                 >
                                 <span class="me_tablabel"><?php echo $part->name; ?></span><br/>
                                 <?php

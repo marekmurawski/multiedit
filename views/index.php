@@ -57,7 +57,7 @@ if ( !defined( 'IN_CMS' ) ) {
         }
     });
 
-$(document).delegate(".multiedit-header-field",'change', function() {
+    $(document).delegate(".multiedit-header-field", 'change', function() {
 
         setMEcookie();
         if ($(this).val() == '0')
@@ -96,7 +96,7 @@ $(document).delegate(".multiedit-header-field",'change', function() {
 
 
 
-$(document).delegate("#partheight",'change', function() {
+    $(document).delegate("#partheight", 'change', function() {
         $height = $(this).val();
         setMEcookie();
         $('.partedit').css('height', $height + "px");
@@ -108,7 +108,7 @@ $(document).delegate("#partheight",'change', function() {
 
 
 
-$(document).delegate('.multiedit-delete-field','click', function() {
+    $(document).delegate('.multiedit-delete-field', 'click', function() {
 
         var fieldname = $(this).attr('data-field-name');
         var confirm = window.confirm('<?php echo __( 'Are you ABSOLUTELY sure you want to delete field' ); ?>' +
@@ -139,7 +139,7 @@ $(document).delegate('.multiedit-delete-field','click', function() {
         }
     });
 
-$(document).delegate('#multiedit-add-field','click', function() {
+    $(document).delegate('#multiedit-add-field', 'click', function() {
 
         var template_id = $('#multiedit-add-field-template').val();
         var newname = window.prompt('<?php echo __( 'Specify new field name ' ); ?>');
@@ -210,47 +210,46 @@ $(document).delegate('#multiedit-add-field','click', function() {
                 value: field.val()
             },
             success: function(data) {
-                if (data.status == 'OK') {
-                    field.removeClass('error');
-                    field.addClass('success');
 
-                    mmShowMessage(data);
-                    setTimeout(function() {
-                        progressIndicator.removeClass('visible');
-                    }, 300);
-                    if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
-                        $('#updated_on-' + data.identifier).html(data.datetime).addClass('wasmodified');
-                    }
-                    if (data.hasOwnProperty('reloaditem') && data.hasOwnProperty('identifier')) {
-                        $('#reload-item' + data.identifier).trigger('click');
-                    }
-                    // change status if page has expired
-                    if (data.hasOwnProperty('setstatus') && data.hasOwnProperty('identifier')) {
-                        $('#status_id-' + data.identifier).val(data.setstatus);
-                        indicator = $('#status-indicator-' + data.identifier);
-                        indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
-                        indicator.addClass('status-' + data.setstatus);
-                    }
-                    // status change management @todo DRY status change
-                    if (field.hasClass('status-select')) {
-                        indicator = $('#' + field.attr('rel'));
-                        indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
-                        indicator.addClass('status-' + field.val());
-                    }
+                field.removeClass('error');
+                field.addClass('success');
 
-                } else {
-                    field.removeClass('success');
-                    field.addClass('error');
-
-                    field.val(data.oldvalue);
-                    mmShowMessage(data);
-                    setTimeout(function() {
-                        progressIndicator.removeClass('visible');
-                    }, 300);
-                    $(".slugfield").trigger('keyup');
-
+                mmShowMessage(data);
+                setTimeout(function() {
+                    progressIndicator.removeClass('visible');
+                }, 300);
+                if (data.hasOwnProperty('datetime') && data.hasOwnProperty('identifier')) {
+                    $('#updated_on-' + data.identifier).html(data.datetime).addClass('wasmodified');
+                }
+                if (data.hasOwnProperty('reloaditem') && data.hasOwnProperty('identifier')) {
+                    $('#reload-item' + data.identifier).trigger('click');
+                }
+                // change status if page has expired
+                if (data.hasOwnProperty('setstatus') && data.hasOwnProperty('identifier')) {
+                    $('#status_id-' + data.identifier).val(data.setstatus);
+                    indicator = $('#status-indicator-' + data.identifier);
+                    indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
+                    indicator.addClass('status-' + data.setstatus);
+                }
+                // status change management @todo DRY status change
+                if (field.hasClass('status-select')) {
+                    indicator = $('#' + field.attr('rel'));
+                    indicator.removeClass('status-1 status-10 status-100 status-101 status-200');
+                    indicator.addClass('status-' + field.val());
                 }
             },
+            error: function(jqXHR) {
+                field.removeClass('success');
+                field.addClass('error');
+                try {
+                    data = $.parseJSON(jqXHR.responseText);
+                    field.val(data.oldvalue);
+                } catch (e) {
+                }
+                mmShowMessage(data);
+                progressIndicator.delay(300).removeClass('visible');
+                $(".slugfield").trigger('keyup');
+            }
         });
     });
 

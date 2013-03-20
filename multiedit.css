@@ -112,6 +112,7 @@
 .multiedit-item .add_page_part,
 .multiedit-item .me_hinttext,
 .multiedit-item .me_tabfilter,
+.multiedit-item .ace_options,
 .multiedit-item .multiedit-slugifier {opacity: 0}
 
 .multiedit-item .actions {
@@ -126,6 +127,7 @@
 .multiedit-item:hover .add_page_part,
 .multiedit-item:hover .me_hinttext,
 .multiedit-item:hover .me_tabfilter,
+.multiedit-item:hover .ace_options,
 .multiedit-item:hover .multiedit-slugifier { opacity: 1; }
 
 

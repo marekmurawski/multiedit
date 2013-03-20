@@ -114,7 +114,7 @@ class MultieditController extends PluginController {
                 'showrow4'       => true,
                 'showpageparts'  => true,
                 'useace'         => false,
-                'pagepartheight' => 54,
+                'pagepartheight' => 200,
     );
 
     public static function read_cookies() {
@@ -207,6 +207,7 @@ class MultieditController extends PluginController {
         }
 
     }
+
 
     /**
      * Retrieves single page view
@@ -815,90 +816,77 @@ QUERY;
                 return false;
             }
             if ( !(bool) preg_match( '/^[-a-z0-9_.]++$/D', (string) $value ) ) {
-                $result = array( 'message'  => __( 'Slug cannot be empty and should consist of letters, digits and "_-." characters!' ),
+                $this->failure( __( 'Slug cannot be empty and should consist of letters, digits and "_-." characters!' ), array(
                             'oldvalue' => $oldslug,
-                            'status'   => 'error' );
-                echo json_encode( $result );
-                return false;
+                            'status'   => 'error' ) );
             }
             $exists = Record::countFrom( 'Page', 'parent_id=? AND slug=?', array( $page->parent_id, $value ) );
             if ( $exists > 0 ) {
-                $result = array( 'message'  => __( 'Other sibling page already has this slug - <b>:slug</b> - restoring original one', array( ':slug' => $value ) ),
+                $this->failure( __( 'Other sibling page already has this slug - <b>:slug</b> - restoring original one', array( ':slug' => $value ) ), array(
                             'oldvalue' => $oldslug,
-                            'status'   => 'error' );
-                echo json_encode( $result );
-                return false;
+                            'status'   => 'error' ) );
             }
         } elseif ( $field == 'partfilter' ) {
-            $tmpval             = explode( '_partname_', $_POST['item'] );
-            $page_id            = substr( $tmpval[0], strlen( $field ) + 1 );
-            $part_name          = $tmpval[1];
-            $revision_save_info = ''; //Part_revisions plugin notice
-
+            $tmpval          = explode( '_partname_', $_POST['item'] );
+            $page_id         = substr( $tmpval[0], strlen( $field ) + 1 );
+            $part_name       = $tmpval[1];
             $part            = PagePart::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
             $part->filter_id = $value;
             if ( $part->save() ) {
-
-                $result = array( 'message'    => __( 'Changed filter of <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ),
+                $this->success( __( 'Changed filter of <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ), array(
                             'reloaditem' => '1',
                             'identifier' => $page_id,
-                            'status'     => 'OK' );
+                ) );
             } else {
-                $result = array( 'message' => __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ),
-                            'status'  => 'error' );
+                $this->failure( __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ) );
             }
-            echo json_encode( $result );
             return false;
         } elseif ( $field == 'part' ) {
-
-            $tmpval             = explode( '_partname_', $_POST['item'] );
-            $page_id            = substr( $tmpval[0], strlen( $field ) + 1 );
-            $part_name          = $tmpval[1];
-            $revision_save_info = ''; //Part_revisions plugin notice
-
+            $tmpval        = explode( '_partname_', $_POST['item'] );
+            $page_id       = substr( $tmpval[0], strlen( $field ) + 1 );
+            $part_name     = $tmpval[1];
             $part          = PagePart::findOneFrom( 'PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ) );
             $part->content = $value;
-
+            /**
+             * Part revisions integration
+             */
             if ( Plugin::isEnabled( 'part_revisions' ) ) {
                 if ( save_old_part( $part ) ) {
-                    $savedPart          = Flash::get( 'page_revisions_saved_parts' );
-                    $revision_save_info = '<br/><br/>' . __( 'Part Revisions plugin active:' ) . '<br/>' . __( 'Revision saved for' ) . ' <b>' . $savedPart[0] . '</b>';
+                    $savedPart = Flash::get( 'page_revisions_saved_parts' );
+                    $this->appendResult( __( 'Part Revisions plugin active:' ) . '<br/>' . __( 'Revision saved for' ) . ' <b>' . $savedPart[0] . '</b>' );
                 } else {
-                    $revision_save_info = '<br/><br/>' . __( 'Part Revisions plugin active:' ) . '<br/>' . __( 'Revision not saved!' );
+                    $this->appendResult( __( 'Part Revisions plugin active:' ) . '<br/>' . __( 'Revision not saved!' ) );
                 }
             }
-
+            if ( !in_array( $part->filter_id, Filter::findAll() ) )
+                $this->failure( __( 'This page part has invalid filter "<b>:filter</b>"  set! <br/> You either dont`t have permissions to use this filter or it`s disabled.', array(
+                            ':filter' => $part->filter_id,
+                ) ) );
             if ( $part->save() ) {
-
                 $insdata = array(
                             'updated_by_id' => AuthUser::getId(),
                             'updated_on'    => $now_datetime
                 );
                 Record::update( 'Page', $insdata, 'id=?', array( $page_id ) );
 
-                $this->success( __( 'Updated <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ) . $revision_save_info, array(
+                $this->success( __( 'Updated <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ), array(
                             'datetime'   => $now_datetime,
                             'identifier' => $page_id,
                 ) );
-            } else {
-                $this->failure( __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ), array(
-                            'status' => 'error' ) );
             }
-            echo json_encode( $result );
+            else
+                $this->failure( __( 'Error updating <b>:part</b> page part in page <b>:page</b>', array( ':part' => $part->name, ':page' => $page_id ) ) );
             return false;
         } elseif ( in_array( $field, array( 'created_on', 'published_on' ) ) ) {
-
             $correct = MultieditController::checkdatevalid( $value );
             if ( !$correct ) {
-                $page   = Page::findById( (int) $ident );
-                $result = array( 'message'  => __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date' => $value ) ),
+                $page = Page::findById( (int) $ident );
+                $this->failure( __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date' => $value ) ), array(
                             'oldvalue' => $page->{$field},
-                            'status'   => 'error' );
-                echo json_encode( $result );
-                return false;
+                            'status'   => 'error' ) );
             } else {
                 if ( $now_datetime < $value ) {
-                    $messagesExt[] = '<span class="warning">' . __( 'Warning: Date of <b>:field</b> is in future!', array( ':field' => $field ) ) . '</span>';
+                    $this->appendResult( '<span class="warning">' . __( 'Warning: Date of <b>:field</b> is in future!', array( ':field' => $field ) ) . '</span>' );
                 };
             }
         } elseif ( $field == 'valid_until' ) {
@@ -906,40 +894,32 @@ QUERY;
             if ( trim( $value, '-/: ' ) == '' ) {
                 Record::getConnection()->exec( "UPDATE " . TABLE_PREFIX . "page SET valid_until=NULL WHERE id=" . (int) $ident );
 
-                $result  = array( 'message'    => __( 'Cleared <b>valid_until</b> field in page: <b>:page</b>', array( ':page' => $ident ) ),
+                $this->success( __( 'Cleared <b>valid_until</b> field in page: <b>:page</b>', array( ':page' => $ident ) ), array(
                             'datetime'   => $now_datetime,
                             'identifier' => $ident,
-                            'status'     => 'OK' );
-                echo json_encode( $result );
-                return false;
+                ) );
             };
             $correct = MultieditController::checkdatevalid( $value );
             if ( !$correct ) {
-                $page   = Page::findById( (int) $ident );
-                $result = array( 'message'  => __( 'Wrong date - <b>:date</b> - restoring original one', array( ':date' => $value ) ),
+                $page = Page::findById( (int) $ident );
+                $this->failure( __( 'Wrong date format - <b>:date</b> - restoring original one', array( ':date' => $value ) ), array(
                             'oldvalue' => $page->{$field},
-                            'status'   => 'error' );
-                echo json_encode( $result );
-                return false;
+                ) );
             }
             if ( $value < $now_datetime ) {
                 Record::getConnection()->exec( "UPDATE " . TABLE_PREFIX . "page SET status_id=" . Page::STATUS_ARCHIVED . " WHERE id=" . (int) $ident );
-                $messagesExt[] = '<span class="warning">' . __( 'Warning: Date of <b>:field</b> is in past! Changed page status to archived!', array( ':field' => $field ) ) . '</span>';
-                $returnExt     = array( 'setstatus'  => Page::STATUS_ARCHIVED,
+                $this->appendResult( '<span class="warning">' . __( 'Warning: Date of <b>:field</b> is in past! Changed page status to archived!', array( ':field' => $field ) ) . '</span>' );
+                $returnExt = array( 'setstatus'  => Page::STATUS_ARCHIVED,
                             'identifier' => $ident,
                 );
             }
         } elseif ( $field == 'tags' ) {
             $page = Page::findById( (int) $ident );
-            $page->setTags( $value );
-
-            $result = array(
-                        'message' => __( 'Updated <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident ) ),
-                        'status'  => 'OK'
-            );
-
-            echo json_encode( $result );
-            return false;
+            if ( $page->setTags( $value ) ) {
+                $this->success( __( 'Updated <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident ) ) );
+            } else {
+                $this->failure( __( 'Error updating <b>tags</b> in page: <b>:page</b>', array( ':page' => $ident ) ) );
+            }
         }
 
         $toUpdate   = array( $field => $value );

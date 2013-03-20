@@ -41,7 +41,9 @@ $show_row_3    = (MultieditController::$cookie['showrow3']) ? ' checked="checked
 $show_row_4    = (MultieditController::$cookie['showrow4']) ? ' checked="checked"' : '';
 $showpageparts = (MultieditController::$cookie['showpageparts']) ? ' checked="checked"' : '';
 $useace        = (MultieditController::$cookie['useace']) ? ' checked="checked"' : '';
-echo '<div id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedit' ) . '">' . get_url( 'plugin/multiedit' ) . '</div>';
+
+// this is used by ajax calls
+echo '<div style="display: none" id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedit' ) . '">' . get_url( 'plugin/multiedit' ) . '</div>';
 ?>
 <table border="0">
     <tr>
@@ -59,7 +61,7 @@ echo '<div id="multiedit-controller-url" data-url="' . get_url( 'plugin/multiedi
             <?php endif; ?>
             <?php if ( AuthUser::hasPermission( 'multiedit_advanced' ) ): ?>
                 <input type="checkbox" class="multiedit-header-field" name="showrow4" id="showrow4" value="1" <?php echo $show_row_4; ?>/>
-                <label for="showrow4"><img alt="<?php echo __( 'Show extended properties' ); ?>" title="<?php echo __( 'Show extended properties' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/row4.png'; ?>"/> <?php echo __( 'Show extended properties' ); ?></label>
+                <label for="showrow4"><img alt="<?php echo __( 'Show extended (plugin) properties' ); ?>" title="<?php echo __( 'Show extended (plugin) properties' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/row4.png'; ?>"/> <?php echo __( 'Show extended (plugin) properties' ); ?></label>
             <?php endif; ?>
         </td>
         <td style="width: 50%">
