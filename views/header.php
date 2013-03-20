@@ -4,7 +4,6 @@ if ( !defined( 'IN_CMS' ) ) {
     exit();
 }
 ?>
-<img alt="<?php echo __( "Reload list of pages" ); ?>" title="<?php echo __( "Reload list of pages" ); ?>" id="reload-list" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh-32.png'; ?>"/>
 <label for="rootpage"><?php echo __( 'Show subpages of' ) ?>: </label>
 <select name="rootpage" id="multiedit-pageslist" class="multiedit-header-field">
     <option value="-1"><?php echo __( 'All pages as flat list' ); ?></option>
@@ -62,21 +61,25 @@ echo '<div style="display: none" id="multiedit-controller-url" data-url="' . get
             <?php if ( AuthUser::hasPermission( 'multiedit_advanced' ) ): ?>
                 <input type="checkbox" class="multiedit-header-field" name="showrow4" id="showrow4" value="1" <?php echo $show_row_4; ?>/>
                 <label for="showrow4"><img alt="<?php echo __( 'Show extended (plugin) properties' ); ?>" title="<?php echo __( 'Show extended (plugin) properties' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/row4.png'; ?>"/> <?php echo __( 'Show extended (plugin) properties' ); ?></label>
+                <div class="clear"></div>
             <?php endif; ?>
+                <input type="button" id="reload-list" value="<?php echo __( 'Reload list' ); ?>"/>
         </td>
         <td style="width: 50%">
             <?php if ( AuthUser::hasPermission( 'multiedit_parts' ) ): ?>
                 <div class="clear"></div>
                 <input type="checkbox" class="multiedit-header-field" name="showpageparts" id="showpageparts" value="1" <?php echo $showpageparts; ?>/>
                 <label for="showpageparts"><img alt="<?php echo __( 'Load page parts' ); ?>" title="<?php echo __( 'Load page parts' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/snippet.png'; ?>"/> <?php echo __( 'Load page parts' ); ?></label>
+
+                <div class="clear"></div>
+                <input type="number" id="partheight" class="secondary" style="width:50px" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="40" max="1000" step="10" />
+                <label for="partheight"><img alt="<?php echo __( 'Part editing field height' ); ?>" title="<?php echo __( 'Part editing field height' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Part editing field height' ); ?></label>
+
                 <?php if ( Plugin::isEnabled( 'ace' ) ): ?>
                     <div class="clear"></div>
                     <input type="checkbox" class="multiedit-header-field secondary" name="useace" id="useace" value="1" <?php echo $useace; ?>/>
                     <label for="useace"><img alt="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" title="<?php echo __( 'Use Ace Syntax highlighter' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Use Ace Syntax highlighter' ); ?></label>
                 <?php endif; ?>
-                <div class="clear"></div>
-                <input type="number" id="partheight" value="<?php echo MultiEditController::$cookie['pagepartheight']; ?>" min="40" max="1000" step="10" />px
-                <label for="partheight"><img alt="<?php echo __( 'Part editing field height' ); ?>" title="<?php echo __( 'Part editing field height' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/stretch-ver.png'; ?>"/> <?php echo __( 'Part editing field height' ); ?></label>
 
                 <div class="clear"></div>
                 <p>New field
@@ -85,7 +88,7 @@ echo '<div style="display: none" id="multiedit-controller-url" data-url="' . get
                             <option value="<?php echo $k; ?>"><?php echo $fieldTemplate['description']; ?></option>
                         <?php endforeach; ?>
                     </select>
-                    <input type="button" id="multiedit-add-field" value="<?php echo 'Add new field'; ?>"/> (DB: <b><?php echo $db_driver; ?></b>)
+                    <input type="button" id="multiedit-add-field" value="<?php echo __('Add new field'); ?>"/> (DB: <b><?php echo $db_driver; ?></b>)
                 </p>
             <?php endif; ?>
             <div class="clear"></div>

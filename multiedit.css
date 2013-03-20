@@ -310,7 +310,7 @@
 #multiedit-header label {display: inline;}
 
 #multiedit-header label img {position: relative; top:3px;}
-#multiedit-header #reload-list {float: right; position: relative; top: 8px;}
+#multiedit-header #reload-list { background: url('icons/refresh.png') #FB4 no-repeat 8px center; padding-left: 32px;}
 
 .multiedit-item img.loader {position: absolute; right: 4px; top: 3px; display: none;}
 .multiedit-item td.timecolumn img.loader {right: 14px;}

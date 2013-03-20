@@ -46,15 +46,16 @@
                     indicator.addClass('status-' + field.val());
                 }
             },
-            error: function(data) {
+            error: function(jqXHR) {
                 field.removeClass('success');
                 field.addClass('error');
-                field.hide();
-                field.val(data.oldvalue);
+                try {
+                    data = $.parseJSON(jqXHR.responseText);
+                    field.val(data.oldvalue);
+                } catch (e) {
+                }
                 mmShowMessage(data);
-                setTimeout(function() {
-                    progressIndicator.removeClass('visible');
-                }, 300);
+                progressIndicator.delay(300).removeClass('visible');
                 $(".slugfield").trigger('keyup');
             }
         });
