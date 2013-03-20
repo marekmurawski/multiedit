@@ -72,8 +72,8 @@
                 type: 'POST',
                 global: false,
                 data: {
-                    page_id : "<?php echo $page_id; ?>",
-                    frontend : "1",
+                    page_id: "<?php echo $page_id; ?>",
+                    frontend: "1",
                 },
                 success: function(data) {
                     target.html(data);
@@ -97,7 +97,7 @@
         $(this).hide();
         me_eraseCookie('MEfe');
         target = $('#multipage_item-' +<?php echo $page_id; ?>);
-        target.hide('fast', function(){
+        target.hide('fast', function() {
             $("#multiedit-fe-show").fadeIn('fast');
         });
     });
@@ -139,12 +139,12 @@
     });
 
     $(document).ajaxError(function(event, jqXHR, settings, exception) {
-        var msg;
-        if (msg = safeJSON(jqXHR.responseText)) {
+        var msg = safeJSON(jqXHR.responseText);
+        if (msg)
             mmShowMessage(msg);
-        } else {
+        else
             mmShowMessage(jqXHR.responseText);
-        }
+
     });
 
     $(document).ready(function() {

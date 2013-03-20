@@ -35,7 +35,7 @@ if ( !$is_frontend )
             <?php endif; ?>
         <div class="actions">
             <?php if ( $is_frontend ) {
-                echo '<input type="number" id="partheight" value="' . MultiEditController::$cookie['pagepartheight'] . '" min="40" max="1000" step="10" />';
+                echo '<input type="number" id="partheight" value="' . MultiEditController::$cookie['pagepartheight'] . '" min="40" max="1000" step="10" style="display: none;"/>';
             } ?>
             <span class="reload-item" id="reload-item<?php echo $k->id; ?>" rel="multipage_item-<?php echo $k->id; ?>" data-is-frontend="<?php echo ($is_frontend) ? '1' : '0'; ?>"><img alt="<?php echo __( 'Refresh item' ); ?>" title="<?php echo __( 'Refresh item' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/refresh.png'; ?>"/></span>
             <span class="reload-item full" rel="multipage_item-<?php echo $k->id; ?>" data-is-frontend="<?php echo ($is_frontend) ? '1' : '0'; ?>"><img alt="<?php echo __( 'Full view' ); ?>" title="<?php echo __( 'Full view' ); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/zoom.png'; ?>"/></span>
