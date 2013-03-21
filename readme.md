@@ -15,16 +15,34 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
-0.2.3
+##### 0.3.0
 
-- modifying frontend .live() to .delegate() jQuery calls in order to support newer jQuery versions
+- new **tabbed page parts display** in frontend and backend
+  - colored tabs for `none`, `ace`, `tinymce`, `markdown` and `textile` filters
+  - configurable editor height
+- full **page part manipulation**, now you can do whatever you want with
+  page parts: **add, rename, delete**
+- **all page parts** are now **editable** in MultiEdit regardless of filter
+- **Ace Syntax Highlighter support** in parts editing *(requires Ace plugin v.0.1.0)*
+- **markdown and textile** filter syntax highlighting autodetection in Ace
+  *I highly recommend using MultiEdit together with ACE. This combo gives
+  you really powerful tool for quick and effective editing your site.*
+- **Restrict PHP** plugin compatibility
+- **Part Revisions** plugin compatibility
+- active page part is remembered in frontend
+- removed <del>tags_input</del> support
+- removed page part <del>autosizing</del> option
 
-0.2.2
+##### 0.2.3
 
-- adding/deleting/renaming extended fields (columns) of Page model (mySQL)
-- adding/deleting extended fields (columns) of Page model (SQLite)
+- modifying frontend `jQuery.live()` to `jQuery.delegate()`  calls in order to support newer jQuery versions
 
-0.2.0
+##### 0.2.2
+
+- **add / delete / rename** extended fields _(columns)_ of Page model _(mySQL)_
+- **add / delete** extended fields _(columns)_ of Page model _(SQLite)_
+
+##### 0.2.0
 
 - editing **extended page fields** - like _comment status_ from Comments plugin
 - option to **autosize** page part contents to fit contents into textarea
@@ -34,25 +52,27 @@ Changelog
 - page parts with _ace, codemirror, markdown and textile_ filters are editable by default
 - new icons and some visual improvements
 - minor bugfixes
-- **new role Multieditor**
-
-    This role gives users full MultiEdit access. You can assign roles to users in Wolf CMS Users tab.
-
-- **new permissions introduced**
-
+- **new Role - Multieditor**
+    This role gives users full MultiEdit access.  
+    You can assign roles to users in Wolf CMS Users tab.
+- **new Permissions introduced**
   - **multiedit_view** - tab access in backend
   - **multiedit_basic** - view/edit basic page fields
   - **multiedit_advanced** - view/edit extended (plugin-provided) page fields
   - **multiedit_parts** - view/edit page parts
   - **multiedit_frontend** - frontend access to MultiEdit
 
-  By default role "Editor" is granted multiedit_view, multiedit_basic and multiedit_frontend permissions.
+By default role "Editor" is granted `multiedit_view`,
+`multiedit_basic` and `multiedit_frontend` permissions.
 
-  Role "Developer" is granted multiedit_view, multiedit_basic, multiedit_parts and multiedit_frontend permissions.
+Role "Developer" is granted `multiedit_view`,
+`multiedit_basic`, `multiedit_parts`
+and `multiedit_frontend` permissions.
 
-  Permissions and roles can be manipulated using Roles Manager plugin by **andrewmman**.
+Permissions and Roles can be manipulated
+using **Roles Manager** plugin by **andrewmman**.
 
-0.1.1
+##### 0.1.1
 
 - frontend - tags_input plugin integration
 - frontend - panel trigger button
@@ -60,20 +80,20 @@ Changelog
 - backend option to show ALL pages of website in one list
 - documentation with Gist
 
-0.1.0
+##### 0.1.0
 
 - bugfix: variable notice
 
-0.0.9
+##### 0.0.9
 
 - FRONTEND EDITING support
 - color character counters indicating short meta descriptions/titles
 
-0.0.8
+##### 0.0.8
 
 - translation for polish language
 
-0.0.7
+##### 0.0.7
 
 - fixed "Show subpages" list to always show full pages hierarchy
 - valid_until set in past makes page status "Archived"
@@ -85,7 +105,7 @@ Changelog
 - minor bugfixes
 - minor visual enhancements
 
-0.0.6
+##### 0.0.6
 
 - preloader
 - root page protection (slug, status)
