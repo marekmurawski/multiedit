@@ -478,13 +478,13 @@ class MultieditController extends PluginController {
         if ( $part = PagePart::findOneFrom('PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], $_POST['name'] )) ) {
 
             /**
-             * Notify part_before_save
              * RESTRICT PHP integration
              */
-            Observer::notify('part_edit_before_save', $part);
-            // if part had PHP code it will be listed in Flash::get('php_restricted_parts');
-            $restrParts = Flash::get('php_restricted_parts');
-            if ( count($restrParts) > 0 )
+            if (
+                        Plugin::isEnabled('restrict_php') &&
+                        !AuthUser::hasPermission('edit_parts_php') &&
+                        has_php_code($part->content)
+            )
                 $this->failure(__('<b>Restrict PHP plugin:</b><br/>You don`t have permission to edit parts containing PHP code!'));
 
             if ( $part->delete() ) {
