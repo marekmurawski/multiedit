@@ -295,7 +295,7 @@ if ( !$is_frontend )
                             ?>
                             <div
                                 data-part-name="<?php echo $part->name; ?>"
-                                class="me_pt_<?php echo $part->name; ?> part_label_tab<?php echo ($active_tab) ? ' active' : ''; ?>"
+                                class="me_filter<?php echo $part->filter_id; ?> me_pt_<?php echo $part->name; ?> part_label_tab<?php echo ($active_tab) ? ' active' : ''; ?>"
                                 data-target="part-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
                                 data-filter-select="partfilter-<?php echo $k->id; ?>_partname_<?php echo $part->name; ?>"
                                 data-short-id="p<?php echo $k->id; ?>_<?php echo $part->name; ?>"

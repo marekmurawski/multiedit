@@ -92,13 +92,29 @@
     })
 
 
+/*
+    $(document).delegate('#multipage_item-' +<?php echo $page_id; ?>, 'mouseenter', function() {
+        //   $(this).fadeTo('slow', 1);
+        $(this).animate({
+            'bottom': '0px'
+        }, 'fast');
+    });
+
+    $(document).delegate('#multipage_item-' +<?php echo $page_id; ?>, 'mouseleave', function() {
+        //$(this).fadeTo('slow', 0.3);
+        h = $(this).outerHeight() - 24;
+        $(this).animate({
+            'bottom': '-' + h + 'px'
+        }, 'fast');
+    });
+ */
 
     $(document).delegate("#multiedit-fe-hide", 'click', function() {
         $(this).hide();
         me_eraseCookie('MEfe');
         target = $('#multipage_item-' +<?php echo $page_id; ?>);
         target.fadeOut('fast', function() {
-            $("#multiedit-fe-show").fadeIn('fast');
+           $("#multiedit-fe-show").fadeIn('fast');
         });
     });
 
@@ -173,7 +189,6 @@
     }
     ?>
     <div id="multiedit-fe-hide"></div>
-
     <div id="multiedit-list" style="display: none;">
         <div class="multiedit-item-root multiedit-item" id="multipage_item-<?php echo $page_id; ?>" style="box-shadow: 0px 0px 16px 4px rgba(0,0,0,0.3);">
         </div>

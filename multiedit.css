@@ -143,8 +143,14 @@
  padding: 2px 40px 2px 6px;
  margin: 0px 2px 4px 0px;
  border-radius: 0px;
+ border-left: 4px solid #888;
  border-bottom-right-radius: 8px !important;
 }
+
+.multiedit-item div.me_filtermarkdown {border-left-color: #D54805;}
+.multiedit-item div.me_filterace {border-left-color: #F80;}
+.multiedit-item div.me_filtertextile {border-left-color: #0592D5;}
+.multiedit-item div.me_filtertinymce {border-left-color: #5E8300;}
 
 .multiedit-item div.part_label_tab.active {
  background: #272822;

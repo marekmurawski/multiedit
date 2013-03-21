@@ -1,5 +1,12 @@
-var showpageparts;
-var showcollapsed;
+/**
+ * Settings
+ */
+
+// automatically detects "markdown" and "textile" filters
+var multiedit_ace_autodetect = true;
+
+// editor theme
+var multiedit_ace_theme = 'tomorrow_night_bright';
 
 function me_createCookie(name, value, days)
 {
@@ -128,15 +135,17 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
         // in backend use height specified in MultiEdit settings
         $options = {
             'editorheight': $('#partheight').val(),
-            'theme': 'monokai'
+            'theme': multiedit_ace_theme
         };
 
-        selectBoxMode = $('#' + filterSelect).val();
-        if ((selectBoxMode === 'textile') || (selectBoxMode === 'markdown'))
-            $.extend($options, {
-                mode: selectBoxMode
-            });
-
+        // markdown and textile autodetection
+        if (multiedit_ace_autodetect) {
+            selectBoxMode = $('#' + filterSelect).val();
+            if ((selectBoxMode === 'textile') || (selectBoxMode === 'markdown'))
+                $.extend($options, {
+                    mode: selectBoxMode
+                });
+        }
         setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), $options);
         // hide standard textareas
         $('#' + target).parents('td').find('textarea.partedit').hide();
@@ -286,7 +295,9 @@ $(document).delegate('.rename_page_part', 'click', function() {
 
 $(document).delegate(".multiedit-item .header", 'click', function(e) {
 
-    if (e.ctrlKey) {
+    is_frontend = ($(this).parents('div.multiedit-item').find('#multiedit-controller-url').length > 0);
+
+    if (e.ctrlKey && !is_frontend) {
         target = $(this).parent();
         target.slideUp('normal', function() {
             target.remove();
