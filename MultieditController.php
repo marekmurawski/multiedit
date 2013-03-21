@@ -476,6 +476,17 @@ class MultieditController extends PluginController {
             $this->failure(__('No data specified'));
         }
         if ( $part = PagePart::findOneFrom('PagePart', 'page_id=? AND name=?', array( $_POST['page_id'], $_POST['name'] )) ) {
+
+            /**
+             * Notify part_before_save
+             * RESTRICT PHP integration
+             */
+            Observer::notify('part_edit_before_save', $part);
+            // if part had PHP code it will be listed in Flash::get('php_restricted_parts');
+            $restrParts = Flash::get('php_restricted_parts');
+            if ( count($restrParts) > 0 )
+                $this->failure(__('<b>Restrict PHP plugin:</b><br/>You don`t have permission to edit parts containing PHP code!'));
+
             if ( $part->delete() ) {
                 $this->success(__('Deleted page part <b>:name</b>', array( ':name' => $_POST['name'] )));
             } else {
@@ -847,23 +858,31 @@ QUERY;
             $part_name     = $tmpval[1];
             $part          = PagePart::findOneFrom('PagePart', 'name=? AND page_id=?', array( $part_name, $page_id ));
             $part->content = $value;
+
             /**
-             * Part revisions integration
+             * Notify part_before_save
+             * - RESTRICT_PHP integration
+             * - PART_REVISIONS integration
              */
-            if ( Plugin::isEnabled('part_revisions') ) {
-                if ( save_old_part($part) ) {
-                    $savedPart = Flash::get('page_revisions_saved_parts');
-                    $this->appendResult(__('Part Revisions plugin active:') . '<br/>' . __('Revision saved for') . ' <b>' . $savedPart[0] . '</b>');
-                } else {
-                    $this->appendResult(__('Part Revisions plugin active:') . '<br/>' . __('Revision not saved!'));
-                }
-            }
+            Observer::notify('part_edit_before_save', $part);
+
+            // if part had protected PHP code it will be listed in Flash::get('php_restricted_parts');
+            $restrParts = Flash::get('php_restricted_parts');
+            if ( count($restrParts) > 0 )
+                $this->failure(__('<b>Restrict PHP plugin:</b><br/>You don`t have permission to edit parts containing PHP code!'));
+
+            // if Part Revision was saved it will be listed in Flash::get('page_revisions_saved_parts');
+            $savedPart = Flash::get('page_revisions_saved_parts');
+            if ( count($savedPart) > 0 )
+                $this->appendResult(__('<b>Part Revisions plugin:</b><br/>Revision saved for') . ' <b>' . $savedPart[0] . '</b>');
+
             // checking if filter actually exists
             if ( !in_array($part->filter_id, Filter::findAll()) && ($part->filter_id != '') ) {
                 $msg = __('This page part has invalid filter <b>:filter</b>  set! ', array( ':filter' => $part->filter_id )) . '<br/>';
                 $msg = $msg . __('You either dont`t have permissions to use this filter or it`s disabled.');
                 $this->failure($msg);
             }
+
             if ( $part->save() ) {
                 $insdata = array(
                             'updated_by_id' => AuthUser::getId(),
