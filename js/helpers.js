@@ -40,25 +40,25 @@ function me_eraseCookie(name) {
 
 $(document).delegate(".multiedit-slugifier", 'click', function() {
     id = $(this).attr('rel').split('-', 2)[1];
-    source = $('#title-' + id)
-    target = $('#slug-' + id);
+    sr = $('#title-' + id)
+    tgt = $('#slug-' + id);
 
-    oldval = target.val();
-    if (oldval != toSlug(source.val())) {
-        target.val(toSlug(source.val()));
-        target.trigger("change");
-        target.trigger("keyup");
+    ov = tgt.val();
+    if (ov != toSlug(sr.val())) {
+        tgt.val(toSlug(sr.val()));
+        tgt.trigger("change");
+        tgt.trigger("keyup");
     }
 });
 
 $(document).delegate(".multiedit-breadcrumber", 'click', function() {
     id = $(this).attr('rel').split('-', 2)[1];
-    source = $('#title-' + id)
-    target = $('#breadcrumb-' + id);
-    oldval = target.val();
-    if (oldval != source.val()) {
-        target.val(source.val());
-        target.trigger("change");
+    sr = $('#title-' + id)
+    tgt = $('#breadcrumb-' + id);
+    ov = tgt.val();
+    if (ov != sr.val()) {
+        tgt.val(sr.val());
+        tgt.trigger("change");
     }
 });
 
@@ -66,19 +66,19 @@ $(document).delegate(".multiedit-breadcrumber", 'click', function() {
 $(document).delegate(".multiedit-countchars", 'keyup', function() {
     field = $(this);
     len = field.val().length;
-    counterObject = $('#' + field.attr('id') + '-cnt');
-    counterObject.html(len);
+    cntObj = $('#' + field.attr('id') + '-cnt');
+    cntObj.html(len);
     if (field.attr('id').substr(0, 4) == 'desc') {
         if ((100 > len) || (len > 180)) {
-            counterObject.removeClass('green');
-            counterObject.addClass('red');
+            cntObj.removeClass('green');
+            cntObj.addClass('red');
         }
         else if ((129 < len) && (len < 161)) {
-            counterObject.removeClass('red');
-            counterObject.addClass('green');
+            cntObj.removeClass('red');
+            cntObj.addClass('green');
         } else {
-            counterObject.removeClass('red');
-            counterObject.removeClass('green');
+            cntObj.removeClass('red');
+            cntObj.removeClass('green');
         }
     }
     ;
@@ -110,17 +110,17 @@ $(document).delegate(".multiedit-slugfield", 'keyup', function() {
  * If Ace is installed and checked to be used - embeds Ace editor
  */
 $(document).delegate('.part_label_tab', 'click', function(e) {
-    target = $(this).attr('data-target');
-    shortID = $(this).attr('data-short-id');
-    filterSelect = $(this).attr('data-filter-select');
+    tgt = $(this).attr('data-target');
+    shID = $(this).attr('data-short-id');
+    fSel = $(this).attr('data-filter-select');
 
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
-    $('#' + target).parents('td').find('.partedit_container.visible').removeClass('visible');
+    $('#' + tgt).parents('td').find('.partedit_container.visible').removeClass('visible');
 
-    $('#' + target + '-container').addClass('visible');
-    $('#' + target).addClass('visible');
+    $('#' + tgt + '-container').addClass('visible');
+    $('#' + tgt).addClass('visible');
 
     me_createCookie('MEfet', $(this).attr('data-part-name'));
 
@@ -131,7 +131,7 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
     /**
      * setup Ace
      */
-    if (($('#aceeditor' + 'ME' + shortID).length < 1) && ($('#ace-live-settings').length > 0)) {
+    if (($('#aceeditor' + 'ME' + shID).length < 1) && ($('#ace-live-settings').length > 0)) {
         // in backend use height specified in MultiEdit settings
         $options = {
             'editorheight': $('#partheight').val(),
@@ -140,15 +140,15 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
 
         // markdown and textile autodetection
         if (multiedit_ace_autodetect) {
-            selectBoxMode = $('#' + filterSelect).val();
+            selectBoxMode = $('#' + fSel).val();
             if ((selectBoxMode === 'textile') || (selectBoxMode === 'markdown'))
                 $.extend($options, {
                     mode: selectBoxMode
                 });
         }
-        setupEditor('ME' + shortID, $('#' + target + '-toolbar'), $('#' + target), $options);
+        setupEditor('ME' + shID, $('#' + tgt + '-toolbar'), $('#' + tgt), $options);
         // hide standard textareas
-        $('#' + target).parents('td').find('textarea.partedit').hide();
+        $('#' + tgt).parents('td').find('textarea.partedit').hide();
     }
 
 });
@@ -159,18 +159,18 @@ $(document).delegate('.part_label_tab', 'click', function(e) {
  */
 $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
     e.preventDefault();
-    target = $(this).attr('data-target');
+    tgt = $(this).attr('data-target');
     $(this).siblings().removeClass('active');
     $(this).addClass('active');
 
-    $('#' + target).parents('td').find('.partedit_container.visible').removeClass('visible');
+    $('#' + tgt).parents('td').find('.partedit_container.visible').removeClass('visible');
 
     // removing Aces
-    $('#' + target).parent().children('.ace_editor, .ace_options').remove();
+    $('#' + tgt).parent().children('.ace_editor, .ace_options').remove();
     // showing textareas
-    $('#' + target).parents('td').find('textarea').show();
+    $('#' + tgt).parents('td').find('textarea').show();
     // displaying container
-    $('#' + target + '-container').addClass('visible');
+    $('#' + tgt + '-container').addClass('visible');
 
     me_createCookie('MEfet', $(this).attr('data-part-name'));
 
@@ -185,11 +185,11 @@ $(document).delegate('.part_label_tab', 'contextmenu', function(e) {
 $(document).delegate('.multiedit-item .reload-item', 'click', function() {
     var meUrl = $('#multiedit-controller-url').attr('data-url');
     showfull = ($(this).hasClass('full')) ? '1' : '0';
-    is_frontend = ($(this).attr('data-is-frontend') == '1') ? '1' : '0';
+    isFE = ($(this).attr('data-is-frontend') == '1') ? '1' : '0';
 
     id = $(this).attr('rel').split('-', 2)[1];
-    target = $('#' + $(this).attr('rel'));
-    target.fadeTo('fast', 0.3, function() {
+    tgt = $('#' + $(this).attr('rel'));
+    tgt.fadeTo('fast', 0.3, function() {
 
         $.ajax({
             url: meUrl + '/getoneitem',
@@ -198,15 +198,15 @@ $(document).delegate('.multiedit-item .reload-item', 'click', function() {
             data: {
                 'page_id': id,
                 'force_full_view': showfull,
-                'frontend': is_frontend
+                'frontend': isFE
             },
             success: function(data) {
-                target.html(data);
+                tgt.html(data);
                 $(".multiedit-countchars").trigger('keyup');
                 $(".multiedit-counttags").trigger('keyup');
-                target.fadeTo('fast', 1);
+                tgt.fadeTo('fast', 1);
                 // trigger click to activate Ace
-                target.find('.part_label_tab.active').trigger('click');
+                tgt.find('.part_label_tab.active').trigger('click');
                 //mmShowMessage ('Reloaded item ' + id,'OK');
             }
         });
@@ -221,7 +221,7 @@ $(document).delegate(".add_page_part", 'click', function() {
     var meUrl = $('#multiedit-controller-url').attr('data-url');
     var pageid = $(this).attr('rel');
     var newname = window.prompt('New page part name ');
-    reloadButton = $('#reload-item' + pageid);
+    relBtn = $('#reload-item' + pageid);
     if (newname === null)
         return false;
     $.ajax({
@@ -233,7 +233,7 @@ $(document).delegate(".add_page_part", 'click', function() {
         },
         dataType: 'json',
         success: function(data) {
-            reloadButton.trigger('click');
+            relBtn.trigger('click');
             mmShowMessage(data);
         }
     });
@@ -249,7 +249,7 @@ $(document).delegate('.delete_page_part', 'click', function() {
     if (window.confirm('Are you sure?') === false)
         return false;
 
-    reloadButton = reloadButton = $('#reload-item' + pageid);
+    relBtn = relBtn = $('#reload-item' + pageid);
     $.ajax({
         url: meUrl + '/delete_page_part',
         type: 'POST',
@@ -259,7 +259,7 @@ $(document).delegate('.delete_page_part', 'click', function() {
         },
         dataType: 'json',
         success: function(data) {
-            reloadButton.trigger('click');
+            relBtn.trigger('click');
             mmShowMessage(data);
         }
     });
@@ -272,7 +272,7 @@ $(document).delegate('.rename_page_part', 'click', function() {
     var pageid = $(this).attr('rel');
     var newname = window.prompt('New page part name for ' + oldname, oldname);
 
-    reloadButton = $(this).parents('div.multiedit-item').find('.reload-item');
+    relBtn = $(this).parents('div.multiedit-item').find('.reload-item');
     if (newname === null)
         return false;
 
@@ -286,7 +286,7 @@ $(document).delegate('.rename_page_part', 'click', function() {
         },
         dataType: 'json',
         success: function(data) {
-            reloadButton.trigger('click');
+            relBtn.trigger('click');
             mmShowMessage(data);
         }
     });
@@ -295,12 +295,12 @@ $(document).delegate('.rename_page_part', 'click', function() {
 
 $(document).delegate(".multiedit-item .header", 'click', function(e) {
 
-    is_frontend = ($(this).parents('div.multiedit-item').find('#multiedit-controller-url').length > 0);
+    isFE = ($(this).parents('div.multiedit-item').find('#multiedit-controller-url').length > 0);
 
-    if (e.ctrlKey && !is_frontend) {
-        target = $(this).parent();
-        target.slideUp('normal', function() {
-            target.remove();
+    if (e.ctrlKey && !isFE) {
+        tgt = $(this).parent();
+        tgt.slideUp('normal', function() {
+            tgt.remove();
         });
         return false;
     }
@@ -318,6 +318,20 @@ $(document).delegate(".multiedit-item .header", 'click', function(e) {
     }
 
     $(this).parent().find('table').toggle();
+});
+
+$(document).delegate(".multiedit-item .header", 'contextmenu', function(e) {
+    e.preventDefault();
+    isFE = ($(this).parents('div.multiedit-item').find('#multiedit-controller-url').length > 0);
+    if (isFE) {
+        var state = $(this).data('state');
+        if (state) {
+            $('#multiedit-wrapper').css('opacity','1');
+        } else {
+            $('#multiedit-wrapper').css('opacity','.33');
+        }
+        $(this).data("state", !state);
+    }
 });
 
 

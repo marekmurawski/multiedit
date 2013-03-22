@@ -29,6 +29,8 @@ if ( !defined('IN_CMS') ) {
 </p>
 <br/>
 <hr/>
-<p>Wolf CMS repository: <a href="http://www.wolfcms.org/repository/120">http://www.wolfcms.org/repository/120</a><br>
+<p>
+    Homepage: <a href="http://marekmurawski.pl/en/web/wolf-cms/plugins/multiedit.html">http://marekmurawski.pl/en/web/wolf-cms/plugins/multiedit.html</a><br>
+    Wolf CMS Repository: <a href="http://www.wolfcms.org/repository/120">http://www.wolfcms.org/repository/120</a><br>
     Git repository: <a href="https://github.com/marekmurawski/multiedit">https://github.com/marekmurawski/multiedit</a>
 </p>

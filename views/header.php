@@ -63,7 +63,7 @@ echo '<div style="display: none" id="multiedit-controller-url" data-url="' . get
                 <label for="showrow4"><img alt="<?php echo __('Show extended (plugin) properties'); ?>" title="<?php echo __('Show extended (plugin) properties'); ?>" src="<?php echo PLUGINS_URI . 'multiedit/icons/row4.png'; ?>"/> <?php echo __('Show extended (plugin) properties'); ?></label>
                 <div class="clear"></div>
             <?php endif; ?>
-            <input type="button" id="reload-list" value="<?php echo __('Reload list'); ?>"/>
+            <input type="button" style="margin-top: 16px" id="reload-list" value="<?php echo __('Reload list'); ?>"/>
         </td>
         <td style="width: 50%">
             <?php if ( AuthUser::hasPermission('multiedit_parts') ): ?>

@@ -20,7 +20,8 @@ if ( !defined('IN_CMS') ) {
         <div id="mmsg_out"></div>
     </div>
     <div id="mmsg_stats"></div>
-    <div class="mm_copyr"><small><p>&copy; <a href="http://marekmurawski.pl" target="_blank" />Marek Murawski</a></p> </small></div>
+    <div style="clear: both; text-align: right;"><small><p>&copy; <a href="http://marekmurawski.pl" target="_blank" />Marek Murawski</a><br/>
+    <a href="http://marekmurawski.pl/en/web/wolf-cms/plugins/multiedit.html" target="_blank" />[plugin homepage]</a></p></small></div>
 </div>
 
 <script>
