@@ -145,7 +145,7 @@ class MultieditController extends PluginController {
 
         $lang = ( $user = AuthUser::getRecord() ) ? strtolower($user->language) : 'en';
         if ( !file_exists(PLUGINS_ROOT . DS . 'multiedit/views/documentation/sidebar/' . $lang . '.php') ) {
-            $lang            = 'en';
+            $lang = 'en';
         }
         $sidebarContents = new View(self::PLUGIN_REL_VIEW_FOLDER . 'documentation/sidebar/' . $lang);
         $this->assignToLayout('sidebar', new View(self::PLUGIN_REL_VIEW_FOLDER . 'sidebar', array(
@@ -230,7 +230,11 @@ class MultieditController extends PluginController {
         $force_full_view = !empty($_POST['force_full_view']) && $_POST['force_full_view'];
 
         // extracting extended fields
-        $extended_fields = array_keys(array_diff_key((array) $items[0], array_flip(self::$defaultPageFields)));
+        //$extended_fields = array_keys(array_diff_key((array) $items[0], array_flip(self::$defaultPageFields)));
+
+        // extracting extended fields
+        $pagePublicProperties = $this->_get_object_public_vars($items[0]);
+        $extended_fields = array_keys(array_diff_key(array_flip($pagePublicProperties), array_flip(self::$defaultPageFields)));
 
         $itemsList = new View(self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
                     'items'           => $items,
@@ -280,7 +284,7 @@ class MultieditController extends PluginController {
             $whereString = 'parent_id=' . Record::escape($page_id);
             $showAll     = false;
         }
-        $parentPage  = Page::findById($page_id);
+        $parentPage = Page::findById($page_id);
         if ( $sorting != '-default-' ) {
             $items = Page::findAllFrom('Page', $whereString . ' ORDER BY ' . $sorting . ' ' . $order);
         } else {
@@ -291,7 +295,9 @@ class MultieditController extends PluginController {
         $layouts = Record::findAllFrom('Layout');
 
         // extracting extended fields
-        $extended_fields = array_keys(array_diff_key((array) $parentPage, array_flip(self::$defaultPageFields)));
+//        $extended_fields = array_keys(array_diff_key((array) $parentPage, array_flip(self::$defaultPageFields)));
+        $pagePublicProperties = $this->_get_object_public_vars($parentPage);
+        $extended_fields = array_keys(array_diff_key(array_flip($pagePublicProperties), array_flip(self::$defaultPageFields)));
 
         $parentUri = $parentPage->getUri();
         $rootItem  = new View(self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
@@ -338,8 +344,26 @@ class MultieditController extends PluginController {
     }
 
 
+    private function _get_object_public_vars($obj) {
+        $ref    = new ReflectionObject($obj);
+        $pros   = $ref->getProperties(ReflectionProperty::IS_PUBLIC);
+        $result = array( );
+        foreach ( $pros as $pro ) {
+            false && $pro  = new ReflectionProperty();
+            $name = $pro->getName();
+            if ( !startsWith($name, '_') ) {
+                $result[] = $name;
+            }
+        }
+
+        return $result;
+
+    }
+
+
     public function index() {
-        $page  = Page::findById(1);
+        //$page  = Page::findById(1);
+        $page  = Record::findByIdFrom('Page', 1);
         self::makePagesListRecursive($page->id);
         $list  = new View(self::PLUGIN_REL_VIEW_FOLDER . 'header', array(
                     'pagesList' => self::$pagesList,
@@ -352,7 +376,9 @@ class MultieditController extends PluginController {
         $layouts = Record::findAllFrom('Layout');
 
         // extracting extended fields
-        $extended_fields = array_keys(array_diff_key((array) $page, array_flip(self::$defaultPageFields)));
+        $pagePublicProperties = $this->_get_object_public_vars($page);
+        $extended_fields = array_keys(array_diff_key(array_flip($pagePublicProperties), array_flip(self::$defaultPageFields)));
+        //echo_r($extended_fields);
 
         $rootItem = new View(self::PLUGIN_REL_VIEW_FOLDER . 'itemslist', array(
                     'items'           => array( $page ),
