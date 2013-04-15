@@ -73,6 +73,7 @@
 	'Memory usage' => 'Memory usage',
 	'Messages' => 'Messages',
 	'MultiEdit' => 'MultiEdit',
+        'Multieditor' => 'Multieditor',
 	'No data specified' => 'No data specified',
 	'No field name specified!' => 'No field name specified!',
 	'No field template specified!' => 'No field template specified!',
