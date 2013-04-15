@@ -15,6 +15,12 @@ MultiEdit Plugin can be installed into your WolfCMS by uploading it to ***CMS_RO
 Changelog
 ---------
 
+##### 0.3.1
+
+- Wolf CMS 0.7.6 support
+- i18n update for 0.7.6 support
+
+
 ##### 0.3.0
 
 - new **tabbed page parts display** in frontend and backend
