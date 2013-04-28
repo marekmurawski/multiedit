@@ -142,7 +142,7 @@ if ( !defined('IN_CMS') ) {
     $(document).delegate('#multiedit-add-field', 'click', function() {
 
         var template_id = $('#multiedit-add-field-template').val();
-        var newname = window.prompt('<?php echo __('Specify new field name '); ?>');
+        var newname = window.prompt('<?php echo __('Specify new name for field'); ?>');
 
         $.ajax({
             url: "<?php echo get_url('plugin/multiedit/field_add'); ?>",
@@ -173,7 +173,7 @@ if ( !defined('IN_CMS') ) {
     $(document).delegate('.multiedit-rename-field', 'click', function() {
 
         var fieldname = $(this).attr('data-field-name');
-        var newname = window.prompt('<?php echo __('Specify new name for field '); ?>' + fieldname);
+        var newname = window.prompt('<?php echo __('Specify new name for field'); ?> ' + fieldname);
 
         if (newname.trim()) {
             $.ajax({

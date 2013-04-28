@@ -441,7 +441,7 @@ class MultieditController extends PluginController {
         }
         // sanitize input
         if ( preg_match("/[^a-zA-Z0-9\-\+_\.]/", $_POST['new_name']) === 1 ) {
-            $this->failure(__('Invalid characters in page part name. Only english letters and + - . _ are allowed'));
+            $this->failure(__('Invalid characters in page part name. Only alphanumeric letters and + - . _ are allowed.'));
         }
 
         // check new name existence
@@ -473,7 +473,7 @@ class MultieditController extends PluginController {
         }
         // sanitize input
         if ( preg_match("/[^a-zA-Z0-9\-\+_\.]/", $_POST['name']) === 1 ) {
-            $this->failure(__('Invalid characters in page part name. Only english letters and + - . _ are allowed'));
+            $this->failure(__('Invalid characters in page part name. Only alphanumeric letters and + - . _ are allowed.'));
         }
 
         // check new name existence
