@@ -441,7 +441,7 @@ class MultieditController extends PluginController {
         }
         // sanitize input
         if ( preg_match("/[^a-zA-Z0-9\-\+_\.]/", $_POST['new_name']) === 1 ) {
-            $this->failure(__('Invalid characters in page part name. Only alphanumeric letters and + - . _ are allowed.'));
+            $this->failure(__('Invalid characters in page part name. Only alphanumeric characters and + - . _ are allowed.'));
         }
 
         // check new name existence
@@ -473,7 +473,7 @@ class MultieditController extends PluginController {
         }
         // sanitize input
         if ( preg_match("/[^a-zA-Z0-9\-\+_\.]/", $_POST['name']) === 1 ) {
-            $this->failure(__('Invalid characters in page part name. Only alphanumeric letters and + - . _ are allowed.'));
+            $this->failure(__('Invalid characters in page part name. Only alphanumeric characters and + - . _ are allowed.'));
         }
 
         // check new name existence
@@ -799,6 +799,16 @@ QUERY;
 
     }
 
+
+    public function to_slug() {
+        // sanitize input
+        if ( empty($_POST['string']) || empty($_POST['string']) ) {
+            $this->failure(__('No data specified'));
+        }
+        $string = $_POST['string'];
+        $result = Node::toSlug($string);
+        $this->respond($result);
+    }
 
     /**
      * Set value of Page model field

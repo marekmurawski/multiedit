@@ -38,18 +38,7 @@ function me_eraseCookie(name) {
     me_createCookie(name, "", -1);
 }
 
-$(document).delegate(".multiedit-slugifier", 'click', function() {
-    id = $(this).attr('rel').split('-', 2)[1];
-    sr = $('#title-' + id)
-    tgt = $('#slug-' + id);
 
-    ov = tgt.val();
-    if (ov != toSlug(sr.val())) {
-        tgt.val(toSlug(sr.val()));
-        tgt.trigger("change");
-        tgt.trigger("keyup");
-    }
-});
 
 $(document).delegate(".multiedit-breadcrumber", 'click', function() {
     id = $(this).attr('rel').split('-', 2)[1];

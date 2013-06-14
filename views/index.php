@@ -166,7 +166,7 @@ if ( !defined('IN_CMS') ) {
     $(document).delegate('.view-frontend-page', 'click', function() {
         $baseUrl = $(this).parents('div.multiedit-item').find('.baseurl').text();
         $slug = $(this).parents('div.multiedit-item').find('.titleslug').text();
-        window.location = $baseUrl+$slug;
+        window.location = $baseUrl + $slug;
     });
 
 
@@ -200,6 +200,19 @@ if ( !defined('IN_CMS') ) {
 
     $("#reload-list").live('click', function() {
         $('#multiedit-pageslist').trigger('change');
+    });
+
+    $(document).delegate(".multiedit-slugifier", 'click', function() {
+        id = $(this).attr('rel').split('-', 2)[1];
+        sr = $('#title-' + id);
+        tgt = $('#slug-' + id);
+
+        ov = tgt.val();
+        if (ov != toSlug(sr.val())) {
+            tgt.val(toSlug(sr.val()));
+            tgt.trigger("change");
+            tgt.trigger("keyup");
+        }
     });
 
     $(document).delegate(".multiedit-field", 'change', function() {

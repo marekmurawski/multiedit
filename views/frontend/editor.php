@@ -87,34 +87,59 @@
                 error: function(data) {
                     alert(dump(data));
                 }
-            })
-        })
-    })
-
-
-/*
-    $(document).delegate('#multipage_item-' +<?php echo $page_id; ?>, 'mouseenter', function() {
-        //   $(this).fadeTo('slow', 1);
-        $(this).animate({
-            'bottom': '0px'
-        }, 'fast');
+            });
+        });
     });
 
-    $(document).delegate('#multipage_item-' +<?php echo $page_id; ?>, 'mouseleave', function() {
-        //$(this).fadeTo('slow', 0.3);
-        h = $(this).outerHeight() - 24;
-        $(this).animate({
-            'bottom': '-' + h + 'px'
-        }, 'fast');
+
+    $(document).delegate(".multiedit-slugifier", 'click', function() {
+        var id = $(this).attr('rel').split('-', 2)[1];
+        var sr = $('#title-' + id);
+        var tgt = $('#slug-' + id);
+        $.ajax({
+            url: "<?php echo URL_PUBLIC . ADMIN_DIR; ?>/plugin/multiedit/to_slug/",
+            type: 'POST',
+            global: false,
+            dataType: 'json',
+            data: {
+                string: sr.val()
+            },
+            success: function(data) {
+                    tgt.val(data.message);
+                    tgt.trigger("change");
+                    tgt.trigger("keyup");
+
+            },
+            error: function(data) {
+                alert(dump(data));
+            }
+        });
     });
- */
+
+
+    /*
+     $(document).delegate('#multipage_item-' +<?php echo $page_id; ?>, 'mouseenter', function() {
+     //   $(this).fadeTo('slow', 1);
+     $(this).animate({
+     'bottom': '0px'
+     }, 'fast');
+     });
+     
+     $(document).delegate('#multipage_item-' +<?php echo $page_id; ?>, 'mouseleave', function() {
+     //$(this).fadeTo('slow', 0.3);
+     h = $(this).outerHeight() - 24;
+     $(this).animate({
+     'bottom': '-' + h + 'px'
+     }, 'fast');
+     });
+     */
 
     $(document).delegate("#multiedit-fe-hide", 'click', function() {
         $(this).hide();
         me_eraseCookie('MEfe');
         target = $('#multipage_item-' +<?php echo $page_id; ?>);
         target.fadeOut('fast', function() {
-           $("#multiedit-fe-show").fadeIn('fast');
+            $("#multiedit-fe-show").fadeIn('fast');
         });
     });
 

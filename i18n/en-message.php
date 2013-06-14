@@ -6,7 +6,7 @@
  * @package Plugins
  * @subpackage multiedit
  *
- * @author Marek Murawski <http://marekmurawski.pl>
+ * @author Your Name < email@domain.something >
  * @version Wolf 0.7.7
  */
 
@@ -65,7 +65,7 @@ return array(
 'Insufficent permissions for editing this field' => 'Insufficent permissions for editing this field',
 'Insufficent permissions for fields manipulation!' => 'Insufficent permissions for fields manipulation!',
 'Insufficent permissions for parts editing' => 'Insufficent permissions for parts editing',
-'Invalid characters in page part name. Only alphanumeric letters and + - . _ are allowed.' => 'Invalid characters in page part name. Only alphanumeric letters and + - . _ are allowed.',
+'Invalid characters in page part name. Only alphanumeric characters and + - . _ are allowed.' => 'Invalid characters in page part name. Only alphanumeric characters and + - . _ are allowed.',
 'Invalid target field name!' => 'Invalid target field name!',
 'Keywords' => 'Keywords',
 'Load page parts' => 'Load page parts',
@@ -152,3 +152,4 @@ return array(
 'to role' => 'to role',
 'was not found and not deleted!' => 'was not found and not deleted!',
 );
+
